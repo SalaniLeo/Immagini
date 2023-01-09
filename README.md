@@ -38,5 +38,5 @@
   <h4>For now it only supports one file scripts/apps</h4>
 
   <h3>Types/Categories</h3>
-    You can see <a href="https://specifications.freedesktop.org/menu-spec/latest/apa.html">valid types</a> and categories in the official documentation page
+    You can see <a href="https://specifications.freedesktop.org/menu-spec/latest/apa.html">valid types and categories</a> in the official documentation page
 

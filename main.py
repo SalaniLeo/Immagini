@@ -9,7 +9,7 @@ from gi.repository import Gtk
 class Handler:
     def onDestroy(self, *args):
         Gtk.main_quit()
-#asadffsss
+        
 # opens popup window for exe selection
     def chooseExe(self, button):
         dialog = Gtk.FileChooserDialog(title="choose the executable",parent=None)

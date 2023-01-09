@@ -9,7 +9,7 @@ def initBuild(appDirPath, output, name):
 
     toolDir = "'" + str(pathlib.Path(__file__).parent.resolve()) + "/appimagetool-x86_64.AppImage'"
 
-    os.chmod(toolDir, 777)
+    # os.chmod(toolDir, 777)
 
     buildoutput = os.popen("ARCH=x86_64 " + toolDir + " '" + appDirPath + "'" + " '" + output + "/" + name + "-x86_64.AppImage' ").read()
 

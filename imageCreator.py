@@ -6,6 +6,7 @@ import creator.AppRun
 import creator.copyExeFile
 import creator.copyIconFile
 import creator.builder.builder
+import ui.errorWindow
 
 name = None
 exe = None
@@ -13,7 +14,7 @@ icon = None
 type = None
 categories = None
 
-def start(name,exe,icon,type,categories,output):
+def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc):
 
     print("[name] " + name)
     print("[exe dir] " + exe)
@@ -21,14 +22,17 @@ def start(name,exe,icon,type,categories,output):
     print("[type] " + type)
     print("[category] " + categories)
     print("[output location] " + output)
-
+    
     exeName = ntpath.basename(exe)
     iconName = ntpath.basename(icon)
     appDirPath = output + "/" + name + ".AppDir/"
 
     creator.AppDir.createAppDir(appDirPath)
     creator.desktopFile.createDesktopFile(name,exeName,iconName,type,categories,appDirPath)
-    creator.AppRun.createAppRunFile(exeName,appDirPath)
+    if not(customAppRun):
+        creator.AppRun.createAppRunFile(exeName,appDirPath)
+    elif(customAppRun):
+        creator.AppRun.copyAppRunFile(appRunLoc,appDirPath)
     creator.copyExeFile.copyExe(exe,appDirPath,exeName)
     creator.copyIconFile.copyIcon(icon,appDirPath,iconName)
 

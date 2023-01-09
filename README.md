@@ -24,7 +24,7 @@
   
     [Desktop Entry]
     Name=Flake
-    Exec=Flake-v0.0.1-x86_64.AppImage <b>(which is picked from the /usr/bin folder inside the .AppImage)
+    Exec=Flake-v0.0.1-x86_64.AppImage (which is picked from the /usr/bin folder inside the .AppImage)
     Icon=Icon.svg
     Type=Application
     Categories=Utility

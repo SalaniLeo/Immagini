@@ -1,4 +1,4 @@
-# Flake
+ # Flake
 
 <p> early development </p>
 
@@ -39,4 +39,36 @@
 
   <h3>Types/Categories</h3>
     You can see <a href="https://specifications.freedesktop.org/menu-spec/latest/apa.html">valid types and categories</a> in the official documentation page
+    
+  <h3>App generated .AppDir</h3>
+    The .AppDir folder contains:<br><br>
+<ul>
+  <li>the bin folder where the executable file/script/app is</li>
+  <li>.deskop file
+  <details>
+  <summary>content</summary>
+  <div>
+  
+    [Desktop Entry]
+    Name=Flake
+    Exec=Flake-v0.0.1-x86_64.AppImage <b>(which is picked from the /usr/bin folder inside the .AppImage)
+    Icon=Icon.svg
+    Type=Application
+    Categories=Utility
+</div></details></li>
+  <li>icon</li>
+  <li>AppRun
+  <details>
+    <summary>content</summary>
+  <div>
+  
+    #!/bin/sh 
+    HERE="$(dirname "$(readlink -f "${0}")")" 
+    EXEC="${HERE}/usr/bin/[selected exe]" 
+    exec "${EXEC}"
+    
+  </div> 
+
+</details></li>
+</ul> 
 

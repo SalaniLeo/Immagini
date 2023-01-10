@@ -48,7 +48,7 @@
   
   Flake provides a gtk user friendly interface for <a href="https://github.com/AppImage/appimagekit">appimagetool</a>, that has a terminal only interface
 
-  This first version has only the very basic options, such as name, icon, executable etc... In the next versions i'll add all the options that <a             href="https://github.com/SalaniLeo/appimagecreator">this</a> app has but much less buggy and built excusively on gtk.
+  This first version has only the very basic options, such as name, icon, executable etc... In the next versions i'll add all the options that appimagetool has and more!
 
   See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs
 

@@ -6,8 +6,6 @@
 
   <h2> Usage </h2>
 
-  Only supports one file scripts, and only 
-
   <h4>For now it only supports one file scripts/apps</h4>
 
   <h3>Types/Categories</h3>

@@ -2,15 +2,15 @@ import shutil
 import os
 from os import path
 import ui.errorWindow
-import sys
 
+# default copyExe option
 def copyExe(exe,appDirPath,exeName):
 
+    # exe file copy destination
     dst = appDirPath + "usr/bin/" + exeName
 
-    exepath = exe
-
-    if path.exists(exepath):
+    # checks if exe file exists
+    if path.exists(exe):
         shutil.copyfile(exe, dst)
         os.chmod(dst, 777)
     
@@ -18,8 +18,13 @@ def copyExe(exe,appDirPath,exeName):
         ui.errorWindow.error_message("could not copy the exe file")
         # sys.exit("could not copy the exe file")
         
-def copyExePFolder(exe,appDirPath,exeName,parentFolder):
+def copyExePFolder(appDirPath,exeName,parentFolder):
     
-    dst = appDirPath + "usr/bin/" + exeName
+    # gets parent folder name from complete directory
+    pFolderName = os.path.normpath(parentFolder)
+    
+    if path.exists(parentFolder):
+        shutil.copyfile(parentFolder, appDirPath)
+        os.chmod(appDirPath + pFolderName + exeName, 777)
 
         

@@ -96,6 +96,7 @@ Author: SalaniLeo
                 <property name="margin-top">6</property>
                 <child>
                   <object class="GtkBox">
+                    <property name="width-request">50</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="margin-left">12</property>
@@ -174,7 +175,7 @@ Author: SalaniLeo
                   </object>
                   <packing>
                     <property name="resize">False</property>
-                    <property name="shrink">True</property>
+                    <property name="shrink">False</property>
                   </packing>
                 </child>
                 <child>
@@ -193,7 +194,6 @@ Author: SalaniLeo
                         <property name="can-focus">True</property>
                         <property name="margin-right">12</property>
                         <property name="margin-end">12</property>
-                        <property name="text" translatable="yes">Utility</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -207,7 +207,6 @@ Author: SalaniLeo
                         <property name="can-focus">True</property>
                         <property name="margin-right">12</property>
                         <property name="margin-end">12</property>
-                        <property name="text" translatable="yes">Application</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -221,7 +220,6 @@ Author: SalaniLeo
                         <property name="can-focus">True</property>
                         <property name="margin-right">100</property>
                         <property name="margin-end">100</property>
-                        <property name="text" translatable="yes">/home/leo/Pictures/icon.svg</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -235,7 +233,6 @@ Author: SalaniLeo
                         <property name="can-focus">True</property>
                         <property name="margin-right">100</property>
                         <property name="margin-end">100</property>
-                        <property name="text" translatable="yes">/home/leo/Desktop/appimage-creator-v1.2-x86_64.AppImage</property>
                         <property name="shadow-type">none</property>
                       </object>
                       <packing>
@@ -252,7 +249,6 @@ Author: SalaniLeo
                         <property name="can-focus">True</property>
                         <property name="margin-right">12</property>
                         <property name="margin-end">12</property>
-                        <property name="text" translatable="yes">test</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -317,7 +313,6 @@ Author: SalaniLeo
                 <property name="margin-bottom">25</property>
                 <child>
                   <object class="GtkSwitch" id="folderMSwitch">
-                    <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="margin-left">12</property>
                   </object>
@@ -328,7 +323,6 @@ Author: SalaniLeo
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="margin-right">21</property>
                     <property name="label" translatable="yes">Folder mode:</property>

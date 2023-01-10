@@ -18,3 +18,8 @@ def copyExe(exe,appDirPath,exeName):
         ui.errorWindow.error_message("could not copy the exe file")
         # sys.exit("could not copy the exe file")
         
+def copyExePFolder(exe,appDirPath,exeName,parentFolder):
+    
+    dst = appDirPath + "usr/bin/" + exeName
+
+        

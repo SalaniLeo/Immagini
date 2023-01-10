@@ -1,8 +1,6 @@
 import shutil
-import os
 from os import path
 import ui.errorWindow
-import sys
 
 def copyIcon(icon,appDirPath,iconName):
 

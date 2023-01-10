@@ -22,15 +22,9 @@ def createAppRunFile(exeName,appDirPath):
 def copyAppRunFile(AppRun,appDirPath):
 
     dst = appDirPath + "AppRun"
-        
-    # if(ntpath.basename(AppRun) is not "AppRun"):
-    #   ui.errorWindow.error_message("AppRun file not valid. \n Try renaming the file to 'AppRun'")
-    #   exit
 
     if path.exists(AppRun):
         shutil.copyfile(AppRun, dst)
-        print(AppRun)
-        print(dst)
         os.chmod(dst, 777)
     
     else:

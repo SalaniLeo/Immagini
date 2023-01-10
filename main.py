@@ -83,7 +83,9 @@ class spHandler():
             categoriesEntry.get_text(),
             sp.get_object("outputEntry").get_text(),
             CustomARSwitch.get_active(),
-            sp.get_object("AppREntry").get_text()
+            sp.get_object("AppREntry").get_text(),
+            folderMSwitch.get_active(),
+            sp.get_object("folderMEntry").get_text()
             
             )) 
         # outputConsole.set_hexpand(True)

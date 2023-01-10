@@ -30,11 +30,16 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc):
     creator.AppDir.createAppDir(appDirPath)
     creator.desktopFile.createDesktopFile(name,exeName,iconName,type,categories,appDirPath)
     if not(customAppRun):
-        creator.AppRun.createAppRunFile(exeName,appDirPath)
+            creator.AppRun.createAppRunFile(exeName,appDirPath)
     elif(customAppRun):
+        if(ntpath.basename(appRunLoc)!="AppRun"):
+            ui.errorWindow.error_message("AppRun file not valid. \nTry renaming the file to 'AppRun'")
+            return 0
         creator.AppRun.copyAppRunFile(appRunLoc,appDirPath)
-    creator.copyExeFile.copyExe(exe,appDirPath,exeName)
-    creator.copyIconFile.copyIcon(icon,appDirPath,iconName)
+            
+        creator.copyExeFile.copyExe(exe,appDirPath,exeName)
+        creator.copyIconFile.copyIcon(icon,appDirPath,iconName)
+
 
 
     outputtxt = creator.builder.builder.initBuild(appDirPath,output,name)

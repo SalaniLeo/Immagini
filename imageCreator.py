@@ -27,15 +27,20 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     exeName = ntpath.basename(exe)
     iconName = ntpath.basename(icon)
     appDirPath = output + "/" + name + ".AppDir/"
+    pFolderName =  os.path.basename(folderLoc)
 
     # creates initial .AppDir folder
-    creator.AppDir.createAppDir(appDirPath)
+    creator.AppDir.createAppDir(appDirPath,folderMode)
+    
     # creates desktop file inside .AppDir folder
     creator.desktopFile.createDesktopFile(name,exeName,iconName,type,categories,appDirPath)
     
+    # copies icon file inside .AppDir
+    creator.copyIconFile.copyIcon(icon,appDirPath,iconName)
+    
     # checks if custom apprun is enabled
     if not(customAppRun):
-            creator.AppRun.createAppRunFile(exeName,appDirPath)
+            creator.AppRun.createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName)
     # if not
     elif(customAppRun):
         # checks if AppRun is named AppRun
@@ -50,12 +55,11 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     if not(folderMode):
         # if foldermode is not enabled copies executable file normally
         creator.copyExeFile.copyExe(exe,appDirPath,exeName)
+        print("exemode")
     elif(folderMode):
         # if foldermode is enabled moves the entire app inside .AppDir
-        creator.copyExeFile.copyExePFolder(exe,appDirPath,exeName,folderLoc)
-        
-    # copies icon file inside .AppDir
-    creator.copyIconFile.copyIcon(icon,appDirPath,iconName)
+        creator.copyExeFile.copyExePFolder(appDirPath,pFolderName,folderLoc)
+        print("folder mode")
 
 
     # sets outputtxt to the appimagetool output

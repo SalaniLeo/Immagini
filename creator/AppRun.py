@@ -5,19 +5,23 @@ from os import path
 import ui.errorWindow
 import ntpath
 
-def createAppRunFile(exeName,appDirPath):
+def createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName):
 
   f = open(appDirPath + "AppRun", "w")
 
   f.writelines("#!/bin/sh")
   f.writelines("\nHERE=\"$(dirname \"$(readlink -f \"${0}\")\")\"")
-  f.writelines("\nEXEC=\"${HERE}/usr/bin/" + exeName + "\"")
+  if not folderMode:
+    f.writelines("\nEXEC=\"${HERE}/usr/bin/" + exeName + "\"")
+  elif folderMode:
+    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + compare(exe,appDirPath) + exeName + "\"")
   f.writelines("\nexec \"${EXEC}\"")
   f.close()
 
 
   os.system("chmod +x '" + appDirPath + "AppRun'")
-  
+
+  print(compare(exe,appDirPath))
   
 def copyAppRunFile(AppRun,appDirPath):
 
@@ -31,3 +35,9 @@ def copyAppRunFile(AppRun,appDirPath):
         ui.errorWindow.error_message("could not copy the AppRun file")
         # sys.exit("could not copy the exe file")
         
+        
+def compare(a, b):
+    for x, y in zip(a, b):
+        if x == y:
+          s = x  
+          return s

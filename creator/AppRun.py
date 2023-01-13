@@ -4,7 +4,7 @@ import os
 from os import path
 import ui.errorWindow
 
-def createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName):
+def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName):
 
   f = open(appDirPath + "AppRun", "w")
 
@@ -13,12 +13,11 @@ def createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName):
   if not folderMode:
     f.writelines("\nEXEC=\"${HERE}/usr/bin/" + exeName + "\"")
   elif folderMode:
-    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + compare(appDirPath,exe)+ "\"")
+    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + exePathFolderMode + "\"")
   f.writelines("\nexec \"${EXEC}\"")
   f.close()
   os.system("chmod +x '" + appDirPath + "AppRun'")
 
-  print(compare(exe,appDirPath))
   
 def copyAppRunFile(AppRun,appDirPath):
 
@@ -31,10 +30,6 @@ def copyAppRunFile(AppRun,appDirPath):
     else:
         ui.errorWindow.error_message("could not copy the AppRun file")
         # sys.exit("could not copy the exe file")
-        
-        
-def compare(s1, s2):
-    result = s2.split("AppDir",1)[1]
-    return result
+
 
 

@@ -28,6 +28,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     iconName = ntpath.basename(icon)
     appDirPath = output + "/" + name + ".AppDir/"
     pFolderName =  os.path.basename(folderLoc)
+    exePathFolderMode = compare(appDirPath,exe)
 
     # creates initial .AppDir folder
     creator.AppDir.createAppDir(appDirPath,folderMode)
@@ -40,7 +41,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     
     # checks if custom apprun is enabled
     if not(customAppRun):
-            creator.AppRun.createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName)
+            creator.AppRun.createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName)
     # if not
     elif(customAppRun):
         # checks if AppRun is named AppRun
@@ -57,10 +58,16 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
         creator.copyExeFile.copyExe(exe,appDirPath,exeName)
     elif(folderMode):
         # if foldermode is enabled moves the entire app inside .AppDir
-        creator.copyExeFile.copyExePFolder(appDirPath,pFolderName,folderLoc)
+        creator.copyExeFile.copyExePFolder(appDirPath,pFolderName,folderLoc,exePathFolderMode)
 
 
     # sets outputtxt to the appimagetool output
     outputtxt = creator.builder.builder.initBuild(appDirPath,output,name)
 
     return outputtxt
+
+
+        
+def compare(s1, s2):
+    result = s2.split("AppDir",1)[1]
+    return result

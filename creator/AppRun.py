@@ -14,11 +14,9 @@ def createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName):
   if not folderMode:
     f.writelines("\nEXEC=\"${HERE}/usr/bin/" + exeName + "\"")
   elif folderMode:
-    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + compare(exe,appDirPath) + exeName + "\"")
+    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + compare(appDirPath,exe)+ "\"")
   f.writelines("\nexec \"${EXEC}\"")
   f.close()
-
-
   os.system("chmod +x '" + appDirPath + "AppRun'")
 
   print(compare(exe,appDirPath))
@@ -36,8 +34,8 @@ def copyAppRunFile(AppRun,appDirPath):
         # sys.exit("could not copy the exe file")
         
         
-def compare(a, b):
-    for x, y in zip(a, b):
-        if x == y:
-          s = x  
-          return s
+def compare(s1, s2):
+    result = s2.split("AppDir",1)[1]
+    return result
+
+

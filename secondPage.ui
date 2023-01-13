@@ -116,6 +116,7 @@
                     <property name="margin-start">50</property>
                     <property name="margin-end">10</property>
                     <property name="image-position">right</property>
+                    <signal name="clicked" handler="selectOutput" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -133,6 +134,7 @@
                     <child>
                       <object class="GtkEntry" id="folderMEntry">
                         <property name="can-focus">True</property>
+                        <property name="margin-right">100</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -143,6 +145,7 @@
                     <child>
                       <object class="GtkEntry" id="AppREntry">
                         <property name="can-focus">True</property>
+                        <property name="margin-right">100</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -161,6 +164,7 @@
                         <property name="margin-start">50</property>
                         <property name="margin-end">10</property>
                         <property name="image-position">right</property>
+                        <signal name="clicked" handler="chooseAppRun" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -178,6 +182,7 @@
                         <property name="margin-start">50</property>
                         <property name="margin-end">10</property>
                         <property name="image-position">right</property>
+                        <signal name="clicked" handler="chooseParentFolder" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -226,6 +231,7 @@
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">center</property>
+                <signal name="clicked" handler="startCreating" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

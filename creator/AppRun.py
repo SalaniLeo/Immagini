@@ -3,7 +3,6 @@ import shutil
 import os
 from os import path
 import ui.errorWindow
-import ntpath
 
 def createAppRunFile(exeName,appDirPath,folderMode,exe,pFolderName):
 

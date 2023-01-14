@@ -4,21 +4,27 @@
 
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
-  <h2> Usage </h2>
+  <h1> Documentation </h1>
 
-  <h4>For now it only supports one file scripts/apps</h4>
+  See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs for all the info about AppImages
 
-  <h3>Types/Categories</h3>
-    You can see <a href="https://specifications.freedesktop.org/menu-spec/latest/apa.html">valid types and categories</a> in the official documentation page
-    
-  <h3>App generated .AppDir</h3>
-    The .AppDir folder contains:<br><br>
+  <h2> Appimages </h2>
+  
+   <h3>App generated .AppDir</h3>
+   <b>This is without any option activated so result may vary</b><br>
+   The .AppDir folder contains:<br><br>
 <ul>
   <li>the bin folder where the executable file/script/app is</li>
-  <li>.deskop file
-  <details>
-  <summary>content</summary>
-  <div>
+  <li> <a href=#.Desktop>Desktop file</a></li>
+  <li> <a href=#Icon>Icon</a></li>
+  <li> <a href=#AppRun>AppRun</a></li>
+</ul> 
+
+<div id=".Desktop">
+ <h2>Desktop file</h2>
+The app creates a Desktop entry for you automatically when building the .AppDir folder. To see the content click...
+<details>
+  <summary>...here</summary><div>
   
     [Desktop Entry]
     Name=Flake
@@ -26,11 +32,23 @@
     Icon=Icon.svg
     Type=Application
     Categories=Utility
+    
 </div></details></li>
-  <li>icon</li>
-  <li>AppRun
-  <details>
-    <summary>Auto generated .AppRun</summary>
+ </div>
+
+
+<div id="Icon">
+ <h2>Icon</h2>
+ <p>The icon is used in thumbnails, and should be in a standard size like 128x128 or 256x256 pixels.</p>
+</div>
+
+<div id="AppRun">
+ <h2>AppRun</h2>
+ <li><h3>Default AppRun</h3>
+ <h4>Only supports one file scripts/application. </h4>
+
+  <p>The app creates a default AppRun file in case a custom one is not provided, if you want to see what's inside...
+  <details><summary>...click me</summary>
   <div>
   
     #!/bin/sh 
@@ -38,35 +56,10 @@
     EXEC="${HERE}/usr/bin/[selected exe]" 
     exec "${EXEC}"
     
-  </div> 
-
-</details></li>
-</ul> 
-
-
-  <h2> Documentation </h2>
+  </div></details>
   
-  Flake provides a gtk user friendly interface for <a href="https://github.com/AppImage/appimagekit">appimagetool</a>, that has a terminal only interface
-
-  This first version has only the very basic options, such as name, icon, executable etc... In the next versions i'll add all the options that appimagetool has and more!
-
-  See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs
-
-  <h4> Appimages </h4>
-  
-  <h5>Only supports one file scripts/application. </h5>
-    
-  <p>The app builds the appimages with a default .AppRun file, that works by using the exec command to run the executable file selected, therefore you cannot run any script that is not executable by your terminal or that has specified the script executor (#!/bin/python3 - #!/bin/sh)
-  
-<details>
-    <summary>default .apprun</summary>
-  <div>
-  
-    #!/bin/sh 
-    HERE="$(dirname "$(readlink -f "${0}")")" 
-    EXEC="${HERE}/usr/bin/[selected exe]" 
-    exec "${EXEC}"
-    
-  </div> 
-
-</details>
+   <li><h3>Custom AppRun</h3>
+   <p>The app supports AppRun files made by you, to use this option enable advanced options and enable "custom apprun".<p>
+   The official docs on how to setup an AppDir folder are <a href="https://docs.appimage.org/reference/appdir.html">here</a>
+   
+</div>

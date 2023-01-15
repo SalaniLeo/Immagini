@@ -59,7 +59,7 @@ The app creates a Desktop entry for you automatically when building the .AppDir 
   </div></details>
   
    <li><h3>Custom AppRun</h3>
-   <p>The app supports AppRun files made by you, to use this option enable advanced options and enable "custom apprun".<p>
+   <p>The app supports AppRun files made by users, to use this option enable advanced options and enable "custom apprun".<p>
    The official docs on how to setup an AppDir folder are <a href="https://docs.appimage.org/reference/appdir.html">here</a>
    
 </div>

@@ -58,7 +58,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
         creator.copyExeFile.copyExe(exe,appDirPath,exeName)
     elif(folderMode):
         # if foldermode is enabled moves the entire app inside .AppDir
-        creator.copyExeFile.copyExePFolder(appDirPath,pFolderName,folderLoc,exePathFolderMode)
+        creator.copyExeFile.copyExePFolder(appDirPath,pFolderName,folderLoc,exe)
 
 
     # sets outputtxt to the appimagetool output

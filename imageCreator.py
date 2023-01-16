@@ -69,5 +69,5 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
 
         
 def compare(s1, s2):
-    result = s2.split("AppDir",1)[1]
+    result = s2.split("AppDir",1)
     return result

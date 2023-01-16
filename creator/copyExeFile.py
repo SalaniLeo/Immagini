@@ -2,8 +2,7 @@ import shutil
 import os
 from os import path
 import ui.errorWindow
-from distutils.dir_util import copy_tree
-import shutil, errno
+import shutil
 
 # default copyExe option
 def copyExe(exe,appDirPath,exeName):

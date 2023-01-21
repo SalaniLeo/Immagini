@@ -1,4 +1,4 @@
- # Flake (libadwaita version)
+ # Flake (libadwaita version) Do not clone this branch. This is not functioning code
 
 <p> early development </p>
 

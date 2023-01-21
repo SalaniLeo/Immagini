@@ -4,6 +4,8 @@
 
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
+<h3> Updating to libadwaita. Next release will also be available as flatpak </h3>
+
   <h1> Documentation </h1>
 
   See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs for all the info about AppImages

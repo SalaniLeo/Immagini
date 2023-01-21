@@ -1,0 +1,33 @@
+#centerGrid > *{
+
+    margin: 6px;
+
+
+}
+
+#mainBox{
+
+    margin: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    
+
+}
+
+#aaa > *{
+    /* background-color: aliceblue; */
+    /* margin-left: 100px;
+    margin-right: 100px; */
+    margin-top: 12px;
+}
+
+#advGrid{
+    margin-top: 6px;
+}
+
+#advGrid > *{ 
+
+    margin: 6px;
+
+}

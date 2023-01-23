@@ -1,9 +1,10 @@
 import sys
-import os
+import imageCreator
+import shutil
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio, GLib, Gdk
+from gi.repository import Gtk, Adw, Gio, Gdk
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -11,15 +12,17 @@ class MainWindow(Gtk.ApplicationWindow):
         
         # self.set_size_request(600,400)
 
-
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_file(Gio.File.new_for_path('/home/leo/Apps/Visual Studio Code/flake/app.css'))
+        css_provider.load_from_file(Gio.File.new_for_path('app.css'))
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         style_context = self.get_style_context()
         style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
                           
         self.header = Gtk.HeaderBar()
+        title_label = Gtk.Label()
+        title_label.set_markup("<b>Flake</b>")
+        self.header.set_title_widget(title_label)
         self.set_titlebar(self.header)
         self.header.set_name("headerbar")
         self.set_name("window")
@@ -28,19 +31,22 @@ class MainWindow(Gtk.ApplicationWindow):
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.switch = Gtk.Switch()
-        # self.switch.set_active(True)  # Let's default it to on
-        # self.switch.connect("state-set", self.switch_switched) # Lets trigger a function
         self.label = Gtk.Label(label="Advanced:")
         self.switch_box.append(self.label)
         self.switch_box.append(self.switch)
         self.header.pack_start(self.switch_box)
         self.switch_box.set_spacing(5) # Add some spacing
         
-        self.switch.connect("state-set", self.showAdvanced) # Lets trigger a function
+        self.switch.connect("state-set", self.showAdvanced)
+        
+        #stack for confirm animation
+        self.stack = Gtk.Stack()
+        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        self.set_child(self.stack)
 
         #main box in the middle
         self.mainBox = Gtk.Grid()
-        self.set_child(self.mainBox)
+        self.stack.add_child(self.mainBox)
         self.mainBox.set_name("mainBox")
         self.set_default_size(750,400)
         
@@ -66,7 +72,8 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mainBox.attach(self.centerGrid, 1, 1, 1, 1)
         self.centerGrid.set_name("centerGrid")
         self.centerGrid.set_hexpand(True)
-        
+        # self.centerGrid.set_row_spacing(12)
+        # self.centerGrid.set_column_spacing(12)
         
         
         self.nameLabel = Gtk.Label(label="Name:")
@@ -76,8 +83,7 @@ class MainWindow(Gtk.ApplicationWindow):
         
         self.nameEntry = Gtk.Entry()
         self.centerGrid.attach(self.nameEntry,1,0,3,1)
-        self.nameEntry.set_name("nameEntry")        
-        
+        self.nameEntry.set_name("nameEntry")                
         
         self.exeLabel = Gtk.Label(label="Executable:")
         self.centerGrid.attach(self.exeLabel,0,1,1,1) 
@@ -89,14 +95,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.exeEntry.set_name("exeEntry")
         self.exeEntry.set_hexpand(True)
 
+
         self.exeBrowse = Gtk.Button(label="browse")
         self.centerGrid.attach(self.exeBrowse,3,1,1,1)
         self.exeBrowse.set_name("exeBrowse")
-        self.exeBrowse.connect('clicked', self.chooseExe)
+        self.exeBrowse.connect("clicked", self.chooseExe)    
 
-        
-        
-        
+
         self.iconLabel = Gtk.Label(label="Icon:")
         self.centerGrid.attach(self.iconLabel,0,2,1,1) 
         self.iconLabel.set_name("iconLabel")
@@ -110,12 +115,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.iconBrowse = Gtk.Button(label="browse")
         self.centerGrid.attach(self.iconBrowse,3,2,1,1)
         self.iconBrowse.set_name("iconBrowse")
-        self.iconBrowse.connect('clicked', self.chooseIcon)
+        self.iconBrowse.connect("clicked", self.chooseIcon)    
         
         
         
-        
-        self.typeLabel = Gtk.Label(label="Name:")
+        self.typeLabel = Gtk.Label(label="Type:")
         self.centerGrid.attach(self.typeLabel,0,3,1,1)
         self.typeLabel.set_name("typeLabel")
         self.typeLabel.set_xalign(0.0)
@@ -149,12 +153,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.okButton.set_size_request(80, -1)  # imposta la larghezza a 80 pixel
         self.okButton.set_halign(Gtk.Align.CENTER)  # imposta l'allineamento al centro
         self.okButton.set_valign(Gtk.Align.CENTER)  # imposta l'allineamento al centro
+        self.okButton.connect("clicked", self.confirm)
         self.okBLabel.append(self.okButton)  #inserisci il bottone nella bottomBox
 
         self.AdvancedOGrid = Gtk.Grid()
         self.mainBox.attach(self.AdvancedOGrid,1,2,1,1)
         self.AdvancedOGrid.set_visible(False)
-        self.AdvancedOGrid.set_size_request(100,100)
+        # self.AdvancedOGrid.set_size_request(100,100)
         self.AdvancedOGrid.set_name("advGrid")
         
         self.folderMLabel = Gtk.Label(label="Folder mode:")
@@ -169,69 +174,238 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.customARSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.customARSwitch,1,1,1,1)
+        
+        
+        
+        
+        ###Second Page###
+        self.secondPage = Gtk.Grid()
+        self.stack.add_child(self.secondPage)
+        self.secondPage.set_row_spacing(35)
+        self.secondPage.set_column_spacing(35)
+
+        
+        self.backButton = Gtk.Button.new_from_icon_name("pan-start-symbolic") 
+        self.backButton.connect("clicked", self.goBack)
     
-    # opens popup window for exe selection
-#     def chooseExe(self, button):
-#         self.exeEntry.set_text(fileChooser("Choose executable file", False))
+        
+        self.topBox2 = Gtk.Box()
+        self.secondPage.attach(self.topBox2, 0, 0, 2, 1)
+        self.topBox2.set_vexpand(True)
+        
+        self.bottomBox2 = Gtk.Box()
+        self.secondPage.attach(self.bottomBox2, 0, 4, 1, 1)
+        self.bottomBox2.set_vexpand(True)
+        
+        self.bottomBox2 = Gtk.Box()
+        self.secondPage.attach(self.bottomBox2, 0, 5, 1, 1)
+        self.bottomBox2.set_vexpand(True)
 
-# # opens popup window for icon selection
-#     def chooseIcon(self, button):
-#         self.iconEntry.set_text(fileChooser("Choose executable file", False, True))
+        self.leftBox2 = Gtk.Box()
+        self.secondPage.attach(self.leftBox2, 0, 0, 1, 1)
+        self.leftBox2.set_hexpand(True)
+        
+        self.rightBox2 = Gtk.Box()
+        self.secondPage.attach(self.rightBox2, 2, 0, 1, 2)
+        self.rightBox2.set_hexpand(True)
+        
+        self.centerGrid2 = Gtk.Grid()
+        self.secondPage.attach(self.centerGrid2, 1, 1, 1, 1)
+        self.centerGrid2.set_hexpand(True)
+        # self.centerGrid2.set_vexpand(True)
+        self.centerGrid2.set_column_spacing(12)
+        self.centerGrid2.set_row_spacing(12)
 
-    #shows the advanced options grid when activated 
-    def showAdvanced(self, active):
+
+        
+        self.outputFLabel = Gtk.Label(label="Output folder:")
+        self.centerGrid2.attach(self.outputFLabel,0,0,1,1) 
+        self.outputFLabel.set_name("exeLabel")
+        self.outputFLabel.set_xalign(0.0)
+
+        self.outputFEntry = Gtk.Entry()
+        self.centerGrid2.attach(self.outputFEntry,1,0,2,1) 
+        self.outputFEntry.set_hexpand(True)
+
+        self.outputFBrowse = Gtk.Button(label="browse")
+        self.centerGrid2.attach(self.outputFBrowse,3,0,1,1)
+        self.outputFBrowse.connect("clicked", self.chooseOutputLoc)    
+        
+        
+        
+        self.secondPARFileLabel = Gtk.Label(label="Custom AppRun file:")
+        self.centerGrid2.attach(self.secondPARFileLabel,0,1,1,1) 
+        self.secondPARFileLabel.set_name("exeLabel")
+        self.secondPARFileLabel.set_xalign(0.0)
+        self.secondPARFileLabel.set_visible(False)
+
+
+        self.secondPARFileEntry = Gtk.Entry()
+        self.centerGrid2.attach(self.secondPARFileEntry,1,1,2,1) 
+        self.secondPARFileEntry.set_hexpand(True)
+        self.secondPARFileEntry.set_visible(False)
+
+
+        self.secondPARFileBrowse = Gtk.Button(label="browse")
+        self.centerGrid2.attach(self.secondPARFileBrowse,3,1,1,1)
+        self.secondPARFileBrowse.connect("clicked", self.chooseExe) 
+        self.secondPARFileBrowse.set_visible(False)
+        
+        
+        
+        self.secondPPFolderLabel = Gtk.Label(label="App parent folder:")
+        self.centerGrid2.attach(self.secondPPFolderLabel,0,2,1,1) 
+        self.secondPPFolderLabel.set_name("exeLabel")
+        self.secondPPFolderLabel.set_xalign(0.0)
+        self.secondPPFolderLabel.set_visible(False)
+
+
+        self.secondPPFolderEntry = Gtk.Entry()
+        self.centerGrid2.attach(self.secondPPFolderEntry,1,2,2,1) 
+        self.secondPPFolderEntry.set_hexpand(True)
+        self.secondPPFolderEntry.set_visible(False)
+
+
+        self.secondPPFolderBrowse = Gtk.Button(label="browse")
+        self.centerGrid2.attach(self.secondPPFolderBrowse,3,2,1,1)
+        self.secondPPFolderBrowse.connect("clicked", self.chooseExe)
+        self.secondPPFolderBrowse.set_visible(False)
+        
+        
+        self.confirmGrid = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.secondPage.attach(self.confirmGrid, 1, 3, 1, 1)
+        self.confirmGrid.set_hexpand(True)
+        self.confirmGrid.set_spacing(12)
+        self.confirmGrid.set_baseline_position(Gtk.BaselinePosition.CENTER)
+        
+        
+        self.remAppDirBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+
+        self.removeAppDir = Gtk.Switch()
+        self.label = Gtk.Label(label="Remove AppDir:")
+        self.remAppDirBox.append(self.label)
+        self.remAppDirBox.append(self.removeAppDir)
+        self.confirmGrid.append(self.remAppDirBox)
+        self.remAppDirBox.set_spacing(12)
+
+        self.expander = Gtk.Expander()
+        self.confirmGrid.append(self.expander)
+        self.outputConsole = Gtk.TextView()
+        self.expander.set_child(self.outputConsole)
+        self.expander.set_label("Console output")
+        
+        self.createBLabel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)    
+        self.confirmGrid.append(self.createBLabel)
+        self.createBLabel.set_homogeneous(True)
+        self.createBLabel.set_hexpand(False)
+        self.createBLabel.set_name("aaa")
+        self.createBLabel.set_baseline_position(Gtk.BaselinePosition.CENTER)
+
+        self.createButton = Gtk.Button(label="confirm")
+
+        self.createButton.set_size_request(80, -1)
+        self.createButton.set_halign(Gtk.Align.CENTER)
+        self.createButton.set_valign(Gtk.Align.CENTER)
+        self.createButton.connect("clicked", self.startCreating)
+        self.createBLabel.append(self.createButton)
+        
+        
+    def goBack(self, button):
+        self.stack.set_visible_child(self.mainBox)
+        self.header.remove(self.backButton)
+        self.header.pack_start(self.switch_box)
+        
+    def goFarw(self):
+        self.stack.set_visible_child(self.secondPage)
+        self.header.remove(self.switch_box)
+        self.header.pack_start(self.backButton)
+
+    def showAdvanced(self, widget, active):
         if active is True:
             self.AdvancedOGrid.set_visible(True)
         else:
-            self.AdvancedOGrid.set_visible(False)
+            self. AdvancedOGrid.set_visible(False)
 
 
-        self.open_dialog = Gtk.FileChooserNative.new(title="Choose a file",
-                                                     parent=self, action=Gtk.FileChooserAction.OPEN)
+# saves and switches page for the main window
+    def confirm(self, button):
 
-        self.open_dialog.connect("response", self.open_response)
-        self.exeBrowse.connect("clicked", self.show_open_dialog)
+        # if none or "" start building the app
+        if None or "" not in (self.nameEntry.get_text(),self.exeEntry.get_text(),self.iconEntry.get_text(),self.typeEntry.get_text(),self.categoriesEntry.get_text()):
+            
+            self.goFarw()
+            
+            if(self.folderMSwitch.get_active()):
+                
+                self.secondPPFolderLabel.set_visible(True)    
+                self.secondPPFolderEntry.set_visible(True)  
+                self.secondPPFolderBrowse.set_visible(True)  
+                
+            if(self.customARSwitch.get_active()):
+                
+                self.secondPARFileLabel.set_visible(True)    
+                self.secondPARFileEntry.set_visible(True)  
+                self.secondPARFileBrowse.set_visible(True)  
+        else:
+            
+            MyApp.throwError(self, "Please fill in all the informations", "All the info are required")
 
-    def show_open_dialog(self, button):
-        self.open_dialog.show()
 
-    def open_response(self, dialog, response):
-        if response == Gtk.ResponseType.ACCEPT:
-            file = dialog.get_file()
-            filename = file.get_path()
-            print(filename)  # Here you could handle opening or saving the file
+# opens popup window for exe selection
+    def chooseExe(self, button):
+        fileChooser(self, "Choose executable file", self.exeEntry, folderMode=False)
 
+# opens popup window for icon selection
+    def chooseIcon(self, button):
+        fileChooser(self, "Choose executable file", self.iconEntry, folderMode=False)
 
+    def chooseOutputLoc(self, button):
+        fileChooser(self, "Choose output location", self.outputFEntry, folderMode=True)
 
-
-
-# def fileChooser(title, folderOnly=Gtk.FileChooserAction.OPEN,iconFilter=False):
     
-#         if(folderOnly):
-#             folderOnly = Gtk.FileChooserAction.SELECT_FOLDER
+    def fileCResponse(self, dialog, response, type, folderMode):
+
+            self.dialog.destroy()
+            self.file = dialog.get_file()
+            type.set_text(self.file.get_path())
+
+
+    def startCreating(self, button):
+        
+        tb = self.outputConsole.get_buffer()
+        self.expander.set_expanded(True)
+        end_iter = tb.get_end_iter()
+        tb.insert(end_iter, imageCreator.start(
+            
+            self.nameEntry.get_text(),
+            self.exeEntry.get_text(),
+            self.iconEntry.get_text(),
+            self.typeEntry.get_text(),
+            self.categoriesEntry.get_text(),
+            self.outputFEntry.get_text(),
+            self.customARSwitch.get_active(),
+            self.secondPARFileEntry.get_text(),
+            self.folderMSwitch.get_active(),
+            self.secondPPFolderEntry.get_text()
+            
+            )) 
+        # outputConsole.set_hexpand(True)
+        if(self.removeAppDir.get_active()):
+            shutil.rmtree(self.outputFEntry.get_text() + "/" + self.nameEntry.get_text() + ".AppDir/")
+
+
+def fileChooser(self,title,type, folderMode):
     
-#         dialog = Gtk.FileChooserDialog(title=title,action=folderOnly,parent=None)
-#         # dialog.add_buttons(Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK)
-#         dialog.set_default_size(500, 500)
-#         # dialog.set_current_folder("/home/leo/Desktop")
+        self.dialog = Gtk.FileChooserNative.new(title=title,
+                                                parent=self, 
+                                                action=Gtk.FileChooserAction.OPEN)
 
-#         if(iconFilter):
-#             filter_text = Gtk.FileFilter()
-#             filter_text.set_name("icon")
-#             filter_text.add_pattern("*.svg")
-#             filter_text.add_pattern("*.png")
-#             filter_text.add_pattern("*.jpg")
-#             dialog.add_filter(filter_text)
-
-#         response = dialog.run()
-#         if response == Gtk.ResponseType.OK:
-#             file = dialog.get_filename()
-#             dialog.destroy()
-#             if(file is None):
-#                 file = " "
-#             return file
-#         elif response == Gtk.ResponseType.CANCEL:
-#             dialog.destroy()
+        if folderMode:
+            self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
+        
+        self.dialog.show()
+        self.dialog.set_title(title)
+        self.dialog.connect("response", self.fileCResponse, type, folderMode)
 
 
 class MyApp(Adw.Application):
@@ -241,7 +415,20 @@ class MyApp(Adw.Application):
 
     def on_activate(self, app):
         self.win = MainWindow(application=app)
-        self.win.present()
+        self.win.present()  
+        
+    def throwError(self, error, title):
+        dialog = Gtk.MessageDialog(
+                parent         = self,
+                message_type   = Gtk.MessageType.ERROR,
+                secondary_text = error,
+                text           = title,
+                buttons        = Gtk.ButtonsType.CLOSE,
+        )
+        result = dialog.show()
+        # print(dialog.response)
+        # if result == Gtk.ResponseType.CLOSE:
+        #     dialog.destroy()
 
 app = MyApp(application_id="dev.sudatoleo.flake")
 app.run(sys.argv)

@@ -1,10 +1,10 @@
 import os
 import shutil
 import os
+import creator.error
 from os import path
-import ui.errorWindow
 
-def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName):
+def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName, self):
 
   f = open(appDirPath + "AppRun", "w")
 
@@ -19,7 +19,7 @@ def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName
   os.system("chmod +x '" + appDirPath + "AppRun'")
 
   
-def copyAppRunFile(AppRun,appDirPath):
+def copyAppRunFile(AppRun,appDirPath, self):
 
     dst = appDirPath + "AppRun"
 
@@ -28,7 +28,7 @@ def copyAppRunFile(AppRun,appDirPath):
         os.chmod(dst, 777)
     
     else:
-        ui.errorWindow.error_message("could not copy the AppRun file")
+        creator.error.throwError(self, "Selected file must be named 'AppRun'", "Could not copy the AppRun file")
         # sys.exit("could not copy the exe file")
 
 

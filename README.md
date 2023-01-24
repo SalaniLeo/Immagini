@@ -1,4 +1,4 @@
- # Flake (libadwaita version) Do not clone this branch because nothing works. It's just to keep everything stored on github
+ # Flake
 
 <p> early development </p>
 

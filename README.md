@@ -1,4 +1,4 @@
- # Flake
+ # Flake (old gtk3 version)
 
 <p> early development </p>
 

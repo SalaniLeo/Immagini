@@ -1,6 +1,7 @@
 import sys
 import imageCreator
 import shutil
+import creator.error
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -26,7 +27,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_titlebar(self.header)
         self.header.set_name("headerbar")
         self.set_name("window")
-        
+        self.set_default_icon_name("icons")
         
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -145,7 +146,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.mainBox.attach(self.okBLabel, 0, 3, 3, 1)
         self.okBLabel.set_homogeneous(True)
         self.okBLabel.set_hexpand(False)
-        self.okBLabel.set_name("aaa")
+        self.okBLabel.set_name("okBLabel")
         self.okBLabel.set_baseline_position(Gtk.BaselinePosition.CENTER)
 
         self.okButton = Gtk.Button(label="confirm")
@@ -248,7 +249,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.secondPARFileBrowse = Gtk.Button(label="browse")
         self.centerGrid2.attach(self.secondPARFileBrowse,3,1,1,1)
-        self.secondPARFileBrowse.connect("clicked", self.chooseExe) 
+        self.secondPARFileBrowse.connect("clicked", self.chooseAppRunLoc) 
         self.secondPARFileBrowse.set_visible(False)
         
         
@@ -268,7 +269,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.secondPPFolderBrowse = Gtk.Button(label="browse")
         self.centerGrid2.attach(self.secondPPFolderBrowse,3,2,1,1)
-        self.secondPPFolderBrowse.connect("clicked", self.chooseExe)
+        self.secondPPFolderBrowse.connect("clicked", self.chooseAppParentFolder)
         self.secondPPFolderBrowse.set_visible(False)
         
         
@@ -290,9 +291,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.expander = Gtk.Expander()
         self.confirmGrid.append(self.expander)
-        self.outputConsole = Gtk.TextView()
+        self.outputConsole = Gtk.TextView(editable=False)
+        self.outputConsole.set_editable(False)
         self.expander.set_child(self.outputConsole)
         self.expander.set_label("Console output")
+        self.expander.set_size_request(100,100)
         
         self.createBLabel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)    
         self.confirmGrid.append(self.createBLabel)
@@ -310,7 +313,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.createBLabel.append(self.createButton)
         
         
+        
     def goBack(self, button):
+        if(self.expander.get_expanded()):
+            self.expander.set_expanded(False)
+            self.set_default_size(750,400)
         self.stack.set_visible_child(self.mainBox)
         self.header.remove(self.backButton)
         self.header.pack_start(self.switch_box)
@@ -324,14 +331,18 @@ class MainWindow(Gtk.ApplicationWindow):
         if active is True:
             self.AdvancedOGrid.set_visible(True)
         else:
-            self. AdvancedOGrid.set_visible(False)
+            self.AdvancedOGrid.set_visible(False)
 
 
 # saves and switches page for the main window
     def confirm(self, button):
 
         # if none or "" start building the app
-        if None or "" not in (self.nameEntry.get_text(),self.exeEntry.get_text(),self.iconEntry.get_text(),self.typeEntry.get_text(),self.categoriesEntry.get_text()):
+        if None or "" not in (self.nameEntry.get_text(),
+                              self.exeEntry.get_text(),
+                              self.iconEntry.get_text(),
+                              self.typeEntry.get_text(),
+                              self.categoriesEntry.get_text()):
             
             self.goFarw()
             
@@ -341,14 +352,24 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.secondPPFolderEntry.set_visible(True)  
                 self.secondPPFolderBrowse.set_visible(True)  
                 
+            else:
+                
+                self.secondPPFolderLabel.set_visible(False)    
+                self.secondPPFolderEntry.set_visible(False)  
+                self.secondPPFolderBrowse.set_visible(False)  
+                
             if(self.customARSwitch.get_active()):
                 
                 self.secondPARFileLabel.set_visible(True)    
                 self.secondPARFileEntry.set_visible(True)  
                 self.secondPARFileBrowse.set_visible(True)  
+            else:
+                self.secondPARFileLabel.set_visible(False)    
+                self.secondPARFileEntry.set_visible(False)  
+                self.secondPARFileBrowse.set_visible(False)  
         else:
             
-            MyApp.throwError(self, "Please fill in all the informations", "All the info are required")
+            creator.error.throwError(self, "Please fill in all the informations", "All the info are required")
 
 
 # opens popup window for exe selection
@@ -357,10 +378,16 @@ class MainWindow(Gtk.ApplicationWindow):
 
 # opens popup window for icon selection
     def chooseIcon(self, button):
-        fileChooser(self, "Choose executable file", self.iconEntry, folderMode=False)
+        fileChooser(self, "Choose icon", self.iconEntry, folderMode=False)
 
     def chooseOutputLoc(self, button):
         fileChooser(self, "Choose output location", self.outputFEntry, folderMode=True)
+        
+    def chooseAppParentFolder(self, button):
+        fileChooser(self, "Choose application parent folder", self.secondPPFolderEntry, folderMode=True)
+        
+    def chooseAppRunLoc(self, button):
+        fileChooser(self, "Choose custom apprun file", self.secondPARFileEntry, folderMode=False)
 
     
     def fileCResponse(self, dialog, response, type, folderMode):
@@ -372,26 +399,34 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def startCreating(self, button):
         
-        tb = self.outputConsole.get_buffer()
-        self.expander.set_expanded(True)
-        end_iter = tb.get_end_iter()
-        tb.insert(end_iter, imageCreator.start(
+        if(self.outputFEntry.get_text() == "" or None):
             
-            self.nameEntry.get_text(),
-            self.exeEntry.get_text(),
-            self.iconEntry.get_text(),
-            self.typeEntry.get_text(),
-            self.categoriesEntry.get_text(),
-            self.outputFEntry.get_text(),
-            self.customARSwitch.get_active(),
-            self.secondPARFileEntry.get_text(),
-            self.folderMSwitch.get_active(),
-            self.secondPPFolderEntry.get_text()
+            creator.error.throwError(self, "An output location is required", "Output location not set")
             
-            )) 
+        else:
+            
+            tb = self.outputConsole.get_buffer()
+            self.expander.set_expanded(True)
+            end_iter = tb.get_end_iter()
+            tb.insert(end_iter, imageCreator.start(
+                
+                self.nameEntry.get_text(),
+                self.exeEntry.get_text(),
+                self.iconEntry.get_text(),
+                self.typeEntry.get_text(),
+                self.categoriesEntry.get_text(),
+                self.outputFEntry.get_text(),
+                self.customARSwitch.get_active(),
+                self.secondPARFileEntry.get_text(),
+                self.folderMSwitch.get_active(),
+                self.secondPPFolderEntry.get_text(),
+                self
+                
+                )) 
+            
         # outputConsole.set_hexpand(True)
-        if(self.removeAppDir.get_active()):
-            shutil.rmtree(self.outputFEntry.get_text() + "/" + self.nameEntry.get_text() + ".AppDir/")
+            if(self.removeAppDir.get_active()):
+                shutil.rmtree(self.outputFEntry.get_text() + "/" + self.nameEntry.get_text() + ".AppDir/")
 
 
 def fileChooser(self,title,type, folderMode):
@@ -417,15 +452,15 @@ class MyApp(Adw.Application):
         self.win = MainWindow(application=app)
         self.win.present()  
         
-    def throwError(self, error, title):
-        dialog = Gtk.MessageDialog(
-                parent         = self,
-                message_type   = Gtk.MessageType.ERROR,
-                secondary_text = error,
-                text           = title,
-                buttons        = Gtk.ButtonsType.CLOSE,
-        )
-        result = dialog.show()
+    # def throwError(self, error, title):
+    #     dialog = Gtk.MessageDialog(
+    #             parent         = self,
+    #             message_type   = Gtk.MessageType.ERROR,
+    #             secondary_text = error,
+    #             text           = title,
+    #             buttons        = Gtk.ButtonsType.CLOSE,
+    #     )
+        # result = dialog.show()
         # print(dialog.response)
         # if result == Gtk.ResponseType.CLOSE:
         #     dialog.destroy()

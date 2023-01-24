@@ -1,8 +1,8 @@
 import shutil
 from os import path
-import ui.errorWindow
+import creator.error
 
-def copyIcon(icon,appDirPath,iconName):
+def copyIcon(icon,appDirPath,iconName, self):
 
     dst = appDirPath + iconName
 
@@ -14,5 +14,5 @@ def copyIcon(icon,appDirPath,iconName):
 
     
     else:
-        ui.errorWindow.error_message("could not copy icon")
+        creator.error.throwError(self, "could not copy icon", "icon file does't exist")
         # sys.exit("could not copy icon")

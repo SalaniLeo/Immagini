@@ -1,9 +1,8 @@
 import os
-import imageCreator
-import ui.errorWindow
+import creator.error
 from os import path
 
-def createAppDir(appDirPath,folderMode):
+def createAppDir(appDirPath,folderMode, self):
 
     folder = appDirPath + "usr/bin"
 
@@ -13,5 +12,5 @@ def createAppDir(appDirPath,folderMode):
         elif folderMode:
             os.makedirs(appDirPath)
     else:
-        ui.errorWindow.error_message("the folder already exists")
+        creator.error.throwError(self, "the folder already exists", "Can't create .AppDir folder")
         

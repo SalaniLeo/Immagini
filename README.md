@@ -1,7 +1,5 @@
  # Flake
 
-<p> early development </p>
-
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
 <h3>Next release will be available as flatpak </h3>

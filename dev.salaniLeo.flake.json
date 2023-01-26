@@ -1,7 +1,7 @@
 {
     "app-id" : "dev.salaniLeo.flake",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "43",
+    "runtime-version" : "42",
     "sdk" : "org.gnome.Sdk",
     "command" : "flake",
     "finish-args" : [

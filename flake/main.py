@@ -1,7 +1,7 @@
 import sys
-from imageCreator import start
+from .imageCreator import start
 import shutil
-from creator.error import *
+from .creator.error import *
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -13,11 +13,11 @@ class MainWindow(Gtk.ApplicationWindow):
         
         # self.set_size_request(600,400)
 
-        # css_provider = Gtk.CssProvider()
-        # css_provider.load_from_resource(Gio.File.new_for_resource('/org/gnome/Flake/app.css'))
-        # Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        # style_context = self.get_style_context()
-        # style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_resource('/dev/salaniLeo/flake/app.css')
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        style_context = self.get_style_context()
+        style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
                           
         self.header = Gtk.HeaderBar()
@@ -27,7 +27,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_titlebar(self.header)
         self.header.set_name("headerbar")
         self.set_name("window")
-        self.set_default_icon_name("icons")
         
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -465,7 +464,7 @@ class MyApp(Adw.Application):
         # if result == Gtk.ResponseType.CLOSE:
         #     dialog.destroy()
 
-
-app = MyApp(application_id="dev.sudatoleo.flake")
-app.run(sys.argv)
+def main(version):
+    app = MyApp(application_id="dev.salaniLeo.flake")
+    app.run(sys.argv)
         

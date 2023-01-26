@@ -1,12 +1,12 @@
 import os
 import ntpath
-from creator.desktopFile import *
-from creator.AppDir import *
-from creator.AppRun import *
-from creator.copyExeFile import *
-from creator.copyIconFile import *
-from creator.builder.builder import *
-from creator.error import *
+from .creator.desktopFile import *
+from .creator.AppDir import *
+from .creator.AppRun import *
+from .creator.copyExeFile import *
+from .creator.copyIconFile import *
+from .creator.builder.builder import *
+from .creator.error import *
 
 # name = None
 # exe = None

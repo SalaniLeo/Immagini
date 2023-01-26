@@ -37,14 +37,10 @@ gettext.install('flake', localedir)
 
 if __name__ == '__main__':
     import gi
-    import os
 
     from gi.repository import Gio
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'flake.gresource'))
     resource._register()
 
-    command = "ls"
-
-    os.system(command)
     from flake import main
     sys.exit(main.main(VERSION))

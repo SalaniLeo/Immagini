@@ -1,14 +1,11 @@
 {
-    "app-id" : "org.gnome.Flake",
+    "app-id" : "dev.salaniLeo.flake",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
     "command" : "flake",
     "finish-args" : [
-        "--share=network",
-        "--share=ipc",
         "--socket=fallback-x11",
-        "--device=dri",
         "--socket=wayland"
     ],
     "cleanup" : [

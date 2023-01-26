@@ -11,7 +11,6 @@ pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.proje
 moduledir = join_paths(pkgdatadir, 'flake')
 
 subdir('data')
-subdir('po')
 
 python = import('python')
 

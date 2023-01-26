@@ -2,7 +2,7 @@
 
 # flake.in
 #
-# Copyright 2023 Leonardo
+# Copyright 2023 Flake
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ if __name__ == '__main__':
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'flake.gresource'))
     resource._register()
 
-    appLoc = localedir + "/flake/main.py"
-    command = "python3" + " " + appLoc
+    command = "ls"
 
-    print(command)
     os.system(command)
+    from flake import main
+    sys.exit(main.main(VERSION))

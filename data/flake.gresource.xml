@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/Flake/src">
+  <gresource prefix="/dev/salaniLeo/flake">
     <file>icon.svg</file>
     <file>app.css</file>
-    <file>../flake/imageCreator.py</file>
   </gresource>
 </gresources>

@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'org.gnome.Flake.desktop.in',
-       output: 'org.gnome.Flake.desktop',
+        input: 'dev.salaniLeo.flake.desktop.in',
+       output: 'dev.salaniLeo.flake.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'org.gnome.Flake.appdata.xml.in',
-       output: 'org.gnome.Flake.appdata.xml',
+        input: 'dev.salaniLeo.flake.appdata.xml.in',
+       output: 'dev.salaniLeo.flake.appdata.xml',
        po_dir: '../po',
       install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -25,7 +25,7 @@ if appstream_util.found()
   test('Validate appstream file', appstream_util, args: ['validate', appstream_file])
 endif
 
-install_data('org.gnome.Flake.gschema.xml',
+install_data('dev.salaniLeo.flake.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 
@@ -39,7 +39,7 @@ endif
 subdir('icons')
 
 gnome.compile_resources('flake',
-  'Flake.gresource.xml',
+  'flake.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,

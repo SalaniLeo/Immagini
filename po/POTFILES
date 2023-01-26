@@ -1,6 +1,0 @@
-data/org.gnome.Example.desktop.in
-data/org.gnome.Example.appdata.xml.in
-data/org.gnome.Example.gschema.xml
-src/main.py
-src/window.py
-src/window.ui

@@ -1,4 +1,4 @@
-application_id = 'org.gnome.Example'
+application_id = 'dev.salaniLeo.flake'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

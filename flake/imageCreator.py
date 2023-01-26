@@ -28,7 +28,8 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     iconName = ntpath.basename(icon)
     appDirPath = output + "/" + name + ".AppDir/"
     pFolderName =  os.path.basename(folderLoc)
-    exePathFolderMode = compare(pFolderName,exe, self)
+    if(folderMode):
+        exePathFolderMode = compare(pFolderName,exe, self)
 
     # creates initial .AppDir folder
     createAppDir(appDirPath,folderMode, self)

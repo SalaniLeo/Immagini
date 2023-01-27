@@ -28,8 +28,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     iconName = ntpath.basename(icon)
     appDirPath = output + "/" + name + ".AppDir/"
     pFolderName =  os.path.basename(folderLoc)
-    if(folderMode):
-        exePathFolderMode = compare(pFolderName,exe, self)
+    exePathFolderMode = compare(pFolderName,exe, self)
 
     # creates initial .AppDir folder
     createAppDir(appDirPath,folderMode, self)
@@ -70,9 +69,11 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
 
         
 def compare(folderName, s2, self):
-    try:
-        result = s2.split(folderName,1)[1]
-        return result
-    except IndexError:
-        throwError(self, "The selected application parent folder does not contain selected executable file", "Parent folder does not contain executable")
-        
+    if folderName:
+        try:
+            result = s2.split(folderName,1)[1]
+            return result
+        except IndexError:
+            throwError(self, "The selected application parent folder does not contain selected executable file", "Parent folder does not contain executable")
+    else:
+        return None

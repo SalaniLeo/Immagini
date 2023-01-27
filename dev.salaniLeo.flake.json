@@ -6,7 +6,8 @@
     "command" : "flake",
     "finish-args" : [
         "--socket=fallback-x11",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--filesystem=host"
     ],
     "cleanup" : [
         "/include",

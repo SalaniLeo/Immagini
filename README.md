@@ -9,7 +9,11 @@
   <h1> Documentation </h1>
 
   See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs for all the info about AppImages
-
+  
+  <h2> FUSE </h2>
+  
+  Since the application relies on appimagetool it requires FUSE. All the instructions on how to install it are <a href=https://github.com/AppImage/AppImageKit/wiki/FUSE>HERE</a></li>
+  
   <h2> Appimages </h2>
   
    <h3>App generated .AppDir</h3>

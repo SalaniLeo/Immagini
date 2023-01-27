@@ -1,11 +1,9 @@
-import os
 import sys
-import signal
-import locale
-import gettext
+import importlib.util
+import sys
+
 
 if __name__ == '__main__':
-    import gi
 
     from gi.repository import Gio
 

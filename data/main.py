@@ -5,14 +5,14 @@ from .creator.error import *
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio, Gdk
+from gi.repository import Gtk, Adw, Gio, Gdk, GLib
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
         # self.set_size_request(600,400)
-
+        
         css_provider = Gtk.CssProvider()
         css_provider.load_from_resource('/dev/salaniLeo/flake/assets/app.css')
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

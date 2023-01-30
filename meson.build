@@ -29,7 +29,7 @@ configure_file(
 )
 
 
-install_subdir('flake', install_dir: pkgdatadir)
+install_subdir('data', install_dir: '/app/bin')
 
 gnome.post_install(
      glib_compile_schemas: true,

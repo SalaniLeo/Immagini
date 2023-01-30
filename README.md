@@ -4,7 +4,7 @@
 
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
-<h3>Next release will be available as flatpak </h3>
+<h3>New version soon available. Also will be on flatpak and as AppImage</h3>
 
   <h1> Documentation </h1>
 

@@ -4,7 +4,6 @@
     "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
     "command" : "flake",
-    "files": [ { "dest": "/app/lib/libfuse.so.2", "type": "file", "source": "/usr/lib/x86_64-linux-gnu/libfuse.so.2" } ],
     "finish-args" : [
         "--socket=fallback-x11",
         "--socket=wayland",

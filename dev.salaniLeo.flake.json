@@ -28,7 +28,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/leo/Apps/'visual studio code'/flake"
+                    "url" : "https://github.com/SalaniLeo/Flake.git"
                 }
             ]
         }

@@ -42,5 +42,5 @@ if __name__ == '__main__':
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'flake.gresource'))
     resource._register()
 
-    from flake import main
+    from data import main
     sys.exit(main.main(VERSION))

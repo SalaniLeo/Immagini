@@ -4,7 +4,4 @@
     <file>icon.svg</file>
     <file>app.css</file>
   </gresource>
-  <gresource prefix="/dev/salaniLeo/flake/">
-      <file>appimagetool-x86_64.AppImage</file>
-  </gresource>
 </gresources>

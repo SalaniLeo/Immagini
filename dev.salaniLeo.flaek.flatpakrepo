@@ -1,7 +1,0 @@
-[Flatpak Repo]
-Title=Flake
-Url=https://dl.flathub.org/repo/
-Homepage=https://github.com/SalaniLeo/Flake
-Comment=Flake repository
-Description=user interface for appimagekit that lets you create AppImages with ease 
-Icon=https://github.com/SalaniLeo/Flake/blob/master/assets/icon.svg

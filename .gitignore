@@ -1,3 +1,5 @@
 start.py
 assets/run.sh
 assets/test.ui
+build-dir/*
+.flatpak-builder/*

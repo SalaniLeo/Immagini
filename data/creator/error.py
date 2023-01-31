@@ -12,5 +12,11 @@ def throwError(self, error, title):
                 text           = title,
                 buttons        = Gtk.ButtonsType.CLOSE,
         )
-                
+        
         dialog.show()
+        
+        dialog.connect("response", on_response, dialog)
+        
+def on_response(dialog: Gtk.Dialog, response: Gtk.ResponseType, _dialog: Gtk.Dialog) -> None:
+        _dialog.destroy()
+        

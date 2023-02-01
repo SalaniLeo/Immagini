@@ -11,14 +11,8 @@
     ],
     "cleanup" : [
         "/include",
-        "/lib/pkgconfig",
-        "/man",
         "/share/doc",
-        "/share/gtk-doc",
-        "/share/man",
-        "/share/pkgconfig",
-        "*.la",
-        "*.a"
+        "/share/gtk-doc"
     ],
     "modules" : [
         {
@@ -28,7 +22,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/SalaniLeo/Flake.git"
+                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git"
                 }
             ]
         }

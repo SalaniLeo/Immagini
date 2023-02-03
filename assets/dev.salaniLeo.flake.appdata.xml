@@ -3,7 +3,6 @@
   <id>dev.salaniLeo.flake</id>
   <name>Flake</name>
   <summary>Gtk interface for AppImageKit. </summary>
-  <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
 
@@ -13,15 +12,16 @@
   </description>
   <launchable type="desktop-id">dev.salaniLeo.flake.desktop</launchable>
   <url type="homepage">https://github.com/SalaniLeo/Flake</url>
-  <content_rating type="oars-1.1"></content_rating>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-3.0</project_license>
+  <content_rating type="oars-1.1" />
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/SalaniLeo/Flake/blob/master/assets/screenshots/firstPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/firstPage.png</image>
       <caption>Initial page when starting the app</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://github.com/SalaniLeo/Flake/blob/master/assets/screenshots/secondPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/secondPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
   </screenshots>

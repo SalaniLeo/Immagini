@@ -1,32 +1,32 @@
-?xml version="1.0" encoding="UTF-8"?>
-<!-- This is a basic example of an AppStream metadata file -->
+<?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>com.example.app</id>
-  <name>Example App</name>
-  <summary>A brief description of the example app</summary>
+  <id>dev.salaniLeo.flake</id>
+  <name>Flake</name>
+  <summary>Gtk interface for AppImageKit. </summary>
+  <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
-      A more detailed description of the example app and its features.
+
+    App made to let users build appimages with ease. Say goodbye to the classic old terminal.
+
     </p>
   </description>
-  <icon type="stock">app-icon</icon>
-  <launchable type="desktop-id">com.example.app.desktop</launchable>
-  <provides>
-    <binary>example-app</binary>
-  </provides>
-  <project_group>Examples</project_group>
-  <url type="homepage">https://www.example.com/app</url>
-  <update_contact>updates@example.com</update_contact>
-  <metadata_license>CC-BY-SA-3.0</metadata_license>
-  <project_license>GPL-2.0</project_license>
+  <launchable type="desktop-id">dev.salaniLeo.flake.desktop</launchable>
+  <url type="homepage">https://github.com/SalaniLeo/Flake</url>
+  <content_rating type="oars-1.1"></content_rating>
+  <project_license>GPL-3.0</project_license>
   <screenshots>
     <screenshot type="default">
-      <image>https://www.example.com/app/screenshot.png</image>
-      <caption>An example screenshot of the app</caption>
+      <image>https://github.com/SalaniLeo/Flake/blob/master/assets/screenshots/firstPage.png</image>
+      <caption>Initial page when starting the app</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://github.com/SalaniLeo/Flake/blob/master/assets/screenshots/secondPage.png</image>
+      <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="1.0" date="2022-01-01">
+    <release version="0.0.3" date="2023-02-03">
       <description>
         <p>
           Initial release of the example app

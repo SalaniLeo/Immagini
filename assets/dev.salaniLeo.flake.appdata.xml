@@ -1,0 +1,37 @@
+?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a basic example of an AppStream metadata file -->
+<component type="desktop">
+  <id>com.example.app</id>
+  <name>Example App</name>
+  <summary>A brief description of the example app</summary>
+  <description>
+    <p>
+      A more detailed description of the example app and its features.
+    </p>
+  </description>
+  <icon type="stock">app-icon</icon>
+  <launchable type="desktop-id">com.example.app.desktop</launchable>
+  <provides>
+    <binary>example-app</binary>
+  </provides>
+  <project_group>Examples</project_group>
+  <url type="homepage">https://www.example.com/app</url>
+  <update_contact>updates@example.com</update_contact>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://www.example.com/app/screenshot.png</image>
+      <caption>An example screenshot of the app</caption>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="1.0" date="2022-01-01">
+      <description>
+        <p>
+          Initial release of the example app
+        </p>
+      </description>
+    </release>
+  </releases>
+</component>

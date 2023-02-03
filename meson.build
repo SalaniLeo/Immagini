@@ -4,6 +4,10 @@ project('flake',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )
 
+APPLICATION_ID = 'dev.salaniLeo.flake@0@'.format('')
+PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_ID)
+PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_ID)
+
 i18n = import('i18n')
 gnome = import('gnome')
 
@@ -27,7 +31,6 @@ configure_file(
   install: true,
   install_dir: get_option('bindir')
 )
-
 
 install_subdir('data', install_dir: '/app/bin')
 

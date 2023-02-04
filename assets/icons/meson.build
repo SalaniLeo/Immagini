@@ -1,4 +1,4 @@
-application_id = 'dev.salaniLeo.flake'
+application_id = 'io.github.salaniLeo.flake'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

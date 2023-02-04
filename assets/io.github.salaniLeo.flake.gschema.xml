@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="flake">
-	<schema id="dev.salaniLeo.flake" path="/dev/salaniLeo/flake">
+	<schema id="io.github.salaniLeo.flake" path="/io/github/salaniLeo/flake">
 	</schema>
 </schemalist>
 

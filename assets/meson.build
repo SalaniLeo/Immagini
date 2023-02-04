@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'dev.salaniLeo.flake.desktop.in',
-       output: 'dev.salaniLeo.flake.desktop',
+        input: 'io.github.salaniLeo.flake.desktop.in',
+       output: 'io.github.salaniLeo.flake.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'dev.salaniLeo.flake.appdata.xml.in',
-       output: 'dev.salaniLeo.flake.appdata.xml',
+        input: 'io.github.salaniLeo.flake.appdata.xml.in',
+       output: 'io.github.salaniLeo.flake.appdata.xml',
        po_dir: '../po',
       install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -25,7 +25,7 @@ if appstream_util.found()
   test('Validate appstream file', appstream_util, args: ['validate', appstream_file])
 endif
 
-install_data('dev.salaniLeo.flake.gschema.xml',
+install_data('io.github.salaniLeo.flake.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

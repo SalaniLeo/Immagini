@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=flake
 Exec=flake
-Icon=dev.salaniLeo.flake
+Icon=io.github.salaniLeo.flake
 Terminal=false
 Type=Application
 Categories=GTK;

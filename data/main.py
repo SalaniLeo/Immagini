@@ -14,7 +14,7 @@ class MainWindow(Gtk.ApplicationWindow):
         # self.set_size_request(600,400)
         
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_resource('/dev/salaniLeo/flake/assets/app.css')
+        css_provider.load_from_resource('/io/github/salaniLeo/flake/assets/app.css')
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         style_context = self.get_style_context()
         style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
@@ -465,6 +465,6 @@ class MyApp(Adw.Application):
         #     dialog.destroy()
 
 def main(version):
-    app = MyApp(application_id="dev.salaniLeo.flake")
+    app = MyApp(application_id="io.github.salaniLeo.flake")
     app.run(sys.argv)
         

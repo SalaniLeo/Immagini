@@ -5,9 +5,10 @@
     "sdk" : "org.gnome.Sdk",
     "command" : "flake",
     "finish-args" : [
+        "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=host"
+        "--filesystem=home"
     ],
     "cleanup" : [
         "/include",
@@ -17,12 +18,13 @@
     "modules" : [
         {
             "name" : "flake",
-            "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git"
+                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git",
+                    "tag" : "0.0.3",
+                    "commit" : "d3b6a978786a502e375c06a76241aa4bfdfd723f"
                 }
             ]
         }

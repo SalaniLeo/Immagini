@@ -1,0 +1,32 @@
+{
+    "app-id" : "io.github.salaniLeo.flake",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "43",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "flake",
+    "finish-args" : [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--filesystem=home"
+    ],
+    "cleanup" : [
+        "/include",
+        "/share/doc",
+        "/share/gtk-doc"
+    ],
+    "modules" : [
+        {
+            "name" : "flake",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git",
+                    "tag" : "0.0.3",
+                    "commit" : "76e6c7449b3427d4e088bc137277705db50da50f"
+                }
+            ]
+        }
+    ]
+}

@@ -1,2 +1,2 @@
 #!/bin/bash
-flatpak-builder --repo=dev.salaniLeo.Flake --force-clean build-dir dev.salaniLeo.flake.json
+flatpak-builder --repo=io.github.salaniLeo.flake --force-clean build-dir io.github.salaniLeo.flake.json

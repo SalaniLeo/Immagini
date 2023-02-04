@@ -3,4 +3,3 @@ assets/run.sh
 assets/test.ui
 build-dir/*
 .flatpak-builder/*
-dev.sudatoLeo.flake.flatpakref

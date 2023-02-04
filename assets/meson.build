@@ -25,6 +25,17 @@ if appstream_util.found()
   test('Validate appstream file', appstream_util, args: ['validate', appstream_file])
 endif
 
+install_data('dev.salaniLeo.flake.gschema.xml',
+  install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
+)
+
+compile_schemas = find_program('glib-compile-schemas', required: false)
+if compile_schemas.found()
+  test('Validate schema file',
+       compile_schemas,
+       args: ['--strict', '--dry-run', meson.current_source_dir()])
+endif
+
 subdir('icons')
 
 gnome.compile_resources('flake',
@@ -32,13 +43,4 @@ gnome.compile_resources('flake',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
-)
-
-appdata_conf = configuration_data()
-i18n.merge_file(
-  input: 'dev.salaniLeo.flake.appdata.xml.in',
-  output: 'dev.salaniLeo.flake.metadata.xml',
-  po_dir: join_paths(meson.project_source_root(), 'po'),
-  install: true,
-  install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'metainfo')
 )

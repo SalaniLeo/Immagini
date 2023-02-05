@@ -5,3 +5,12 @@ build-dir/*
 .flatpak-builder/*
 local \build/*
 .gitignore
+data/creator/__pycache__/AppDir.cpython-311.pyc
+data/creator/__pycache__/AppRun.cpython-311.pyc
+data/creator/__pycache__/copyExeFile.cpython-311.pyc
+data/creator/__pycache__/copyIconFile.cpython-311.pyc
+data/creator/__pycache__/desktopFile.cpython-311.pyc
+data/creator/__pycache__/error.cpython-311.pyc
+data/creator/builder/__pycache__/builder.cpython-311.pyc
+data/__pycache__/imageCreator.cpython-311.pyc
+data/__pycache__/main.cpython-311.pyc

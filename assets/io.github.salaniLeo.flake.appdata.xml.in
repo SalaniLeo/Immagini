@@ -17,19 +17,19 @@
   <content_rating type="oars-1.1" />
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/firstPage.png</image>
+      <image>screenshots/firstPage.png</image>
       <caption>Initial page when starting the app</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/secondPage.png</image>
+      <image>screenshots/secondPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.0.3" date="2023-02-03">
+    <release version="0.0.3" date="2023-02-05">
       <description>
         <p>
-          Initial release of the example app
+          <li>Updated ui to libadwaita.
         </p>
       </description>
     </release>

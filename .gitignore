@@ -3,3 +3,4 @@ assets/run.sh
 assets/test.ui
 build-dir/*
 .flatpak-builder/*
+local \build/*

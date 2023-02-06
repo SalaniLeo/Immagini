@@ -4,7 +4,14 @@
 
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
-<h3>New version soon available. Also will be on flatpak and as AppImage</h3>
+  <h1> Install </h1>
+  
+  <li><h3>AppImage:</h3>
+  x86_64: <a href="https://github.com/SalaniLeo/Flake/releases/download/v0.0.3/Flake-0.0.3-x86_64.AppImage">here</a><br>
+  aarch64: Coming next release...<br>
+  <li><h3>Flatpak:</h3>
+  flatpakref: <a href="https://dl.flathub.org/repo/appstream/io.github.salaniLeo.flake.flatpakref">here</a><br>
+   from flathub repo: <b>flatpak install io.github.salaniLeo.flake</b>
 
   <h1> Documentation </h1>
 

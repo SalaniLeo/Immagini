@@ -29,8 +29,8 @@
     <release version="0.0.3" date="2023-02-06">
       <description>
         <p>
-          <li>UI ported to libadwaita
-          <li>Added app to flathub
+          UI ported to libadwaita
+          Added app to flathub
         </p>
       </description>
     </release>

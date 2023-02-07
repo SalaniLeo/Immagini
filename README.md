@@ -10,7 +10,7 @@
   x86_64: <a href="https://github.com/SalaniLeo/Flake/releases/download/v0.0.3/Flake-0.0.3-x86_64.AppImage">here</a><br>
   aarch64: Coming next release...<br>
   <li><h3>Flatpak:</h3>
-  flatpakref: <a href="https://dl.flathub.org/repo/appstream/io.github.salaniLeo.flake.flatpakref">here</a><br>
+  flathub: <a href="https://flathub.org/apps/details/io.github.salaniLeo.flake">here</a><br>
    from flathub repo: <b>flatpak install io.github.salaniLeo.flake</b>
 
   <h1> Documentation </h1>

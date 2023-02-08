@@ -75,7 +75,8 @@ The app creates a Desktop entry for you automatically when building the .AppDir 
    <li><h3> FolderMode </h3>
       <h4> using a <a href=#AppRun>custom apprun</a> is recommended if the exe file selected is not written is bash. </h4>
       
+      <b>Application folder must meet the <a href="https://docs.appimage.org/packaging-guide/manual.html#creating-an-appdir-manually">foldermode requirements</a> for the app to work correctly.
+      
    Allows users to include in the AppImage applications that require multiple files (like most ones).
-   Works by asking user the main exe file and it's parent folder, so the app copies the entire parent folder to the .AppDir and using the main exe file as    application.
    
    <b> I'll improve this option in every release, since it's still in beta </b>

@@ -9,7 +9,7 @@
   aarch64: Coming next release...<br>
   <li><h3>Flatpak:</h3>
   flathub: <a href="https://flathub.org/apps/details/io.github.salaniLeo.flake">here</a><br>
-   from flathub repo: <b>flatpak install io.github.salaniLeo.flake</b>
+   from flathub repo: <b>flatpak install flathub io.github.salaniLeo.flake</b>
 
   <h1> Documentation </h1>
 

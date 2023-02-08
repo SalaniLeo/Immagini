@@ -1,6 +1,6 @@
  # Flake
 
-<p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
+<p>Very basic GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
   <h1> Install </h1>
   

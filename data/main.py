@@ -5,6 +5,7 @@ from .creator.error import *
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
+gi.require_version('Gio', '2.0')
 from gi.repository import Gtk, Adw, Gio, Gdk, GLib
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -15,6 +16,7 @@ class MainWindow(Gtk.ApplicationWindow):
         
         css_provider = Gtk.CssProvider()
         css_provider.load_from_resource('/io/github/salaniLeo/flake/assets/app.css')
+        css_provider.load_from_file(Gio.File.new_for_path('assets/app.css'))
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         style_context = self.get_style_context()
         style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
@@ -167,16 +169,17 @@ class MainWindow(Gtk.ApplicationWindow):
         
         self.folderMSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.folderMSwitch,1,0,1,1)
-
+        AdwPreferencesWindow.checkAutoEnable(self, self.folderMSwitch)
 
         self.customARLabel = Gtk.Label(label="Custom apprun:")
         self.AdvancedOGrid.attach(self.customARLabel,0,1,1,1)
 
         self.customARSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.customARSwitch,1,1,1,1)
-        
-        
-        
+        AdwPreferencesWindow.checkAutoEnable(self, self.customARSwitch)
+    
+            
+
         
         ###Second Page###
         self.secondPage = Gtk.Grid()
@@ -287,6 +290,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.remAppDirBox.append(self.removeAppDir)
         self.confirmGrid.append(self.remAppDirBox)
         self.remAppDirBox.set_spacing(12)
+        AdwPreferencesWindow.checkAutoEnable(self, self.removeAppDir)
 
         self.expander = Gtk.Expander()
         self.confirmGrid.append(self.expander)
@@ -310,9 +314,53 @@ class MainWindow(Gtk.ApplicationWindow):
         self.createButton.set_valign(Gtk.Align.CENTER)
         self.createButton.connect("clicked", self.startCreating)
         self.createBLabel.append(self.createButton)
+    
+        menu = Gio.Menu.new()
+
+        self.popover = Gtk.PopoverMenu()  # Create a new popover menu
+        self.popover.set_menu_model(menu)
+
+        # Create a menu button
+        self.menuButton = Gtk.MenuButton()
+        self.menuButton.set_popover(self.popover)
+        self.menuButton.set_icon_name("open-menu-symbolic")  # Give it a nice icon
+
+        # Add menu button to the header bar
+        self.header.pack_end(self.menuButton)
+
+        # Create an action to run a *show about dialog* function we will create 
+        about = Gio.SimpleAction.new("about", None)
+        about.connect("activate", self.show_about)
+        self.add_action(about)
+
+        preferences = Gio.SimpleAction.new("preferences", None)
+        preferences.connect("activate", self.show_preferences)
+        self.add_action(preferences)
         
-        
-        
+        menu.append("Preferences", "win.preferences") 
+        menu.append("About Flake", "win.about")
+
+
+
+    def show_about(self, action, param):
+        dialog = Adw.AboutWindow() 
+        dialog.set_application_name=("Flake") 
+        dialog.set_version("0.0.4") 
+        dialog.set_developer_name("Leonardo Salani") 
+        dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0)) 
+        dialog.set_comments("GTK user insterface for appimagekit") 
+        dialog.set_website("https://github.com/SalaniLeo/Flake") 
+        # dialog.add_credit_section("Contributors", ["salaniLeo"]) 
+        # dialog.set_translator_credits("Italian: Leonardo Salani")
+        # dialog.set_copyright("© 2022 developer")
+        dialog.set_developers(["salaniLeo"]) 
+        dialog.set_application_icon("io.github.salaniLeo.flake") # icon must be uploaded in ~/.local/share/icons or /usr/share/icons
+        dialog.present()
+
+    def show_preferences(self, action, param):
+        adw_preferences_window = AdwPreferencesWindow()
+        adw_preferences_window.show()
+
     def goBack(self, button):
         if(self.expander.get_expanded()):
             self.expander.set_expanded(False)
@@ -350,7 +398,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.secondPPFolderLabel.set_visible(True)    
                 self.secondPPFolderEntry.set_visible(True)  
                 self.secondPPFolderBrowse.set_visible(True)  
-                
+
             else:
                 
                 self.secondPPFolderLabel.set_visible(False)    
@@ -441,6 +489,73 @@ def fileChooser(self,title,type, folderMode):
         self.dialog.set_title(title)
         self.dialog.connect("response", self.fileCResponse, type, folderMode)
 
+class AdwPreferencesWindow(Adw.PreferencesWindow):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.set_title(title='Preferences')
+        self.settings = Gio.Settings.new("io.github.salanileo.flake")
+        autoDeleteOption = self.settings.get_boolean("removeappdir")
+        autoFolderMode = self.settings.get_boolean("foldermode")
+        autoCustomAppRun = self.settings.get_boolean("customapprun")
+
+        prefercePage = Adw.PreferencesPage.new()
+        self.add(page=prefercePage)
+
+        generalOptionsGroup = Adw.PreferencesGroup.new()
+        generalOptionsGroup.set_title(title='General')
+
+        prefercePage.add(group=generalOptionsGroup)
+
+        self.autoDelete = Gtk.Switch.new()
+        self.autoDelete.set_valign(align=Gtk.Align.CENTER)
+        self.autoDelete.connect('notify::active', self.saveOpt, "removeappdir")
+        self.autoDelete.set_state(autoDeleteOption)
+
+        deleteADRow = Adw.ActionRow.new()
+        deleteADRow.set_title(title='Auto delete AppDir')
+        deleteADRow.add_suffix(widget=self.autoDelete)
+        generalOptionsGroup.add(child=deleteADRow)
+
+
+
+        self.autoFolderMSw = Gtk.Switch.new()
+        self.autoFolderMSw.set_valign(align=Gtk.Align.CENTER)
+        self.autoFolderMSw.connect('notify::active', self.saveOpt, "foldermode")
+        self.autoFolderMSw.set_state(autoFolderMode)
+
+        autoFolderMRow = Adw.ActionRow.new()
+        autoFolderMRow.set_title(title='Enable FolderMode by default')
+        autoFolderMRow.add_suffix(widget=self.autoFolderMSw)
+        generalOptionsGroup.add(child=autoFolderMRow)
+
+
+
+        self.autoCustomARSw = Gtk.Switch.new()
+        self.autoCustomARSw.set_valign(align=Gtk.Align.CENTER)
+        self.autoCustomARSw.connect('notify::active', self.saveOpt, "foldermode")
+        self.autoCustomARSw.set_state(autoCustomAppRun)
+
+        autoCustomARRow = Adw.ActionRow.new()
+        autoCustomARRow.set_title(title='Enable custom AppRun by default')
+        autoCustomARRow.add_suffix(widget=self.autoCustomARSw)
+        generalOptionsGroup.add(child=autoCustomARRow)
+
+
+    def checkAutoEnable(self, var):
+
+        self.settings = Gio.Settings.new("io.github.salanileo.flake")
+        if var is self.folderMSwitch:
+            self.autoDeleteOption = self.settings.get_boolean("foldermode")
+        elif var is self.customARSwitch:
+            self.autoDeleteOption = self.settings.get_boolean("customapprun")
+        elif var is self.removeAppDir:
+            self.autoDeleteOption = self.settings.get_boolean("removeappdir")
+
+        var.set_state(self.autoDeleteOption)
+
+    def saveOpt(self, switch, GParamBoolean, key):
+        self.settings.set_boolean(key, switch.get_state())
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):

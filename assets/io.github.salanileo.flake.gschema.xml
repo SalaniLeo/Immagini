@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="io.github.salanileo.flake" path="/io/github/salaniLeo/flake/" gettext-domain="flake">
+
+    <key name="foldermode" type="b">
+      <default>false</default>
+      <summary>the app starts with this option enabled</summary>
+      <description>automatically enables the option to create appimages in foldermode</description>
+    </key>
+
+    <key name="removeappdir" type="b">
+      <default>true</default>
+      <summary>Does the app removes .AppDir as default?</summary>
+      <description>automatically removes .appdir folder generated to build the appimage</description>
+    </key>
+
+    <key name="customapprun" type="b">
+      <default>false</default>
+      <summary>the app requests a customapprun as default</summary>
+      <description>automatically enables the option to create appimages with a custom apprun</description>
+    </key>
+
+  </schema>
+</schemalist>

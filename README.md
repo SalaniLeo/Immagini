@@ -13,7 +13,7 @@
 
   <h1> Documentation </h1>
    
-  If you want to see what features I'll add in the future see <a href="#workingOn">what I'm working on</a>
+  If you want to see what features I'll add in the future see <a href="#workingOn">what I'm working on</a>, also check out the <a href="https://github.com/SalaniLeo/Flake/tree/Library-dev">Library-dev</a> branch to see everything I'm working on
 
   See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs for all the info about AppImages
   

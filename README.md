@@ -90,4 +90,4 @@ The app creates a Desktop entry for you automatically when building the .AppDir 
   <li>Library - just started
   <li>Settings - half done, adding settings to page
   <li>Credits - done
-  <li>Library's create image option - waiting to finish library 
+  <li>Library's 'create image' option - waiting to finish library 

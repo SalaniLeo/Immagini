@@ -20,5 +20,11 @@
       <description>automatically enables the option to create appimages with a custom apprun</description>
     </key>
 
+    <key name="librarypath" type="s">
+      <default>'~/Applications'</default>
+      <summary>location of output and library</summary>
+      <description>test</description>
+    </key>
+
   </schema>
 </schemalist>

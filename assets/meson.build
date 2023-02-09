@@ -36,8 +36,6 @@ if compile_schemas.found()
        args: ['--strict', '--dry-run', meson.current_source_dir()])
 endif
 
-subdir('icons')
-
 gnome.compile_resources('flake',
   'flake.gresource.xml',
   gresource_bundle: true,

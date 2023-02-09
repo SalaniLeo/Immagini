@@ -1,0 +1,31 @@
+#centerGrid > *{
+
+    margin: 6px;
+
+
+}
+
+#mainBox{
+
+    margin: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    
+
+}
+
+#okBLabel > *{
+
+    margin-top: 12px;
+}
+
+#advGrid{
+    margin-top: 6px;
+}
+
+#advGrid > *{ 
+
+    margin: 6px;
+
+}

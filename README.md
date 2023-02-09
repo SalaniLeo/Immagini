@@ -12,6 +12,8 @@
    from flathub repo: <b>flatpak install flathub io.github.salaniLeo.flake</b>
 
   <h1> Documentation </h1>
+   
+  If you want to see what features I'll add in the future see <a href="#workingOn">what I'm working on</a>
 
   See the <a href="https://appimage-builder.readthedocs.io/en/latest/">appimage builder</a> docs for all the info about AppImages
   
@@ -80,3 +82,12 @@ The app creates a Desktop entry for you automatically when building the .AppDir 
    Allows users to include in the AppImage applications that require multiple files (like most ones).
    
    <b> I'll improve this option in every release, since it's still in beta </b>
+   <br>
+
+<div id='workingOn'>
+  <h2>Next release updates</h2>
+
+  <li>Library - just started
+  <li>Settings - half done, adding settings to page
+  <li>Credits - done
+  <li>Library's create image option - waiting to finish library 

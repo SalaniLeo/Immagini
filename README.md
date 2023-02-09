@@ -1,4 +1,4 @@
- # Flake
+ # Flake, working on adding a library to store all appimages 
 
 <p>Very basic GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 

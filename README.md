@@ -1,5 +1,7 @@
  # Flake, working on adding a library to store all appimages 
 
+ <h1> To execute the app launch __init__.py or build and run through gnome-builder </h1>
+
 <p>Very basic GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 
   <h1> Install </h1>

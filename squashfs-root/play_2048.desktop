@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Play 2048
+Comment=2048 Game implemented in ASFML
+Exec=play_2048
+Icon=play_2048
+Terminal=true
+Type=Application
+Categories=Game;
+
+X-AppImage-Version=ddfe6fa

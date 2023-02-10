@@ -5,10 +5,7 @@ from .creator.error import *
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-<<<<<<< Updated upstream
 gi.require_version('Gio', '2.0')
-=======
->>>>>>> Stashed changes
 from gi.repository import Gtk, Adw, Gio, Gdk, GLib
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -18,12 +15,8 @@ class MainWindow(Gtk.ApplicationWindow):
         # self.set_size_request(600,400)
         
         css_provider = Gtk.CssProvider()
-<<<<<<< Updated upstream
         css_provider.load_from_resource('/io/github/salaniLeo/flake/assets/app.css')
         css_provider.load_from_file(Gio.File.new_for_path('assets/app.css'))
-=======
-        css_provider.load_from_file(Gio.File.new_for_path('share/flake/app.css'))
->>>>>>> Stashed changes
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         style_context = self.get_style_context()
         style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
@@ -176,37 +169,17 @@ class MainWindow(Gtk.ApplicationWindow):
         
         self.folderMSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.folderMSwitch,1,0,1,1)
-<<<<<<< Updated upstream
         # AdwPreferencesWindow.checkAutoEnable(self, self.folderMSwitch)
-=======
-<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
-
-=======
-        # AdwPreferencesWindow.checkAutoEnable(self, self.folderMSwitch)
->>>>>>> Stashed changes:Flake/ui.py
->>>>>>> Stashed changes
 
         self.customARLabel = Gtk.Label(label="Custom apprun:")
         self.AdvancedOGrid.attach(self.customARLabel,0,1,1,1)
 
         self.customARSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.customARSwitch,1,1,1,1)
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
-        
-        
-        
-=======
->>>>>>> Stashed changes
         # AdwPreferencesWindow.checkAutoEnable(self, self.customARSwitch)
     
             
 
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes:Flake/ui.py
->>>>>>> Stashed changes
         
         ###Second Page###
         self.secondPage = Gtk.Grid()
@@ -317,14 +290,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.remAppDirBox.append(self.removeAppDir)
         self.confirmGrid.append(self.remAppDirBox)
         self.remAppDirBox.set_spacing(12)
-<<<<<<< Updated upstream
         # AdwPreferencesWindow.checkAutoEnable(self, self.removeAppDir)
-=======
-<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
-=======
-        # AdwPreferencesWindow.checkAutoEnable(self, self.removeAppDir)
->>>>>>> Stashed changes:Flake/ui.py
->>>>>>> Stashed changes
 
         self.expander = Gtk.Expander()
         self.confirmGrid.append(self.expander)
@@ -348,17 +314,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.createButton.set_valign(Gtk.Align.CENTER)
         self.createButton.connect("clicked", self.startCreating)
         self.createBLabel.append(self.createButton)
-<<<<<<< Updated upstream
 
-=======
-<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
-        
-        
-        
-=======
-
->>>>>>> Stashed changes:Flake/ui.py
->>>>>>> Stashed changes
     def goBack(self, button):
         if(self.expander.get_expanded()):
             self.expander.set_expanded(False)
@@ -396,11 +352,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 self.secondPPFolderLabel.set_visible(True)    
                 self.secondPPFolderEntry.set_visible(True)  
                 self.secondPPFolderBrowse.set_visible(True)  
-<<<<<<< Updated upstream
 
-=======
-                
->>>>>>> Stashed changes
             else:
                 
                 self.secondPPFolderLabel.set_visible(False)    
@@ -492,12 +444,6 @@ def fileChooser(self,title,type, folderMode):
         self.dialog.connect("response", self.fileCResponse, type, folderMode)
 
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
-class MyApp(Adw.Application):
-=======
->>>>>>> Stashed changes
     # def checkAutoEnable(self, var):
 
     #     self.settings = Gio.Settings.new("io.github.salanileo.flake")
@@ -514,10 +460,6 @@ class MyApp(Adw.Application):
     #     self.settings.set_boolean(key, switch.get_state())
 
 class createAppImage(Adw.Application):
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes:Flake/ui.py
->>>>>>> Stashed changes
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.connect('activate', self.on_activate)

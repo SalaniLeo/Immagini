@@ -17,12 +17,12 @@ from .creator.error import *
 def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, self):
 
     # prints options for terminal output
-    print("[name] " + name)
-    print("[exe dir] " + exe)
-    print("[icon dir] " + icon)
-    print("[type] " + type)
-    print("[category] " + categories)
-    print("[output location] " + output)
+    # print("[name] " + name)
+    # print("[exe dir] " + exe)
+    # print("[icon dir] " + icon)
+    # print("[type] " + type)
+    # print("[category] " + categories)
+    # print("[output location] " + output)
     
     exeName = ntpath.basename(exe)
     iconName = ntpath.basename(icon)

@@ -43,6 +43,10 @@ if __name__ == '__main__':
     resource._register()
 
     from Flake import main
+<<<<<<< Updated upstream
     sys.exit(main.main("0.0.3")) 
+=======
+
+>>>>>>> Stashed changes
 
     

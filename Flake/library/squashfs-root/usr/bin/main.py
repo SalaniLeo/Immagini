@@ -167,16 +167,27 @@ class MainWindow(Gtk.ApplicationWindow):
         
         self.folderMSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.folderMSwitch,1,0,1,1)
+<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
 
+=======
+        # AdwPreferencesWindow.checkAutoEnable(self, self.folderMSwitch)
+>>>>>>> Stashed changes:Flake/ui.py
 
         self.customARLabel = Gtk.Label(label="Custom apprun:")
         self.AdvancedOGrid.attach(self.customARLabel,0,1,1,1)
 
         self.customARSwitch = Gtk.Switch()
         self.AdvancedOGrid.attach(self.customARSwitch,1,1,1,1)
+<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
         
         
         
+=======
+        # AdwPreferencesWindow.checkAutoEnable(self, self.customARSwitch)
+    
+            
+
+>>>>>>> Stashed changes:Flake/ui.py
         
         ###Second Page###
         self.secondPage = Gtk.Grid()
@@ -287,6 +298,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.remAppDirBox.append(self.removeAppDir)
         self.confirmGrid.append(self.remAppDirBox)
         self.remAppDirBox.set_spacing(12)
+<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
+=======
+        # AdwPreferencesWindow.checkAutoEnable(self, self.removeAppDir)
+>>>>>>> Stashed changes:Flake/ui.py
 
         self.expander = Gtk.Expander()
         self.confirmGrid.append(self.expander)
@@ -310,9 +325,13 @@ class MainWindow(Gtk.ApplicationWindow):
         self.createButton.set_valign(Gtk.Align.CENTER)
         self.createButton.connect("clicked", self.startCreating)
         self.createBLabel.append(self.createButton)
+<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
         
         
         
+=======
+
+>>>>>>> Stashed changes:Flake/ui.py
     def goBack(self, button):
         if(self.expander.get_expanded()):
             self.expander.set_expanded(False)
@@ -442,29 +461,30 @@ def fileChooser(self,title,type, folderMode):
         self.dialog.connect("response", self.fileCResponse, type, folderMode)
 
 
+<<<<<<< Updated upstream:Flake/library/squashfs-root/usr/bin/main.py
 class MyApp(Adw.Application):
+=======
+    # def checkAutoEnable(self, var):
+
+    #     self.settings = Gio.Settings.new("io.github.salanileo.flake")
+    #     if var is self.folderMSwitch:
+    #         self.autoDeleteOption = self.settings.get_boolean("foldermode")
+    #     elif var is self.customARSwitch:
+    #         self.autoDeleteOption = self.settings.get_boolean("customapprun")
+    #     elif var is self.removeAppDir:
+    #         self.autoDeleteOption = self.settings.get_boolean("removeappdir")
+
+    #     var.set_state(self.autoDeleteOption)
+
+    # def saveOpt(self, switch, GParamBoolean, key):
+    #     self.settings.set_boolean(key, switch.get_state())
+
+class createAppImage(Adw.Application):
+>>>>>>> Stashed changes:Flake/ui.py
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.connect('activate', self.on_activate)
 
-    def on_activate(self, app):
-        self.win = MainWindow(application=app)
+    def on_activate(self, ):
+        self.win = MainWindow()
         self.win.present()  
-        
-    # def throwError(self, error, title):
-    #     dialog = Gtk.MessageDialog(
-    #             parent         = self,
-    #             message_type   = Gtk.MessageType.ERROR,
-    #             secondary_text = error,
-    #             text           = title,
-    #             buttons        = Gtk.ButtonsType.CLOSE,
-    #     )
-        # result = dialog.show()
-        # print(dialog.response)
-        # if result == Gtk.ResponseType.CLOSE:
-        #     dialog.destroy()
-
-def main(version):
-    app = MyApp(application_id="io.github.salaniLeo.flake")
-    app.run(sys.argv)
-        

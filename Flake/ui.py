@@ -8,49 +8,26 @@ gi.require_version('Adw', '1')
 gi.require_version('Gio', '2.0')
 from gi.repository import Gtk, Adw, Gio, Gdk, GLib
 
-class MainWindow(Gtk.ApplicationWindow):
+class mainBox(Gtk.Box):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
-        # self.set_size_request(600,400)
-        
+                
         css_provider = Gtk.CssProvider()
         css_provider.load_from_resource('/io/github/salaniLeo/flake/assets/app.css')
         css_provider.load_from_file(Gio.File.new_for_path('assets/app.css'))
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         style_context = self.get_style_context()
         style_context.add_provider_for_display(self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-
-                          
-        self.header = Gtk.HeaderBar()
-        title_label = Gtk.Label()
-        title_label.set_markup("<b>Flake</b>")
-        self.header.set_title_widget(title_label)
-        self.set_titlebar(self.header)
-        self.header.set_name("headerbar")
-        self.set_name("window")
-        
-        self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
-        self.switch = Gtk.Switch()
-        self.label = Gtk.Label(label="Advanced:")
-        self.switch_box.append(self.label)
-        self.switch_box.append(self.switch)
-        self.header.pack_start(self.switch_box)
-        self.switch_box.set_spacing(5) # Add some spacing
-        
-        self.switch.connect("state-set", self.showAdvanced)
         
         #stack for confirm animation
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-        self.set_child(self.stack)
+        self.append(self.stack)
 
         #main box in the middle
         self.mainBox = Gtk.Grid()
         self.stack.add_child(self.mainBox)
         self.mainBox.set_name("mainBox")
-        self.set_default_size(750,400)
         
         self.topBox = Gtk.Box()
         self.mainBox.attach(self.topBox, 0, 0, 2, 1)
@@ -83,9 +60,16 @@ class MainWindow(Gtk.ApplicationWindow):
         self.nameLabel.set_name("nameLabel")
         self.nameLabel.set_xalign(0.0)
         
-        self.nameEntry = Gtk.Entry()
+        # self.nameEntry = Gtk.Entry()
+        # self.centerGrid.attach(self.nameEntry,1,0,3,1)
+        # self.nameEntry.set_name("nameEntry")       
+
+        self.nameEntry = Adw.EntryRow.new()
+        self.nameEntry.set_title(title="item")
+        self.nameEntry.set_show_apply_button(show_apply_button=True)
+        self.nameEntry.set_activates_default(activates=True)
+        self.nameEntry.set_name("nameEntry")
         self.centerGrid.attach(self.nameEntry,1,0,3,1)
-        self.nameEntry.set_name("nameEntry")                
         
         self.exeLabel = Gtk.Label(label="Executable:")
         self.centerGrid.attach(self.exeLabel,0,1,1,1) 
@@ -186,10 +170,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stack.add_child(self.secondPage)
         self.secondPage.set_row_spacing(35)
         self.secondPage.set_column_spacing(35)
-
-        
-        self.backButton = Gtk.Button.new_from_icon_name("pan-start-symbolic") 
-        self.backButton.connect("clicked", self.goBack)
     
         
         self.topBox2 = Gtk.Box()
@@ -315,19 +295,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.createButton.connect("clicked", self.startCreating)
         self.createBLabel.append(self.createButton)
 
-    def goBack(self, button):
-        if(self.expander.get_expanded()):
-            self.expander.set_expanded(False)
-            self.set_default_size(750,400)
-        self.stack.set_visible_child(self.mainBox)
-        self.header.remove(self.backButton)
-        self.header.pack_start(self.switch_box)
-        
-    def goFarw(self):
-        self.stack.set_visible_child(self.secondPage)
-        self.header.remove(self.switch_box)
-        self.header.pack_start(self.backButton)
-
     def showAdvanced(self, widget, active):
         if active is True:
             self.AdvancedOGrid.set_visible(True)
@@ -442,28 +409,3 @@ def fileChooser(self,title,type, folderMode):
         self.dialog.show()
         self.dialog.set_title(title)
         self.dialog.connect("response", self.fileCResponse, type, folderMode)
-
-
-    # def checkAutoEnable(self, var):
-
-    #     self.settings = Gio.Settings.new("io.github.salanileo.flake")
-    #     if var is self.folderMSwitch:
-    #         self.autoDeleteOption = self.settings.get_boolean("foldermode")
-    #     elif var is self.customARSwitch:
-    #         self.autoDeleteOption = self.settings.get_boolean("customapprun")
-    #     elif var is self.removeAppDir:
-    #         self.autoDeleteOption = self.settings.get_boolean("removeappdir")
-
-    #     var.set_state(self.autoDeleteOption)
-
-    # def saveOpt(self, switch, GParamBoolean, key):
-    #     self.settings.set_boolean(key, switch.get_state())
-
-class createAppImage(Adw.Application):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.connect('activate', self.on_activate)
-
-    def on_activate(self, ):
-        self.win = MainWindow()
-        self.win.present()  

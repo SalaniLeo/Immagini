@@ -11,35 +11,36 @@ gi.require_version(namespace='Adw', version='1')
 
 from gi.repository import Adw, Gio, Gtk
 
-def createElements(path, imageList):
+def createElements(path, imageList,dir):
+    desktopFile = glob.glob(dir + '/squashfs-root/*.desktop')
+    name = getContent.getName(desktopFile)
 
-    desktopFile = glob.glob('squashfs-root/*.desktop')
-
-    name = getContent.getName(path, desktopFile)
-
-    if name is None or "":
-        name = "a"
+    if name[0] is None or "":
+        name[0] = "(app name not found)"
 
     button = Gtk.Button()
     box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-    # image = Gtk.Image.new_from_file(getContent.getIcon(path))
+    # image = Gtk.Image.new_from_file(getContent.getIcon(dir,imageLoc))
+    # image.set_size_request(50,50)
     # box.append(image)
     label = Gtk.Label()
-    label.set_text(name)
+    label.set_text(name[0])
     box.append(label)
-    button.set_size_request(100,50)
+    # box.append(image)
     button.set_child(box)
-    button.connect('clicked', buttonClicked, path, imageList)
+    # button.connect('clicked', buttonClicked, path, imageList)
 
     return button
 
-def extractAppImage(imageLoc):
+# imagessss = None
+
+def extractAppImage(imageLoc,dir):
 
     if not isExecutable(imageLoc):
         os.system("chmod 777 " + imageLoc) 
 
-    os.popen(imageLoc + " --appimage-extract *.desktop").read
-    
+    os.popen("cd " + dir + " && " + imageLoc + " --appimage-extract *.desktop").read
+
 
 def isExecutable(path):
     st = os.stat(path)
@@ -47,7 +48,7 @@ def isExecutable(path):
 
 
 class getImages(list):
-    def __init__(self, list, loc): 
+    def __init__(self, list, loc, dir): 
 
         i = 0
         self.appimages = 0
@@ -61,7 +62,7 @@ class getImages(list):
                 self.appimages += 1   
                 name = str(loc) + '/' + str(file).encode('utf-8').decode()
                 self.names.append(name)
-                extractAppImage(name)
+                extractAppImage(name, dir)
 
 
 desktopCount=0
@@ -70,39 +71,23 @@ class getContent():
 
     global appimageLoc
 
-    # def getIcon(path):
-    #     os.popen(path + " --appimage-extract *.svg").read
-    #     time.sleep(0)
-    #     iconFIle = glob.glob('squashfs-root/.DirIcon')
-    #     # return(str(iconFIle[0]))
-    #     print(str(iconFIle[0]))
-    #     if os.path.islink(str(iconFIle)):
-    #         image = os.readlink(str(iconFIle))
-    #         print(image)
-    #         os.popen(path + " --appimage-extract " + str(image)).read
+    # def getIcon(path,imageLoc):
+    #     os.popen("cd " + dir + " && " + imageLoc + " --appimage-extract *.svg").read
+
+    #     iconFIle = glob.glob(dir + '/squashfs-root/.DirIcon')
+
     #     return(str(iconFIle))
 
 
-    def getName(path, desktopFile):
+    def getName(desktopFile):
 
         global desktopCount
-
-        contents = pathlib.Path(str(desktopFile[desktopCount])).read_text()
+        base = os.path.basename(desktopFile[desktopCount])
+        name = os.path.splitext(base)
         desktopCount = desktopCount + 1
-        for line in contents.split("\n"):
-            if line.startswith("Name="):
-                return(line.split("=")[1])
+        return(name)
 
 
-def getFileNum(list, loc):
-    return getImages(list, loc)
+def getFileNum(list, loc, dir):
+    return getImages(list, loc, dir)
 
-
-
-def buttonClicked(button, imagePath, imageList):
-    os.system("chmod +x " + imageList)
-    t1 = threading.Thread(target=execProgram(imageList))
-    t1.start()
-
-def execProgram(imageList):
-    os.system(imageList)

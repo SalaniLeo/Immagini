@@ -4,7 +4,7 @@ import os
 from .library.getContent import *
 # from .library.getContent import *
 from threading import Thread
-from .ui import mainBox
+from .newImage import *
 
 
 gi.require_version(namespace='Gtk', version='4.0')
@@ -13,9 +13,11 @@ gi.require_version(namespace='Adw', version='1')
 from gi.repository import Adw, Gio, Gtk
 
 Adw.init()
-# os.system("whereami")
+flowbox = Gtk.FlowBox.new()
 libraryPath = ""
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
+widgets = []
+
 if(not os.path.exists(dir)):
     os.mkdir(dir)
 
@@ -24,29 +26,32 @@ class mainWindow(Gtk.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.createImageBox = mainBox()
+        self.createImageBox = newImageBox()
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-
+        self.set_default_size(750,450)
         self.set_title(title='Flake - library')
-        self.set_size_request(750,450)
+        # self.set_size_request(750,450)
 
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.set_child(self.stack)
 
-        self.flowbox = Gtk.FlowBox.new()
-        self.flowbox.set_margin_top(margin=12)
-        self.flowbox.set_margin_end(margin=12)
-        self.flowbox.set_margin_bottom(margin=12)
-        self.flowbox.set_margin_start(margin=12)
-        self.flowbox.set_valign(align=Gtk.Align.START)
-        self.flowbox.set_max_children_per_line(n_children=10)
-        self.flowbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-        self.stack.add_child(child=self.flowbox)
+        global flowbox
+
+        flowbox.set_margin_top(margin=12)
+        flowbox.set_margin_end(margin=12)
+        flowbox.set_margin_bottom(margin=12)
+        flowbox.set_margin_start(margin=12)
+        flowbox.set_valign(align=Gtk.Align.START)
+        flowbox.set_max_children_per_line(n_children=10)
+        flowbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
+
+        self.addBox(False)
+
         self.stack.add_child(child=self.createImageBox)
 
-        t1 = Thread(target=self.images)
+        t1 = Thread(target=mainWindow.images)
         t1.start()
 
         self.headerbar = Gtk.HeaderBar.new()
@@ -55,16 +60,18 @@ class mainWindow(Gtk.ApplicationWindow):
         about = Gio.SimpleAction.new("about", None)
         about.connect("activate", Flake.show_about)
 
-        self.show_in_folder = Gtk.Button.new_with_label("aa")
+        self.show_in_folder = Gtk.Button.new()
         
         show_in_folder = Gio.SimpleAction.new("show_in_folder", None)
         show_in_folder.connect("activate", Flake.show_in_folder)
 
         menu_button_model = Gio.Menu()
 
+        menu_button_model.append('Refresh', 'app.refresh')
         menu_button_model.append('Show in folder', 'app.show_in_folder')
         menu_button_model.append('Preferences', 'app.preferences')
         menu_button_model.append('About', 'app.about')
+
 
         menuButton = Gtk.MenuButton.new()
         menuButton.set_icon_name(icon_name='open-menu-symbolic')
@@ -74,24 +81,46 @@ class mainWindow(Gtk.ApplicationWindow):
         self.newAppImage = Gtk.Button()
         self.newAppImage.connect('clicked', Flake.createImage, self)
         self.newAppImage.set_icon_name(icon_name='list-add-symbolic')
-        # self.newAppImage.get_style_context().add_class(class_name='accent')
         self.headerbar.pack_start(child=self.newAppImage)
 
         self.backButton = Gtk.Button.new_from_icon_name("pan-start-symbolic") 
         self.backButton.connect("clicked", Flake.goBack, self)
 
-        # self.test = FlakePreferences.
+        self.advancedOptions = Gtk.Box()
+        self.advancedSwitch = Gtk.Switch()
+        self.advancedLabel = Gtk.Label(label="Advanced")
+        self.advancedLabel.set_margin_end(12)
+        self.advancedOptions.append(self.advancedLabel)
+        self.advancedOptions.append(self.advancedSwitch)
+        self.advancedSwitch.connect("state-set", newImageBox.showAdvanced)
 
-    def images(self):
-            global dir
-            test = FlakePreferences()
-            imagesDir = test.settings.get_string("librarypath")
-            appslist = os.listdir(imagesDir)
-            appsInfo = getFileNum(appslist, imagesDir, dir)
-            time.sleep(0.5)
-            for n in range(appsInfo.appimages):
-                self.flowbox.insert(widget=createElements(imagesDir, appsInfo.names[n], dir), position=n)
+    def addBox(self, refresh):
 
+        global flowbox
+
+        if not refresh:
+            self.stack.add_child(child=flowbox)
+        elif refresh:
+            self.stack.remove_child(flowbox)
+
+
+    def images():
+        global widgets
+        global dir
+        global flowbox
+        global imagesNum
+        test = FlakePreferences()
+        imagesDir = test.settings.get_string("librarypath")
+        appslist = os.listdir(imagesDir)
+        appsInfo = getFileNum(appslist, imagesDir, dir)
+        imagesNum = appsInfo.appimages
+        time.sleep(0.5)
+        for n in range(appsInfo.appimages):
+            element = createElements(None, appsInfo.names[n], dir)
+            widgets.append(element)
+            flowbox.insert(element, position=n)
+
+imagesNum = None
 
 class Flake(Adw.Application):
 
@@ -102,6 +131,7 @@ class Flake(Adw.Application):
         self.create_action('show_in_folder', self.show_in_folder)
         self.create_action('preferences', self.show_preferences)
         self.create_action('about', self.show_about)
+        self.create_action('refresh', self.refresh)
 
         # self.create_action('quit', self.do_shutdown, ['<primary>q'])
 
@@ -144,17 +174,28 @@ class Flake(Adw.Application):
     def show_in_folder(self, action, param):
         os.system('xdg-open "%s"' % libraryPath)
 
+    def refresh(self, action, param):
+        global flowbox
+        global imagesNum
+        for n in range(imagesNum):
+            flowbox.remove(widgets[n].get_parent())
+        getContent.refresh()
+        t1 = Thread(target=mainWindow.images)
+        t1.start()
+
     def createImage(button, self):
         self.get_style_context().add_class(class_name='devel')
         self.stack.set_visible_child(self.createImageBox)
         self.headerbar.remove(self.newAppImage)
         self.headerbar.pack_start(self.backButton)
+        self.headerbar.pack_start(self.advancedOptions)
         self.set_title(title='Flake - new')
 
     def goBack(button, self):
         self.get_style_context().remove_class(class_name='devel')
         self.stack.set_visible_child(self.flowbox)
         self.headerbar.remove(self.backButton)
+        self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
         self.set_title(title='Flake - library')
 
@@ -168,6 +209,8 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoFolderMode = self.settings.get_boolean("foldermode")
         autoCustomAppRun = self.settings.get_boolean("customapprun")
         self.libraryPath = self.settings.get_string("librarypath")
+
+        # self.connect('close-request', self.do_shutdown)
 
         prefercePage = Adw.PreferencesPage.new()
         self.add(page=prefercePage)
@@ -220,6 +263,8 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.libraryPathEntry.set_valign(align=Gtk.Align.CENTER)
 
         self.libraryPathEntry.set_text(self.libraryPath)
+        # self.libraryPathButton = Gtk.Button.new_from_icon_name("document-open-symbolic") 
+        # self.libraryPathButton.set_size_request(40,10)
 
 
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
@@ -230,6 +275,8 @@ class FlakePreferences(Adw.PreferencesWindow):
         libraryPathRow.set_title(title='Library location')
         libraryPathRow.set_subtitle("To apply changes restart the app")
         libraryPathRow.add_suffix(widget=self.libraryPathEntry)
+        # libraryPathRow.add_suffix(widget=self.libraryPathButton)
+
         libraryOptions.add(child=libraryPathRow)
 
         self.changedPath = False
@@ -245,6 +292,9 @@ class FlakePreferences(Adw.PreferencesWindow):
         else:
                 self.settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
                 self.libraryPathEntry.get_style_context().add_class(class_name='error')
+
+    # def do_shutdown(self, quit):
+        # Flake.refresh(self, None, None)
 
 
 

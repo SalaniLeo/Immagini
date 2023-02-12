@@ -11,28 +11,24 @@ gi.require_version(namespace='Adw', version='1')
 
 from gi.repository import Adw, Gio, Gtk
 
-def createElements(path, imageList,dir):
+def createElements(executable, imageList, dir):
     desktopFile = glob.glob(dir + '/squashfs-root/*.desktop')
     name = getContent.getName(desktopFile)
+    box = Gtk.Button()
+
 
     if name[0] is None or "":
         name[0] = "(app name not found)"
 
-    button = Gtk.Button()
-    box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-    # image = Gtk.Image.new_from_file(getContent.getIcon(dir,imageLoc))
-    # image.set_size_request(50,50)
-    # box.append(image)
-    label = Gtk.Label()
-    label.set_text(name[0])
-    box.append(label)
-    # box.append(image)
-    button.set_child(box)
-    # button.connect('clicked', buttonClicked, path, imageList)
+    name = Gtk.Label(label=name[0])
+    # if executable == "False":
+    #     box.get_style_context().add_class(class_name='error')
 
-    return button
+    box.set_size_request(100,65)
+    box.set_child(name)
 
-# imagessss = None
+    return box
+
 
 def extractAppImage(imageLoc,dir):
 
@@ -52,6 +48,7 @@ class getImages(list):
 
         i = 0
         self.appimages = 0
+        # self.executable = []
         self.names = []
 
         for x in list:
@@ -59,11 +56,15 @@ class getImages(list):
             i += 1
             self.file_extension = file.suffix
             if(self.file_extension == ".AppImage"):
-                self.appimages += 1   
+                # print(loc)
+                # if os.access(str(loc)+"/"+str(file), os.X_OK):
+                #     self.executable.append("True")
+                # else:
+                #     self.executable.append("False")
+                self.appimages += 1
                 name = str(loc) + '/' + str(file).encode('utf-8').decode()
                 self.names.append(name)
                 extractAppImage(name, dir)
-
 
 desktopCount=0
 
@@ -86,6 +87,10 @@ class getContent():
         name = os.path.splitext(base)
         desktopCount = desktopCount + 1
         return(name)
+
+    def refresh():
+        global desktopCount
+        desktopCount = 0
 
 
 def getFileNum(list, loc, dir):

@@ -33,14 +33,14 @@ class newImageBox(Gtk.Box):
         self.addInfo.set_title("New")
         mainBox.add(group=self.addInfo)
 
-        self.nameEntry = self.newEntryRow("Name", False,"Name of the AppImage")
-        self.exeEntry = self.newEntryRow("Executable",True,"Executable file to package")
-        self.iconEntry = self.newEntryRow("Icon", True,"Icon of the app")
-        self.categoriesEntry = self.newEntryRow("Category",False,"Category to specify in desktop file")
-        self.typeEntry = self.newEntryRow("Type",False,"Type to specify in desktop file")
+        self.nameEntry = self.newEntryRow("Name", False, "Name")
+        self.exeEntry = self.newEntryRow("Executable",True,"Executable")
+        self.iconEntry = self.newEntryRow("Icon", True,"Icon")
+        self.categoriesEntry = self.newEntryRow("Category",False,"Category")
+        self.typeEntry = self.newEntryRow("Type",False,"Type")
 
-        self.parentFolder = self.newAdvancedRow("Enable folder mode")
-        self.customARLoc = self.newAdvancedRow("Enable custom apprun")
+        self.parentFolder = self.newAdvancedRow("Enable folder mode",True, True)
+        self.customARLoc = self.newAdvancedRow("Enable custom apprun",True, False)
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
 
@@ -56,7 +56,7 @@ class newImageBox(Gtk.Box):
         self.okButton.set_size_request(80, -1)
         self.okButton.set_halign(Gtk.Align.CENTER)
         self.okButton.set_valign(Gtk.Align.CENTER)
-        self.okButton.connect("clicked", self.confirm)
+        # self.okButton.connect("clicked", self.confirm)
         self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
 
@@ -71,36 +71,35 @@ class newImageBox(Gtk.Box):
         else:
             mainBox.remove(AdvancedInfo)
 
-    def newEntryRow(self, name, buttonNeeded,placeholder):
-
-        button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-        button.set_valign(Gtk.Align.CENTER)
-
-        width = 500
+    def newEntryRow(self, name, buttonNeeded ,placeholder):
 
         label = Gtk.Label(label=name)
+        label.set_hexpand(False)
+        label.set_halign(Gtk.Align.START)
         entry = Gtk.Entry()
-        # entry.set_hexpand(True)
         entry.set_valign(Gtk.Align.CENTER)
+        entry.set_halign(Gtk.Align.FILL)
         entry.set_placeholder_text(placeholder)
+        entry.set_hexpand(True)
+
         if name == "Enable folder mode":
             entry.set_placeholder_text("Parent folder location")
         elif name == "Enable custom apprun":
             entry.set_placeholder_text("Custom AppRun location")
         
         row = Adw.ActionRow.new()
-        entry.set_size_request(width,-1)
         row.add_suffix(entry)
         row.add_prefix(label)
         if buttonNeeded:
-            entry.set_size_request(width-40,-1)
+            folderMode = not buttonNeeded
+            button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
+            button.connect('clicked', self.fileChooser, name, folderMode, entry)
+            button.set_valign(Gtk.Align.CENTER)
             row.add_suffix(button)
-
-        # button.connect('state-set', self.enableOption, entry)
 
         return row
 
-    def newAdvancedRow(self, name):
+    def newAdvancedRow(self, name, buttonNeeded, folderMode):
 
         switch = Gtk.Switch()
         switch.set_valign(Gtk.Align.CENTER)
@@ -115,16 +114,19 @@ class newImageBox(Gtk.Box):
             entry.set_placeholder_text("Parent folder location")
         elif name == "Enable custom apprun":
             entry.set_placeholder_text("Custom AppRun location")
-
-        # box.set_hexpand(True)
-        # box.set_vexpand(True)
         
+        switch.connect('state-set', self.enableOption, entry)
+
         row = Adw.ActionRow.new()
         row.add_suffix(switch)
         row.add_suffix(entry)
         row.add_prefix(label)
 
-        switch.connect('state-set', self.enableOption, entry)
+        if buttonNeeded:
+            button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
+            button.set_valign(Gtk.Align.CENTER)
+            button.connect('clicked', self.fileChooser, name, folderMode, entry)
+            row.add_suffix(button)
 
         return row
 
@@ -136,110 +138,23 @@ class newImageBox(Gtk.Box):
             opt.get_style_context().add_class(class_name='error')
             opt.set_editable(False)
 
-# saves and switches page for the main window
-    def confirm(self, button):
-
-        # if none or "" start building the app
-        if None or "" not in (self.nameEntry.get_text(),
-                              self.exeEntry.get_text(),
-                              self.iconEntry.get_text(),
-                              self.typeEntry.get_text(),
-                              self.categoriesEntry.get_text()):
-            
-
-            
-            if(self.folderMSwitch.get_active()):
-                
-                self.secondPPFolderLabel.set_visible(True)    
-                self.secondPPFolderEntry.set_visible(True)  
-                self.secondPPFolderBrowse.set_visible(True)  
-
-            else:
-                
-                self.secondPPFolderLabel.set_visible(False)    
-                self.secondPPFolderEntry.set_visible(False)  
-                self.secondPPFolderBrowse.set_visible(False)  
-                
-            if(self.customARSwitch.get_active()):
-                
-                self.secondPARFileLabel.set_visible(True)    
-                self.secondPARFileEntry.set_visible(True)  
-                self.secondPARFileBrowse.set_visible(True)  
-            else:
-                self.secondPARFileLabel.set_visible(False)    
-                self.secondPARFileEntry.set_visible(False)  
-                self.secondPARFileBrowse.set_visible(False)  
-        else:
-            
-            throwError(self, "Please fill in all the informations", "All the info are required")
-
-
-# opens popup window for exe selection
-    def chooseExe(self, button):
-        fileChooser(self, "Choose executable file", self.exeEntry, folderMode=False)
-
-# opens popup window for icon selection
-    def chooseIcon(self, button):
-        fileChooser(self, "Choose icon", self.iconEntry, folderMode=False)
-
-    def chooseOutputLoc(self, button):
-        fileChooser(self, "Choose output location", self.outputFEntry, folderMode=True)
-        
-    def chooseAppParentFolder(self, button):
-        fileChooser(self, "Choose application parent folder", self.secondPPFolderEntry, folderMode=True)
-        
-    def chooseAppRunLoc(self, button):
-        fileChooser(self, "Choose custom apprun file", self.secondPARFileEntry, folderMode=False)
 
     
-    def fileCResponse(self, dialog, response, type, folderMode):
+    def fileCResponse(self, dialog, window, entry):
 
             self.dialog.destroy()
-            self.file = dialog.get_file()
-            type.set_text(self.file.get_path())
+            entry.set_text(dialog.get_file().get_path())
 
 
-    def startCreating(self, button):
+    def fileChooser(self, button , title, folderMode, entry):
         
-        if(self.outputFEntry.get_text() == "" or None):
-            
-            throwError(self, "An output location is required", "Output location not set")
-            
-        else:
-            
-            tb = self.outputConsole.get_buffer()
-            self.expander.set_expanded(True)
-            end_iter = tb.get_end_iter()
-            tb.insert(end_iter, start(
-                
-                self.nameEntry.get_text(),
-                self.exeEntry.get_text(),
-                self.iconEntry.get_text(),
-                self.typeEntry.get_text(),
-                self.categoriesEntry.get_text(),
-                self.outputFEntry.get_text(),
-                self.customARSwitch.get_active(),
-                self.secondPARFileEntry.get_text(),
-                self.folderMSwitch.get_active(),
-                self.secondPPFolderEntry.get_text(),
-                self
-                
-                )) 
-            
-        # outputConsole.set_hexpand(True)
-            if(self.removeAppDir.get_active()):
-                shutil.rmtree(self.outputFEntry.get_text() + "/" + self.nameEntry.get_text() + ".AppDir/")
+            self.dialog = Gtk.FileChooserNative.new(title=title,
+                                                    parent=None, 
+                                                    action=Gtk.FileChooserAction.OPEN)
 
-
-def fileChooser(self,title,type, folderMode):
-    
-        self.dialog = Gtk.FileChooserNative.new(title=title,
-                                                parent=self, 
-                                                action=Gtk.FileChooserAction.OPEN)
-
-        if folderMode:
-            self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
-        
-        self.dialog.show()
-        self.dialog.set_title(title)
-        self.dialog.connect("response", self.fileCResponse, type, folderMode)
+            if folderMode:
+                self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
+            
+            self.dialog.show()
+            self.dialog.set_title(title)
+            self.dialog.connect("response", self.fileCResponse, entry)

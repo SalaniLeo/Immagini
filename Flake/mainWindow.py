@@ -1,8 +1,6 @@
 import gi
 import os
-# import library.getFiles as count
 from .library.getContent import *
-# from .library.getContent import *
 from threading import Thread
 from .newImage import *
 
@@ -12,15 +10,20 @@ gi.require_version(namespace='Adw', version='1')
 
 from gi.repository import Adw, Gio, Gtk
 
+##Global Variables
 Adw.init()
 flowbox = Gtk.FlowBox.new()
 libraryPath = ""
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
 widgets = []
+changedPath = False
+toast_overlay = Adw.ToastOverlay.new()
 
+##checks if app data dir exists and if not creates it
 if(not os.path.exists(dir)):
     os.mkdir(dir)
 
+##main app window
 class mainWindow(Gtk.ApplicationWindow):
 
     def __init__(self, **kwargs):
@@ -31,11 +34,21 @@ class mainWindow(Gtk.ApplicationWindow):
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.set_default_size(750,450)
         self.set_title(title='Flake - library')
-        # self.set_size_request(750,450)
 
+        #Main stack
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-        self.set_child(self.stack)
+
+        global toast_overlay
+
+        toast_overlay = Adw.ToastOverlay.new()
+        toast_overlay.set_margin_top(margin=12)
+        toast_overlay.set_margin_end(margin=12)
+        toast_overlay.set_margin_bottom(margin=12)
+        toast_overlay.set_margin_start(margin=12)
+        self.set_child(child=toast_overlay)
+
+        toast_overlay.set_child(child=self.stack)
 
         global flowbox
 
@@ -109,8 +122,8 @@ class mainWindow(Gtk.ApplicationWindow):
         global dir
         global flowbox
         global imagesNum
-        test = FlakePreferences()
-        imagesDir = test.settings.get_string("librarypath")
+
+        imagesDir = FlakePreferences().settings.get_string("librarypath")
         appslist = os.listdir(imagesDir)
         appsInfo = getFileNum(appslist, imagesDir, dir)
         imagesNum = appsInfo.appimages
@@ -118,7 +131,7 @@ class mainWindow(Gtk.ApplicationWindow):
         for n in range(appsInfo.appimages):
             element = createElements(None, appsInfo.names[n], dir)
             widgets.append(element)
-            flowbox.insert(element, position=n)
+            flowbox.insert(widgets[n], position=n)
 
 imagesNum = None
 
@@ -178,8 +191,9 @@ class Flake(Adw.Application):
         global flowbox
         global imagesNum
         for n in range(imagesNum):
-            flowbox.remove(widgets[n].get_parent())
-        getContent.refresh()
+            flowbox.remove(widgets[0].get_parent())
+            widgets.remove(widgets[0])
+        getContent.restart_count()
         t1 = Thread(target=mainWindow.images)
         t1.start()
 
@@ -192,12 +206,23 @@ class Flake(Adw.Application):
         self.set_title(title='Flake - new')
 
     def goBack(button, self):
+        global flowbox
         self.get_style_context().remove_class(class_name='devel')
-        self.stack.set_visible_child(self.flowbox)
+        self.stack.set_visible_child(flowbox)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
         self.set_title(title='Flake - library')
+
+    def newToast(self, title, action):
+
+        toast = Adw.Toast.new(title='')
+        toast.set_title(title=title)
+        toast.set_timeout(True)
+        toast.set_button_label("Refresh")
+        toast.set_action_name(action)
+
+        return toast
 
 class FlakePreferences(Adw.PreferencesWindow):
     
@@ -210,7 +235,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoCustomAppRun = self.settings.get_boolean("customapprun")
         self.libraryPath = self.settings.get_string("librarypath")
 
-        # self.connect('close-request', self.do_shutdown)
+        self.connect('close-request', self.do_shutdown)
 
         prefercePage = Adw.PreferencesPage.new()
         self.add(page=prefercePage)
@@ -228,8 +253,6 @@ class FlakePreferences(Adw.PreferencesWindow):
         deleteADRow.add_suffix(widget=self.autoDelete)
         imageCreatorOptions.add(child=deleteADRow)
 
-
-
         self.autoFolderMSw = Gtk.Switch.new()
         self.autoFolderMSw.set_valign(align=Gtk.Align.CENTER)
         self.autoFolderMSw.connect('notify::active', self.saveOpt, "foldermode")
@@ -239,8 +262,6 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoFolderMRow.set_title(title='Enable FolderMode by default')
         autoFolderMRow.add_suffix(widget=self.autoFolderMSw)
         imageCreatorOptions.add(child=autoFolderMRow)
-
-
 
         self.autoCustomARSw = Gtk.Switch.new()
         self.autoCustomARSw.set_valign(align=Gtk.Align.CENTER)
@@ -252,7 +273,6 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoCustomARRow.add_suffix(widget=self.autoCustomARSw)
         imageCreatorOptions.add(child=autoCustomARRow)
 
-
         libraryOptions = Adw.PreferencesGroup.new()
         libraryOptions.set_title(title='Library')
 
@@ -263,9 +283,6 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.libraryPathEntry.set_valign(align=Gtk.Align.CENTER)
 
         self.libraryPathEntry.set_text(self.libraryPath)
-        # self.libraryPathButton = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-        # self.libraryPathButton.set_size_request(40,10)
-
 
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
         global libraryPath
@@ -275,30 +292,32 @@ class FlakePreferences(Adw.PreferencesWindow):
         libraryPathRow.set_title(title='Library location')
         libraryPathRow.set_subtitle("To apply changes restart the app")
         libraryPathRow.add_suffix(widget=self.libraryPathEntry)
-        # libraryPathRow.add_suffix(widget=self.libraryPathButton)
 
         libraryOptions.add(child=libraryPathRow)
 
-        self.changedPath = False
+        global changedPath
+
+        changedPath = False
 
     def saveOpt(self, switch, GParamBoolean, key):
         self.settings.set_boolean(key, switch.get_state())
 
     def saveString(self, entry, key):
+        global changedPath
         if os.path.exists(entry.get_text()):
-                self.changedPath = True
+                changedPath = True
                 self.settings.set_string(key, entry.get_text())
                 self.libraryPathEntry.get_style_context().remove_class(class_name='error')
         else:
                 self.settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
                 self.libraryPathEntry.get_style_context().add_class(class_name='error')
 
-    # def do_shutdown(self, quit):
-        # Flake.refresh(self, None, None)
+    def do_shutdown(self, quit):
+        global changedPath
+        global toast_overlay
 
-
-
-
+        if(changedPath):
+            toast_overlay.add_toast(Flake.newToast(self, "Library path changed", "app.refresh"))
 
 if __name__ == '__main__':
     import sys

@@ -88,7 +88,7 @@ class getContent():
         desktopCount = desktopCount + 1
         return(name)
 
-    def refresh():
+    def restart_count():
         global desktopCount
         desktopCount = 0
 

@@ -42,16 +42,16 @@ class mainWindow(Gtk.ApplicationWindow):
         global toast_overlay
 
         toast_overlay = Adw.ToastOverlay.new()
-        toast_overlay.set_margin_top(margin=12)
-        toast_overlay.set_margin_end(margin=12)
-        toast_overlay.set_margin_bottom(margin=12)
-        toast_overlay.set_margin_start(margin=12)
         self.set_child(child=toast_overlay)
 
         toast_overlay.set_child(child=self.stack)
 
         global flowbox
 
+        flowbox.set_margin_top(margin=12)
+        flowbox.set_margin_end(margin=12)
+        flowbox.set_margin_bottom(margin=12)
+        flowbox.set_margin_start(margin=12)
         flowbox.set_valign(align=Gtk.Align.START)
         flowbox.set_max_children_per_line(n_children=10)
         flowbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)

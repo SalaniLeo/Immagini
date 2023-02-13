@@ -18,6 +18,8 @@ class newImageBox(Gtk.Box):
         global AdvancedInfo
         #main box in the middle
 
+        self.entryNum = 0
+
         self.container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.bottomBox = Gtk.Box()
         self.bottomBox.set_vexpand(True)
@@ -57,8 +59,9 @@ class newImageBox(Gtk.Box):
         self.okButton.set_halign(Gtk.Align.CENTER)
         self.okButton.set_valign(Gtk.Align.CENTER)
         # self.okButton.connect("clicked", self.confirm)
-        self.okButton.set_margin_bottom(6)
+        # self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
+        self.okButton.connect('clicked', self.createImage)
 
         self.container.append(self.okButton)
         self.container.append(self.bottomBox)
@@ -87,6 +90,9 @@ class newImageBox(Gtk.Box):
         elif name == "Enable custom apprun":
             entry.set_placeholder_text("Custom AppRun location")
         
+        global test
+        test.append(entry)
+
         row = Adw.ActionRow.new()
         row.add_suffix(entry)
         row.add_prefix(label)
@@ -158,3 +164,57 @@ class newImageBox(Gtk.Box):
             self.dialog.show()
             self.dialog.set_title(title)
             self.dialog.connect("response", self.fileCResponse, entry)
+
+
+    def createImage(self, button):
+
+        nameText = test[0].get_text()
+        exeText = test[1].get_text()
+        iconText = test[2].get_text()
+        typeText = test[3].get_text()
+        categoryText = test[4].get_text()
+
+        if None or "" not in (nameText,exeText,iconText,typeText,categoryText):
+
+            
+            # if(self.folderMSwitch.get_active()):
+                
+            # if(self.customARSwitch.get_active()):
+
+            start(nameText,exeText,iconText,typeText,categoryText,
+            
+            
+            )
+                
+            
+            throwError(self, "Please fill in all the informations", "All the info are required")
+
+
+
+    def startCreating(self, button):
+        
+        if(self.outputFEntry.get_text() == "" or None):
+            
+            throwError(self, "An output location is required", "Output location not set")
+            
+        else:
+            
+            tb = self.outputConsole.get_buffer()
+            self.expander.set_expanded(True)
+            end_iter = tb.get_end_iter()
+            tb.insert(end_iter, start(
+                
+                self.nameEntry.get_text(),
+                self.exeEntry.get_text(),
+                self.iconEntry.get_text(),
+                self.typeEntry.get_text(),
+                self.categoriesEntry.get_text(),
+                self.outputFEntry.get_text(),
+                self.customARSwitch.get_active(),
+                self.secondPARFileEntry.get_text(),
+                self.folderMSwitch.get_active(),
+                self.secondPPFolderEntry.get_text(),
+                self
+                
+                )) 
+test = []

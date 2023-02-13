@@ -59,7 +59,7 @@ class newImageBox(Gtk.Box):
         self.okButton.set_halign(Gtk.Align.CENTER)
         self.okButton.set_valign(Gtk.Align.CENTER)
         # self.okButton.connect("clicked", self.confirm)
-        # self.okButton.set_margin_bottom(6)
+        self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
         self.okButton.connect('clicked', self.createImage)
 

@@ -80,7 +80,7 @@ class newImageBox(Gtk.Box):
         # print(self.uselibraryPath)
         global isOutputActive
 
-        if self.uselibraryPath:
+        if not self.uselibraryPath:
             isOutputActive = True
             mainBox.add(outputRow)
 
@@ -91,17 +91,19 @@ class newImageBox(Gtk.Box):
         else:
             mainBox.remove(AdvancedInfo)
 
-    def sameOutput(active, path):
+    def sameOutput(active):
         global mainBox
         global outputRow
         global isOutputActive
 
-        if active:
+        if not active:
             if not isOutputActive:
+                isOutputActive = True
                 mainBox.add(outputRow)
         else:
-            isOutputActive = False
-            mainBox.remove(outputRow)
+            if isOutputActive:
+                isOutputActive = False
+                mainBox.remove(outputRow)
 
     def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode):
 

@@ -325,7 +325,7 @@ class FlakePreferences(Adw.PreferencesWindow):
 
     def useLPath(self, switch, GParamBoolean, key):
         self.settings.set_boolean(key, switch.get_state())
-        newImageBox.sameOutput(switch.get_state(), libraryPath)
+        newImageBox.sameOutput(switch.get_state())
 
     def saveString(self, entry, key):
         global changedPath
@@ -333,7 +333,6 @@ class FlakePreferences(Adw.PreferencesWindow):
                 changedPath = True
                 self.settings.set_string(key, entry.get_text())
                 self.libraryPathEntry.get_style_context().remove_class(class_name='error')
-                newImageBox.sameOutput(self.uselibraryPath, libraryPath)
         else:
                 self.settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
                 self.libraryPathEntry.get_style_context().add_class(class_name='error')

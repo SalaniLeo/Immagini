@@ -12,6 +12,8 @@ from gi.repository import Adw, Gio, Gtk
 
 ##Global Variables
 Adw.init()
+
+flatpak = False
 flowbox = Gtk.FlowBox.new()
 libraryPath = ""
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
@@ -30,6 +32,7 @@ class mainWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.createImageBox = newImageBox()
+        newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.set_default_size(750,450)
@@ -133,7 +136,7 @@ imagesNum = None
 
 class Flake(Adw.Application):
 
-    def __init__(self,AppId):
+    def __init__(self,AppId, isFlatpak):
         super().__init__(application_id=AppId,
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
 
@@ -141,6 +144,9 @@ class Flake(Adw.Application):
         self.create_action('preferences', self.show_preferences)
         self.create_action('about', self.show_about)
         self.create_action('refresh', self.refresh)
+
+        global flatpak
+        flatpak = isFlatpak
 
         # self.create_action('quit', self.do_shutdown, ['<primary>q'])
 
@@ -230,6 +236,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoFolderMode = self.settings.get_boolean("foldermode")
         autoCustomAppRun = self.settings.get_boolean("customapprun")
         self.libraryPath = self.settings.get_string("librarypath")
+        uselibraryPath = self.settings.get_boolean("uselibrarypath")
 
         self.connect('close-request', self.do_shutdown)
 
@@ -237,7 +244,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.add(page=prefercePage)
 
         imageCreatorOptions = Adw.PreferencesGroup.new()
-        imageCreatorOptions.set_title(title='General')
+        imageCreatorOptions.set_title(title='General options')
 
         self.autoDelete = Gtk.Switch.new()
         self.autoDelete.set_valign(align=Gtk.Align.CENTER)
@@ -270,10 +277,15 @@ class FlakePreferences(Adw.PreferencesWindow):
         imageCreatorOptions.add(child=autoCustomARRow)
 
         libraryOptions = Adw.PreferencesGroup.new()
-        libraryOptions.set_title(title='Library')
+        libraryOptions.set_title(title='Library options')
+
+        newImageOptions = Adw.PreferencesGroup.new()
+        newImageOptions.set_title(title='New image options')
 
         prefercePage.add(group=libraryOptions)
         prefercePage.add(group=imageCreatorOptions)
+        prefercePage.add(group=newImageOptions)
+
 
         self.libraryPathEntry = Gtk.Entry.new()
         self.libraryPathEntry.set_valign(align=Gtk.Align.CENTER)
@@ -294,6 +306,19 @@ class FlakePreferences(Adw.PreferencesWindow):
         global changedPath
 
         changedPath = False
+
+        useLPath = Gtk.Switch.new()
+        useLPath.set_valign(align=Gtk.Align.CENTER)
+        useLPath.connect('notify::active', self.saveOpt, "uselibrarypath")
+        useLPath.set_state(uselibraryPath)
+
+        useLPathRow = Adw.ActionRow.new()
+        useLPathRow.set_title(title='Use library folder as default')
+        useLPathRow.set_subtitle('Uses library folder as default location when creating new apps')
+        useLPathRow.add_suffix(widget=useLPath)
+
+        newImageOptions.add(child=useLPathRow)
+
 
     def saveOpt(self, switch, GParamBoolean, key):
         self.settings.set_boolean(key, switch.get_state())

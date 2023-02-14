@@ -10,13 +10,15 @@ from gi.repository import Gtk, Adw, Gio, Gdk, GLib
 
 mainBox = Adw.PreferencesPage.new()
 AdvancedInfo = Adw.PreferencesGroup.new()
-appLoc = None
+outputRow = Adw.PreferencesGroup.new()
+isOutputActive = False
 
 class newImageBox(Gtk.Box):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         global mainBox
         global AdvancedInfo
+        global outputRow
 
         self.entryNum = 0
 
@@ -30,9 +32,6 @@ class newImageBox(Gtk.Box):
 
         AdvancedInfo = Adw.PreferencesGroup.new()
         AdvancedInfo.set_title("Advanced")
-
-        self.outputRow = Adw.PreferencesGroup.new()
-        # outputRow.set_title("")
 
         self.addInfo = Adw.PreferencesGroup.new()
         self.addInfo.set_title("New")
@@ -48,10 +47,9 @@ class newImageBox(Gtk.Box):
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
 
-        global appLoc
-
-        self.outputEntry = self.newEntryRow("Location",True,appLoc,True)
-        self.outputRow.add(self.outputEntry)
+        self.settings = Gio.Settings.new("io.github.salanileo.flake")
+        self.libraryPath = self.settings.get_string("librarypath")
+        uselibraryPath = self.settings.get_boolean("uselibrarypath")
 
         self.addInfo.add(self.nameEntry)
         self.addInfo.add(self.exeEntry)
@@ -69,11 +67,22 @@ class newImageBox(Gtk.Box):
         self.okButton.set_margin_top(6)
         self.okButton.connect('clicked', self.createImage)
 
-        # self.append(self.okButton)
-        # self.append(self.bottomBox)
-
         mainBox.add(group=self.addInfo)
-        mainBox.add(self.outputRow)
+
+        self.settings = Gio.Settings.new("io.github.salanileo.flake")
+        self.uselibraryPath = self.settings.get_boolean("uselibrarypath")
+
+
+        self.outputEntry = self.newEntryRow("Location",True,"App location",True)
+        outputRow.add(self.outputEntry)
+        # mainBox.add(outputRow)
+
+        # print(self.uselibraryPath)
+        global isOutputActive
+
+        if self.uselibraryPath:
+            isOutputActive = True
+            mainBox.add(outputRow)
 
     def showAdvanced(widget, active):
         global mainBox
@@ -82,6 +91,17 @@ class newImageBox(Gtk.Box):
         else:
             mainBox.remove(AdvancedInfo)
 
+    def sameOutput(active, path):
+        global mainBox
+        global outputRow
+        global isOutputActive
+
+        if active:
+            if not isOutputActive:
+                mainBox.add(outputRow)
+        else:
+            isOutputActive = False
+            mainBox.remove(outputRow)
 
     def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode):
 
@@ -221,12 +241,6 @@ class newImageBox(Gtk.Box):
         global flatpak
         flatpak = isFlatpak
 
-    # def updateAppLoc(LibLoc, useL):
-    #     if useL:
-    #         global appLoc
-    #         appLoc = LibLoc
-    #     else:
-    #         appLoc = "App location"
 
 flatpak = None
 normalRow = []

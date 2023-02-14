@@ -236,7 +236,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         autoFolderMode = self.settings.get_boolean("foldermode")
         autoCustomAppRun = self.settings.get_boolean("customapprun")
         self.libraryPath = self.settings.get_string("librarypath")
-        uselibraryPath = self.settings.get_boolean("uselibrarypath")
+        self.uselibraryPath = self.settings.get_boolean("uselibrarypath")
 
         self.connect('close-request', self.do_shutdown)
 
@@ -309,8 +309,8 @@ class FlakePreferences(Adw.PreferencesWindow):
 
         useLPath = Gtk.Switch.new()
         useLPath.set_valign(align=Gtk.Align.CENTER)
-        useLPath.connect('notify::active', self.saveOpt, "uselibrarypath")
-        useLPath.set_state(uselibraryPath)
+        useLPath.connect('notify::active', self.useLPath, "uselibrarypath")
+        useLPath.set_state(self.uselibraryPath)
 
         useLPathRow = Adw.ActionRow.new()
         useLPathRow.set_title(title='Use library folder as default')
@@ -323,12 +323,17 @@ class FlakePreferences(Adw.PreferencesWindow):
     def saveOpt(self, switch, GParamBoolean, key):
         self.settings.set_boolean(key, switch.get_state())
 
+    def useLPath(self, switch, GParamBoolean, key):
+        self.settings.set_boolean(key, switch.get_state())
+        newImageBox.sameOutput(switch.get_state(), libraryPath)
+
     def saveString(self, entry, key):
         global changedPath
         if os.path.exists(entry.get_text()):
                 changedPath = True
                 self.settings.set_string(key, entry.get_text())
                 self.libraryPathEntry.get_style_context().remove_class(class_name='error')
+                newImageBox.sameOutput(self.uselibraryPath, libraryPath)
         else:
                 self.settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
                 self.libraryPathEntry.get_style_context().add_class(class_name='error')

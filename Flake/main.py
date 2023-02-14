@@ -3,12 +3,12 @@ from .mainWindow import Flake
 import os
 
 AppId="io.github.salaniLeo.flake"
+flatpak = False
 
-# if(os.path.exists(".flatpak-conf")):
-#     flatpak = True
+if 'FLATPAK_SANDBOX_DIR' in os.environ:
+    flatpak = True
 
-# print()
 
 class main():
-    app = Flake(AppId)
+    app = Flake(AppId,flatpak)
     app.run(sys.argv)

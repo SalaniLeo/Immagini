@@ -3,12 +3,14 @@ import pathlib
 
 # import shutil
 
-def initBuild(appDirPath, output, name):
+def initBuild(appDirPath, output, name, flatpak):
     # os.system("ARCH=x86_64 ./creator/builder/appimagetool-x86_64.AppImage " + "'" + appDirPath + "'" + " " + output + "/" + name + "-x86_64.AppImage")
     # shutil.move(name + "-x86_64.AppImage", output + "/" + name + "-x86_64.AppImage")
 
-    # toolDir = "/app/bin/Flake/creator/builder/tool/AppRun"
-    toolDir = "data/creator/builder/tool/AppRun"
+    if flatpak:
+        toolDir = "/app/bin/Flake/creator/builder/tool/AppRun"
+    else:
+        toolDir = "Flake/creator/builder/tool/AppRun"
 
     # os.chmod(toolDir, 777)
 

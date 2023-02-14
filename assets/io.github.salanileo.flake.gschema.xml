@@ -26,5 +26,11 @@
       <description>test</description>
     </key>
 
+    <key name="uselibrarypath" type="b">
+      <default>true</default>
+      <summary>location of output</summary>
+      <description>test</description>
+    </key>
+
   </schema>
 </schemalist>

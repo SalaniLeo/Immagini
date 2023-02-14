@@ -14,7 +14,7 @@ from .creator.error import *
 # type = None
 # categories = None
 
-def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, self):
+def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, flatpak, self):
 
     # prints options for terminal output
     # print("[name] " + name)
@@ -62,7 +62,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
 
 
     # sets outputtxt to the appimagetool output
-    outputtxt = initBuild(appDirPath,output,name)
+    outputtxt = initBuild(appDirPath,output,name,flatpak)
 
     return outputtxt
 

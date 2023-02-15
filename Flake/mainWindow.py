@@ -15,11 +15,13 @@ Adw.init()
 
 flatpak = False
 flowbox = Gtk.FlowBox.new()
-libraryPath = ""
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
 widgets = []
 changedPath = False
 toast_overlay = Adw.ToastOverlay.new()
+
+settings = Gio.Settings.new("io.github.salanileo.flake")
+
 
 ##checks if app data dir exists and if not creates it
 if(not os.path.exists(dir)):
@@ -38,30 +40,34 @@ class mainWindow(Gtk.ApplicationWindow):
         self.set_default_size(750,450)
         self.set_title(title='Flake - library')
 
-        #Main stack
+        ##stack that contains the scrolled and newImage
         self.stack = Gtk.Stack()
-        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        #scrolled that contains the flowbox
+        self.scrolled = Gtk.ScrolledWindow()
 
-        global toast_overlay
-
-        toast_overlay = Adw.ToastOverlay.new()
+        #adds as child toast_overlay, that contains everything
         self.set_child(child=toast_overlay)
 
+        #adds as toast_overlay child stack
         toast_overlay.set_child(child=self.stack)
 
-        global flowbox
+        #adds as scrolled child flowbox
+        self.scrolled.set_child(flowbox)
 
-        flowbox.set_margin_top(margin=12)
+        #adds the 2 pages to stack
+        self.stack.add_child(child=self.scrolled)
+        self.stack.add_child(child=self.createImageBox)
+
+        #Main stack
+        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+
+        flowbox.set_margin_top(margin=6)
         flowbox.set_margin_end(margin=12)
         flowbox.set_margin_bottom(margin=12)
         flowbox.set_margin_start(margin=12)
         flowbox.set_valign(align=Gtk.Align.START)
         flowbox.set_max_children_per_line(n_children=10)
-        flowbox.set_selection_mode(mode=Gtk.SelectionMode.NONE)
-
-        self.addBox(False)
-
-        self.stack.add_child(child=self.createImageBox)
+        flowbox.set_selection_mode(mode=Gtk.SelectionMode.MULTIPLE)
 
         t1 = Thread(target=mainWindow.images)
         t1.start()
@@ -106,23 +112,27 @@ class mainWindow(Gtk.ApplicationWindow):
         self.advancedOptions.append(self.advancedSwitch)
         self.advancedSwitch.connect("state-set", newImageBox.showAdvanced)
 
+        self.okButton = Gtk.Button(label="confirm")
+        self.okButton.set_size_request(80, -1)
+        self.okButton.set_halign(Gtk.Align.CENTER)
+        self.okButton.set_valign(Gtk.Align.CENTER)
+        self.okButton.set_margin_bottom(6)
+        self.okButton.set_margin_top(6)
+        self.okButton.connect('clicked', newImageBox.createImage)
+
     def addBox(self, refresh):
-
-        global flowbox
-
-        if not refresh:
-            self.stack.add_child(child=flowbox)
+        if not refresh:   
+            self.stack.add_child(child=self.scrolled)
         elif refresh:
-            self.stack.remove_child(flowbox)
+            self.stack.remove_child(self.scrolled)
 
 
     def images():
-        global widgets
-        global dir
-        global flowbox
         global imagesNum
 
-        imagesDir = FlakePreferences().settings.get_string("librarypath")
+        libraryPath = settings.get_string("librarypath")
+
+        imagesDir = libraryPath
         appslist = os.listdir(imagesDir)
         appsInfo = getFileNum(appslist, imagesDir, dir)
         imagesNum = appsInfo.appimages
@@ -151,22 +161,24 @@ class Flake(Adw.Application):
         # self.create_action('quit', self.do_shutdown, ['<primary>q'])
 
     def do_activate(self):
+        global mainwindow
         win = self.props.active_window
         if not win:
             win = mainWindow(application=self)
+            mainwindow = win 
         win.present()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
 
     def do_shutdown(self):
-        global dir
         shutil.rmtree(dir + "/squashfs-root")
         Gtk.Application.do_shutdown(self)
         self.quit()
 
     def show_preferences(self, action, param):
-        adw_preferences_window = FlakePreferences()
+        global mainwindow
+        adw_preferences_window = FlakePreferences(mainwindow)
         adw_preferences_window.show()
 
     def create_action(self, name, callback, shortcuts=None):
@@ -187,11 +199,12 @@ class Flake(Adw.Application):
         dialog.present()
         
     def show_in_folder(self, action, param):
+        global settings
+        libraryPath = settings.get_string("librarypath")
         os.system('xdg-open "%s"' % libraryPath)
 
     def refresh(self, action, param):
-        global flowbox
-        global imagesNum
+        shutil.rmtree(dir + "/squashfs-root")
         for n in range(imagesNum):
             flowbox.remove(widgets[0].get_parent())
             widgets.remove(widgets[0])
@@ -200,7 +213,7 @@ class Flake(Adw.Application):
         t1.start()
 
     def createImage(button, self):
-        self.get_style_context().add_class(class_name='devel')
+        # self.get_style_context().add_class(class_name='devel')
         self.stack.set_visible_child(self.createImageBox)
         self.headerbar.remove(self.newAppImage)
         self.headerbar.pack_start(self.backButton)
@@ -208,9 +221,8 @@ class Flake(Adw.Application):
         self.set_title(title='Flake - new')
 
     def goBack(button, self):
-        global flowbox
-        self.get_style_context().remove_class(class_name='devel')
-        self.stack.set_visible_child(flowbox)
+        # self.get_style_context().remove_class(class_name='devel')
+        self.stack.set_visible_child(self.scrolled)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
@@ -227,16 +239,23 @@ class Flake(Adw.Application):
         return toast
 
 class FlakePreferences(Adw.PreferencesWindow):
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+
+    def __init__(self, parent,  **kwargs):
+        super().__init__(**kwargs)   
+
+        global settings
+
+        autoDeleteOption = settings.get_boolean("removeappdir")
+        autoFolderMode = settings.get_boolean("foldermode")
+        autoCustomAppRun = settings.get_boolean("customapprun")
+        libraryPath = settings.get_string("librarypath")
+        uselibraryPath = settings.get_boolean("uselibrarypath")
+
         self.set_title(title='Preferences')
-        self.settings = Gio.Settings.new("io.github.salanileo.flake")
-        autoDeleteOption = self.settings.get_boolean("removeappdir")
-        autoFolderMode = self.settings.get_boolean("foldermode")
-        autoCustomAppRun = self.settings.get_boolean("customapprun")
-        self.libraryPath = self.settings.get_string("librarypath")
-        self.uselibraryPath = self.settings.get_boolean("uselibrarypath")
+
+        self.set_transient_for(parent)
+        self.set_modal(True)
+
 
         self.connect('close-request', self.do_shutdown)
 
@@ -290,11 +309,9 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.libraryPathEntry = Gtk.Entry.new()
         self.libraryPathEntry.set_valign(align=Gtk.Align.CENTER)
 
-        self.libraryPathEntry.set_text(self.libraryPath)
+        self.libraryPathEntry.set_text(libraryPath)
 
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
-        global libraryPath
-        libraryPath = self.libraryPathEntry.get_text()
 
         libraryPathRow = Adw.ActionRow.new()
         libraryPathRow.set_title(title='Library location')
@@ -310,7 +327,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         useLPath = Gtk.Switch.new()
         useLPath.set_valign(align=Gtk.Align.CENTER)
         useLPath.connect('notify::active', self.useLPath, "uselibrarypath")
-        useLPath.set_state(self.uselibraryPath)
+        useLPath.set_state(uselibraryPath)
 
         useLPathRow = Adw.ActionRow.new()
         useLPathRow.set_title(title='Use library folder as default')
@@ -321,20 +338,23 @@ class FlakePreferences(Adw.PreferencesWindow):
 
 
     def saveOpt(self, switch, GParamBoolean, key):
-        self.settings.set_boolean(key, switch.get_state())
+        global settings
+        settings.set_boolean(key, switch.get_state())
 
     def useLPath(self, switch, GParamBoolean, key):
-        self.settings.set_boolean(key, switch.get_state())
+        global settings
+        settings.set_boolean(key, switch.get_state())
         newImageBox.sameOutput(switch.get_state())
 
     def saveString(self, entry, key):
         global changedPath
+        global settings
         if os.path.exists(entry.get_text()):
                 changedPath = True
-                self.settings.set_string(key, entry.get_text())
+                settings.set_string(key, entry.get_text())
                 self.libraryPathEntry.get_style_context().remove_class(class_name='error')
         else:
-                self.settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
+                settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
                 self.libraryPathEntry.get_style_context().add_class(class_name='error')
 
     def do_shutdown(self, quit):
@@ -349,4 +369,3 @@ if __name__ == '__main__':
 
     app = Flake()
     app.run(sys.argv)
-

@@ -12,6 +12,8 @@ mainBox = Adw.PreferencesPage.new()
 AdvancedInfo = Adw.PreferencesGroup.new()
 outputRow = Adw.PreferencesGroup.new()
 isOutputActive = False
+settings = Gio.Settings.new("io.github.salanileo.flake")
+
 
 class newImageBox(Gtk.Box):
     def __init__(self, *args, **kwargs):
@@ -46,6 +48,8 @@ class newImageBox(Gtk.Box):
         self.customARLoc = self.newAdvancedRow("Enable custom apprun",True, False)
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
+        AdvancedInfo.set_visible(False)
+
 
         self.settings = Gio.Settings.new("io.github.salanileo.flake")
         self.libraryPath = self.settings.get_string("librarypath")
@@ -60,9 +64,9 @@ class newImageBox(Gtk.Box):
 
         self.okButton = Gtk.Button(label="confirm")
         self.okButton.set_size_request(80, -1)
+        self.okButton.set_hexpand(True)
         self.okButton.set_halign(Gtk.Align.CENTER)
         self.okButton.set_valign(Gtk.Align.CENTER)
-        # self.okButton.connect("clicked", self.confirm)
         self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
         self.okButton.connect('clicked', self.createImage)
@@ -72,25 +76,37 @@ class newImageBox(Gtk.Box):
         self.settings = Gio.Settings.new("io.github.salanileo.flake")
         self.uselibraryPath = self.settings.get_boolean("uselibrarypath")
 
+        okPage = Adw.PreferencesGroup.new()
+
+        okRow = Adw.ActionRow.new()
+        # okRow.set_visible(False)
+        okRow.set_child(self.okButton)
+        
+        okPage.add(okRow)
+
+        mainBox.add(outputRow)
+        mainBox.add(okPage)
+        mainBox.add(AdvancedInfo)
 
         self.outputEntry = self.newEntryRow("Location",True,"App location",True)
         outputRow.add(self.outputEntry)
-        # mainBox.add(outputRow)
 
         # print(self.uselibraryPath)
         global isOutputActive
 
         if not self.uselibraryPath:
             isOutputActive = True
-            mainBox.add(outputRow)
+            outputRow.set_visible(True)
+        else:
+            isOutputActive = False
+            outputRow.set_visible(False)
 
     def showAdvanced(widget, active):
         global mainBox
         if active is True:
-            mainBox.add(AdvancedInfo)
+            AdvancedInfo.set_visible(True)
         else:
-            mainBox.remove(AdvancedInfo)
-
+            AdvancedInfo.set_visible(False)
     def sameOutput(active):
         global mainBox
         global outputRow
@@ -99,11 +115,11 @@ class newImageBox(Gtk.Box):
         if not active:
             if not isOutputActive:
                 isOutputActive = True
-                mainBox.add(outputRow)
+                outputRow.set_visible(True)
         else:
             if isOutputActive:
                 isOutputActive = False
-                mainBox.remove(outputRow)
+                outputRow.set_visible(False)
 
     def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode):
 
@@ -210,9 +226,13 @@ class newImageBox(Gtk.Box):
         typeText = normalRow[3].get_text()
         categoryText = normalRow[4].get_text()
 
-        # self.libraryPath
+        libraryPath = settings.get_string("librarypath")
+        uselibraryPath = settings.get_boolean("uselibrarypath")
 
-        outputText = normalRow[5].get_text()
+        if not uselibraryPath:
+            outputText = normalRow[5].get_text()
+        else:
+            outputText = libraryPath
 
         parentFolderText = advancedRow[0].get_text()
         appRunText = advancedRow[1].get_text()
@@ -236,8 +256,11 @@ class newImageBox(Gtk.Box):
             else:
                 customAppRun = False
 
+            print(folderMode)
+
             start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self)
 
+            
 
     def getFlatpak(isFlatpak):
         global flatpak

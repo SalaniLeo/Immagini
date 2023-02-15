@@ -15,7 +15,11 @@ def createElements(executable, imageList, dir):
     desktopFile = glob.glob(dir + '/squashfs-root/*.desktop')
     name = getContent.getName(desktopFile)
     box = Gtk.Button()
-
+    margin = 1
+    box.set_margin_start(margin)
+    box.set_margin_end(margin)
+    box.set_margin_top(margin)
+    box.set_margin_bottom(margin)
 
     if name[0] is None or "":
         name[0] = "(app name not found)"

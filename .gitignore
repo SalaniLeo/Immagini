@@ -15,3 +15,4 @@ data/creator/builder/__pycache__/builder.cpython-311.pyc
 data/__pycache__/imageCreator.cpython-311.pyc
 data/__pycache__/main.cpython-311.pyc
 local build/flatpak-build.sh
+test.py

@@ -101,6 +101,17 @@ class newImageBox(Gtk.Box):
             isOutputActive = False
             outputRow.set_visible(False)
 
+        autoFolderMode = settings.get_boolean("foldermode")
+        autoCustomAppRun = settings.get_boolean("customapprun")
+
+        if autoFolderMode:
+
+            advancedSwitch[1].set_active(True)
+
+        if autoCustomAppRun:
+
+            advancedSwitch[0].set_active(True)
+
     def showAdvanced(widget, active):
         global mainBox
         if active is True:
@@ -228,6 +239,7 @@ class newImageBox(Gtk.Box):
 
         libraryPath = settings.get_string("librarypath")
         uselibraryPath = settings.get_boolean("uselibrarypath")
+        removeappdir = settings.get_boolean("removeappdir")
 
         if not uselibraryPath:
             outputText = normalRow[5].get_text()
@@ -241,7 +253,7 @@ class newImageBox(Gtk.Box):
         appRunSwitch = advancedSwitch[1]
 
         if None or "" in (nameText,exeText,iconText,typeText,categoryText,outputText):
-            
+
             throwError(self, "Please fill in all the informations", "All the info are required")
 
         else:
@@ -256,10 +268,14 @@ class newImageBox(Gtk.Box):
             else:
                 customAppRun = False
 
-            print(folderMode)
 
             start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self)
 
+            if removeappdir:
+                shutil.rmtree(outputText + "/" + nameText + ".AppDir")
+
+            
+            
             
 
     def getFlatpak(isFlatpak):

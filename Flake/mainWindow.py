@@ -1,4 +1,5 @@
 import gi
+import time
 import os
 from .library.getContent import *
 from threading import Thread
@@ -34,6 +35,7 @@ class mainWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.createImageBox = newImageBox()
+        self.createImageBox.okButton.connect('clicked', newImageBox.createImage, Flake.refresh)
         newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -112,13 +114,6 @@ class mainWindow(Gtk.ApplicationWindow):
         self.advancedOptions.append(self.advancedSwitch)
         self.advancedSwitch.connect("state-set", newImageBox.showAdvanced)
 
-        self.okButton = Gtk.Button(label="confirm")
-        self.okButton.set_size_request(80, -1)
-        self.okButton.set_halign(Gtk.Align.CENTER)
-        self.okButton.set_valign(Gtk.Align.CENTER)
-        self.okButton.set_margin_bottom(6)
-        self.okButton.set_margin_top(6)
-        self.okButton.connect('clicked', newImageBox.createImage)
 
     def addBox(self, refresh):
         if not refresh:   
@@ -132,15 +127,16 @@ class mainWindow(Gtk.ApplicationWindow):
 
         libraryPath = settings.get_string("librarypath")
 
-        imagesDir = libraryPath
-        appslist = os.listdir(imagesDir)
-        appsInfo = getFileNum(appslist, imagesDir, dir)
+        appslist = os.listdir(libraryPath)
+        appsInfo = getFileNum(appslist, libraryPath)
         imagesNum = appsInfo.appimages
-        time.sleep(0.5)
-        for n in range(appsInfo.appimages):
-            element = createElements(None, appsInfo.names[n], dir)
-            widgets.append(element)
-            flowbox.insert(widgets[n], position=n)
+        # time.sleep(0.5)
+
+        # print(appslist)
+        for n in range(imagesNum):
+                element = getImages.createElements(appsInfo.names[n])
+                widgets.append(element)
+                flowbox.insert(widgets[n], position=n)
 
 imagesNum = None
 
@@ -172,7 +168,7 @@ class Flake(Adw.Application):
         Gtk.Application.do_startup(self)
 
     def do_shutdown(self):
-        shutil.rmtree(dir + "/squashfs-root")
+        # shutil.rmtree(dir + "/squashfs-root")
         Gtk.Application.do_shutdown(self)
         self.quit()
 
@@ -204,11 +200,10 @@ class Flake(Adw.Application):
         os.system('xdg-open "%s"' % libraryPath)
 
     def refresh(self, action, param):
-        shutil.rmtree(dir + "/squashfs-root")
         for n in range(imagesNum):
             flowbox.remove(widgets[0].get_parent())
             widgets.remove(widgets[0])
-        getContent.restart_count()
+        getImages.restart_count()
         t1 = Thread(target=mainWindow.images)
         t1.start()
 

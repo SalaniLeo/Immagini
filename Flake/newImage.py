@@ -69,7 +69,9 @@ class newImageBox(Gtk.Box):
         self.okButton.set_valign(Gtk.Align.CENTER)
         self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
-        self.okButton.connect('clicked', self.createImage)
+        # self.okButton.connect('clicked', self.createImage)
+
+        # self.okButton.connect("button-press-event", self.on_button_pressed)
 
         mainBox.add(group=self.addInfo)
 
@@ -229,7 +231,7 @@ class newImageBox(Gtk.Box):
             self.dialog.connect("response", self.fileCResponse, entry)
 
 
-    def createImage(self, button):
+    def createImage(self, refresh):
 
         nameText = normalRow[0].get_text()
         exeText = normalRow[1].get_text()
@@ -273,6 +275,8 @@ class newImageBox(Gtk.Box):
 
             if removeappdir:
                 shutil.rmtree(outputText + "/" + nameText + ".AppDir")
+
+            refresh(None, None, None)
 
             
             

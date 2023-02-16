@@ -1,58 +1,22 @@
 import os
 import stat
-import shutil
 import glob
-import time
 import pathlib
+import subprocess
 import gi
-import threading
+from .imageOptions import manageImages
+from ..creator import error
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
-from gi.repository import Adw, Gio, Gtk
-
-def createElements(executable, imageList, dir):
-    desktopFile = glob.glob(dir + '/squashfs-root/*.desktop')
-    name = getContent.getName(desktopFile)
-    box = Gtk.Button()
-    margin = 1
-    box.set_margin_start(margin)
-    box.set_margin_end(margin)
-    box.set_margin_top(margin)
-    box.set_margin_bottom(margin)
-
-    if name[0] is None or "":
-        name[0] = "(app name not found)"
-
-    name = Gtk.Label(label=name[0])
-    # if executable == "False":
-    #     box.get_style_context().add_class(class_name='error')
-
-    box.set_size_request(100,65)
-    box.set_child(name)
-
-    return box
-
-
-def extractAppImage(imageLoc,dir):
-
-    if not isExecutable(imageLoc):
-        os.system("chmod 777 " + imageLoc) 
-
-    os.popen("cd " + dir + " && " + imageLoc + " --appimage-extract *.desktop").read
-
-
-def isExecutable(path):
-    st = os.stat(path)
-    return bool(st.st_mode & stat.S_IEXEC)
-
+from gi.repository import Adw, Gio, Gtk, Pango, Gdk
 
 class getImages(list):
-    def __init__(self, list, loc, dir): 
+    def __init__(self, list, loc): 
 
         i = 0
         self.appimages = 0
-        # self.executable = []
+        self.executable = []
         self.names = []
 
         for x in list:
@@ -60,43 +24,56 @@ class getImages(list):
             i += 1
             self.file_extension = file.suffix
             if(self.file_extension == ".AppImage"):
-                # print(loc)
-                # if os.access(str(loc)+"/"+str(file), os.X_OK):
-                #     self.executable.append("True")
-                # else:
-                #     self.executable.append("False")
                 self.appimages += 1
                 name = str(loc) + '/' + str(file).encode('utf-8').decode()
                 self.names.append(name)
-                extractAppImage(name, dir)
+                names.append(self.names)
 
-desktopCount=0
+    def createElements(appImage):
 
-class getContent():
+        box = Gtk.Button()
+        margin = 1
+        box.set_margin_start(margin)
+        box.set_margin_end(margin)
+        box.set_margin_top(margin)
+        box.set_margin_bottom(margin)
 
-    global appimageLoc
+        imageName = os.path.splitext(appImage)[0]
 
-    # def getIcon(path,imageLoc):
-    #     os.popen("cd " + dir + " && " + imageLoc + " --appimage-extract *.svg").read
+        fullName = os.path.basename(imageName)
+        baseName = fullName.replace("-x86_64", "")
+        name = Gtk.Label(label=baseName)
+        name.set_max_width_chars(15)
+        name.set_ellipsize(Pango.EllipsizeMode.END)
+        name.set_halign(Gtk.Align.CENTER)
 
-    #     iconFIle = glob.glob(dir + '/squashfs-root/.DirIcon')
+        st = os.stat(appImage)
+        executable = bool(st.st_mode & stat.S_IEXEC)
 
-    #     return(str(iconFIle))
+        if not executable:
+            box.get_style_context().add_class(class_name='error')
 
+        box.set_size_request(10,50)
+        box.set_child(name)
+        box.connect("clicked", executeImage, executable, appImage)        
 
-    def getName(desktopFile):
-
-        global desktopCount
-        base = os.path.basename(desktopFile[desktopCount])
-        name = os.path.splitext(base)
-        desktopCount = desktopCount + 1
-        return(name)
+        return box
 
     def restart_count():
         global desktopCount
+        global nameNum
         desktopCount = 0
+        nameNum = 0
 
+desktopCount=0
+names = []
+nameNum = 0
 
-def getFileNum(list, loc, dir):
-    return getImages(list, loc, dir)
+def getFileNum(list, loc):
+    return getImages(list, loc)
 
+def executeImage(executable, imagePath):
+        if not executable:
+            error.throwError(None, "The app has no executable permissions", "Permission denied")
+        else:
+            subprocess.run(imagePath)

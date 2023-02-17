@@ -40,7 +40,7 @@ class getImages(list):
             executable = bool(st.st_mode & stat.S_IEXEC)
 
             rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-            rightBox.append(createElementButton('media-playback-start-symbolic','success',manageImages.startImage, appImage, refresh, baseName, mainWindow))
+            rightBox.append(createElementButton('media-playback-start-symbolic','success',manageImages.startImage, appImage, refresh, executable, mainWindow))
             rightBox.append(createElementButton('org.gnome.Settings-symbolic',None, manageImages.imageOptions, appImage, refresh, baseName, mainWindow))
             rightBox.append(createElementButton('user-trash-symbolic','error',manageImages.deleteImage, appImage, refresh, baseName, mainWindow))
 
@@ -76,32 +76,33 @@ class getImages(list):
 
 def createElementButton(iconName, style, action, actionArg1, refresh, name, mainWindow):
 
-            b = Gtk.Button()
-            b.set_size_request(30,30)
-            b.set_halign(Gtk.Align.END)
-            b.set_valign(Gtk.Align.CENTER)
-            b.set_icon_name(icon_name=iconName)
-            if style is not None:
-                b.get_style_context().add_class(class_name=style)
-            b.set_margin_start(3)
-            b.set_margin_top(12)
-            b.set_margin_end(6)
-            b.set_margin_bottom(12)
-            b.connect('clicked', action, actionArg1, refresh, name, mainWindow)
+    b = Gtk.Button()
+    b.set_size_request(30,30)
+    b.set_halign(Gtk.Align.END)
+    b.set_valign(Gtk.Align.CENTER)
+    b.set_icon_name(icon_name=iconName)
+    if style is not None:
+        b.get_style_context().add_class(class_name=style)
+    b.set_margin_start(3)
+    b.set_margin_top(12)
+    b.set_margin_end(6)
+    b.set_margin_bottom(12)
+    b.connect('clicked', action, actionArg1, refresh, name, mainWindow)
 
-            return b
+    return b
 
 def createElementLabel(text, name):
 
-            l = Gtk.Label()
-            l.set_margin_start(12)
-            l.set_margin_top(6)
-            l.set_margin_end(12)
-            l.set_margin_bottom(12)
-            l.set_text(text + name)
-            l.set_halign(Gtk.Align.START)
+    l = Gtk.Label()
+    l.set_margin_start(12)
+    l.set_margin_top(6)
+    l.set_margin_end(12)
+    l.set_margin_bottom(12)
+    # l.set_ellipsize_status(12)
+    l.set_text(text + name)
+    l.set_halign(Gtk.Align.START)
 
-            return l
+    return l
 
 desktopCount=0
 names = []
@@ -109,9 +110,3 @@ nameNum = 0
 
 def getFileNum(list, loc):
     return getImages(list, loc)
-
-def executeImage(executable, imagePath):
-        if not executable:
-            error.throwError(None, "The app has no executable permissions", "Permission denied")
-        else:
-            subprocess.run(imagePath)

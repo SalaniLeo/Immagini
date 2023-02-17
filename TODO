@@ -1,6 +1,6 @@
-list view of apps in library
-add refresh def to confirm button
-modify library app widgets
-add right click menu to library buttons
-
-everything that has been done will be removed. I'll keep only things to do here.
+add stop def if app is running
+finish options for each image
+add set executable, add desktop shortcut, and launcher shortcut
+set labels inside rows to autoresize based on window width
+create new icon for application
+(maybe) rename the app to 'Immagini' to match application function, and sounds more like a gnome application

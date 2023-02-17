@@ -1,11 +1,14 @@
 import gi
 import subprocess
 import os
+import threading
 from ..creator import error
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
 from gi.repository import Gtk, Gdk, Adw
+
+imagePath = ""
 
 class manageImages(list):
     def __init__(self, list, loc): 
@@ -57,9 +60,17 @@ class manageImages(list):
         options = imageOptions(mainWindow)
         options.show()
         
-    def startImage(button, appImage, refresh, baseName,mainWindow):
-        None
+    def startImage(button, appImage, executable, baseName,mainWindow):
+        if not executable:
+            error.throwError(None, "The app has no executable permissions", "Permission denied")
+        else:
+            global imagePath
+            imagePath = appImage
+            t1 = threading.Thread(target=runImage)
+            t1.start()
 
+def runImage():
+    subprocess.run(imagePath)
 
 class imageOptions(Adw.PreferencesWindow):
 

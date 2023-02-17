@@ -120,6 +120,7 @@ class newImageBox(Gtk.Box):
             AdvancedInfo.set_visible(True)
         else:
             AdvancedInfo.set_visible(False)
+            
     def sameOutput(active):
         global mainBox
         global outputRow
@@ -231,7 +232,7 @@ class newImageBox(Gtk.Box):
             self.dialog.connect("response", self.fileCResponse, entry)
 
 
-    def createImage(self, refresh):
+    def createImage(self, refresh, mainWindow):
 
         nameText = normalRow[0].get_text()
         exeText = normalRow[1].get_text()
@@ -256,7 +257,7 @@ class newImageBox(Gtk.Box):
 
         if None or "" in (nameText,exeText,iconText,typeText,categoryText,outputText):
 
-            throwError(self, "Please fill in all the informations", "All the info are required")
+            throwError(self, "Please fill in all the informations", "All the info are required", mainWindow)
 
         else:
             

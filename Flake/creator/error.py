@@ -1,24 +1,24 @@
 
 import gi
 gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
+gi.require_version('Adw', '1')
+from gi.repository import Gtk, Adw
 
-def throwError(self, error, title):
+def throwError(self, error, title, mainWindow):
                  
-        dialog = Gtk.MessageDialog(
-                parent         = None,
-                message_type   = Gtk.MessageType.ERROR,
-                secondary_text = error,
-                text           = title,
-                buttons        = Gtk.ButtonsType.CLOSE,
+        dialog = Adw.MessageDialog.new()
+
+        dialog.set_transient_for(mainWindow)
+        dialog.set_modal(True)
+        dialog.set_heading(heading=title)
+        dialog.set_body(body=error)
+        dialog.add_response(Gtk.ResponseType.OK.value_nick, 'Ok')
+        dialog.set_response_appearance(
+            response=Gtk.ResponseType.OK.value_nick,
+            appearance=Adw.ResponseAppearance.SUGGESTED
         )
 
-        dialog.set_transient_for(None)
-        dialog.set_modal(True)
-        dialog.show()
-        
-        dialog.connect("response", on_response, dialog)
-        
-def on_response(dialog: Gtk.Dialog, response: Gtk.ResponseType, _dialog: Gtk.Dialog) -> None:
-        _dialog.destroy()
-        
+        dialog.present()
+
+def dialog_response(dialog, response, imagePath, refresh):
+        None

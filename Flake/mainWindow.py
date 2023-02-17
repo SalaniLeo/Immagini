@@ -15,12 +15,13 @@ from gi.repository import Adw, Gio, Gtk
 Adw.init()
 
 flatpak = False
-flowbox = Gtk.FlowBox.new()
+contentWindow = Adw.PreferencesPage.new()
+# contentWindow = Gtk.Box.new(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
 widgets = []
 changedPath = False
 toast_overlay = Adw.ToastOverlay.new()
-
+page = None
 settings = Gio.Settings.new("io.github.salanileo.flake")
 
 
@@ -35,7 +36,7 @@ class mainWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.createImageBox = newImageBox()
-        self.createImageBox.okButton.connect('clicked', newImageBox.createImage, Flake.refresh)
+        self.createImageBox.okButton.connect('clicked', newImageBox.createImage, Flake.refresh, page)
         newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -54,22 +55,14 @@ class mainWindow(Gtk.ApplicationWindow):
         toast_overlay.set_child(child=self.stack)
 
         #adds as scrolled child flowbox
-        self.scrolled.set_child(flowbox)
+        # self.scrolled.set_child(contentWindow)
 
         #adds the 2 pages to stack
-        self.stack.add_child(child=self.scrolled)
+        self.stack.add_child(child=contentWindow)
         self.stack.add_child(child=self.createImageBox)
 
         #Main stack
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-
-        flowbox.set_margin_top(margin=6)
-        flowbox.set_margin_end(margin=12)
-        flowbox.set_margin_bottom(margin=12)
-        flowbox.set_margin_start(margin=12)
-        flowbox.set_valign(align=Gtk.Align.START)
-        flowbox.set_max_children_per_line(n_children=10)
-        flowbox.set_selection_mode(mode=Gtk.SelectionMode.MULTIPLE)
 
         t1 = Thread(target=mainWindow.images)
         t1.start()
@@ -114,16 +107,9 @@ class mainWindow(Gtk.ApplicationWindow):
         self.advancedOptions.append(self.advancedSwitch)
         self.advancedSwitch.connect("state-set", newImageBox.showAdvanced)
 
-
-    def addBox(self, refresh):
-        if not refresh:   
-            self.stack.add_child(child=self.scrolled)
-        elif refresh:
-            self.stack.remove_child(self.scrolled)
-
-
     def images():
         global imagesNum
+        global page
 
         libraryPath = settings.get_string("librarypath")
 
@@ -134,9 +120,9 @@ class mainWindow(Gtk.ApplicationWindow):
 
         # print(appslist)
         for n in range(imagesNum):
-                element = getImages.createElements(appsInfo.names[n])
+                element = getImages.createElements(appsInfo.names[n], Flake.refresh, page)
                 widgets.append(element)
-                flowbox.insert(widgets[n], position=n)
+                contentWindow.add(widgets[n])
 
 imagesNum = None
 
@@ -157,12 +143,11 @@ class Flake(Adw.Application):
         # self.create_action('quit', self.do_shutdown, ['<primary>q'])
 
     def do_activate(self):
-        global mainwindow
-        win = self.props.active_window
-        if not win:
-            win = mainWindow(application=self)
-            mainwindow = win 
-        win.present()
+        global page
+        page = self.props.active_window
+        if not page:
+            page = mainWindow(application=self)
+        page.present()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -173,8 +158,8 @@ class Flake(Adw.Application):
         self.quit()
 
     def show_preferences(self, action, param):
-        global mainwindow
-        adw_preferences_window = FlakePreferences(mainwindow)
+        global page
+        adw_preferences_window = FlakePreferences(page)
         adw_preferences_window.show()
 
     def create_action(self, name, callback, shortcuts=None):
@@ -201,7 +186,7 @@ class Flake(Adw.Application):
 
     def refresh(self, action, param):
         for n in range(imagesNum):
-            flowbox.remove(widgets[0].get_parent())
+            contentWindow.remove(widgets[0])
             widgets.remove(widgets[0])
         getImages.restart_count()
         t1 = Thread(target=mainWindow.images)
@@ -217,7 +202,7 @@ class Flake(Adw.Application):
 
     def goBack(button, self):
         # self.get_style_context().remove_class(class_name='devel')
-        self.stack.set_visible_child(self.scrolled)
+        self.stack.set_visible_child(contentWindow)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
@@ -354,7 +339,6 @@ class FlakePreferences(Adw.PreferencesWindow):
 
     def do_shutdown(self, quit):
         global changedPath
-        global toast_overlay
 
         if(changedPath):
             toast_overlay.add_toast(Flake.newToast(self, "Library path changed", "app.refresh"))

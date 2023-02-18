@@ -86,6 +86,7 @@ class mainWindow(Gtk.ApplicationWindow):
         menu_button_model.append('About', 'app.about')
 
 
+
         menuButton = Gtk.MenuButton.new()
         menuButton.set_icon_name(icon_name='open-menu-symbolic')
         menuButton.set_menu_model(menu_model=menu_button_model)
@@ -116,13 +117,13 @@ class mainWindow(Gtk.ApplicationWindow):
         appslist = os.listdir(libraryPath)
         appsInfo = getFileNum(appslist, libraryPath)
         imagesNum = appsInfo.appimages
-        # time.sleep(0.5)
+        time.sleep(0.1)
 
         # print(appslist)
         for n in range(imagesNum):
-                element = getImages.createElements(appsInfo.names[n], Flake.refresh, page)
-                widgets.append(element)
-                contentWindow.add(widgets[n])
+            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, Flake.setRowState)
+            widgets.append(element)
+            contentWindow.add(widgets[n])
 
 imagesNum = None
 
@@ -158,7 +159,7 @@ class Flake(Adw.Application):
         self.quit()
 
     def show_preferences(self, action, param):
-        global page
+
         adw_preferences_window = FlakePreferences(page)
         adw_preferences_window.show()
 
@@ -193,7 +194,6 @@ class Flake(Adw.Application):
         t1.start()
 
     def createImage(button, self):
-        # self.get_style_context().add_class(class_name='devel')
         self.stack.set_visible_child(self.createImageBox)
         self.headerbar.remove(self.newAppImage)
         self.headerbar.pack_start(self.backButton)
@@ -201,7 +201,6 @@ class Flake(Adw.Application):
         self.set_title(title='Flake - new')
 
     def goBack(button, self):
-        # self.get_style_context().remove_class(class_name='devel')
         self.stack.set_visible_child(contentWindow)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
@@ -217,6 +216,14 @@ class Flake(Adw.Application):
         toast.set_action_name(action)
 
         return toast
+
+    def setRowState(widget, mode):
+
+        if mode == 'default':
+            widget.get_style_context().remove_class(class_name='error')
+
+        widget.get_style_context().add_class(class_name=mode)
+        # widget.set_subtitle(subtitle='AppImage file not executable')
 
 class FlakePreferences(Adw.PreferencesWindow):
 
@@ -332,10 +339,10 @@ class FlakePreferences(Adw.PreferencesWindow):
         if os.path.exists(entry.get_text()):
                 changedPath = True
                 settings.set_string(key, entry.get_text())
-                self.libraryPathEntry.get_style_context().remove_class(class_name='error')
+                Flake.setRowState(self.libraryPathEntry, 'default')
         else:
                 settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
-                self.libraryPathEntry.get_style_context().add_class(class_name='error')
+                Flake.setRowState(self.libraryPathEntry, 'error')
 
     def do_shutdown(self, quit):
         global changedPath

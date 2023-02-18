@@ -1,6 +1,3 @@
-add stop def if app is running
-finish options for each image
-add set executable, add desktop shortcut, and launcher shortcut
-set labels inside rows to autoresize based on window width
+add desktop shortcut, and launcher shortcut
 create new icon for application
 (maybe) rename the app to 'Immagini' to match application function, and sounds more like a gnome application

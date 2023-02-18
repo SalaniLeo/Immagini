@@ -5,7 +5,7 @@
 This app is being actively developed. If you want to see what features I'm adding in the app see <a href="#workingOn">what I'm working on</a>, also check out the <a href="https://github.com/SalaniLeo/Flake/tree/Library-dev">Library-dev</a> branch to see everything I'm currently coding. 
 
   <h1> Install </h1>
-<a href="https://flathub.org/apps/details/io.github.salaniLeo.flake" rel="nofollow"><img src="https://camo.githubusercontent.com/1682ee5722ac262c660297d4541837e5c8765c7e239fa2a6ce7c3f4817a79283/68747470733a2f2f666c61746875622e6f72672f6173736574732f6261646765732f666c61746875622d62616467652d656e2e706e67" data-canonical-src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>
+<a href="https://beta.flathub.org/apps/io.github.salaniLeo.flake" rel="nofollow"><img src="https://camo.githubusercontent.com/1682ee5722ac262c660297d4541837e5c8765c7e239fa2a6ce7c3f4817a79283/68747470733a2f2f666c61746875622e6f72672f6173736574732f6261646765732f666c61746875622d62616467652d656e2e706e67" data-canonical-src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>
   <li><h3>AppImage:</h3>
   x86_64: <a href="https://github.com/SalaniLeo/Flake/releases/download/v0.0.3/Flake-0.0.3-x86_64.AppImage">here</a><br>
   aarch64: Coming next release...<br>

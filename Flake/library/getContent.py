@@ -1,15 +1,12 @@
 import os
 import stat
-import glob
 import pathlib
-import subprocess
 import gi
 from .imageOptions import *
-from ..creator import error
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
-from gi.repository import Adw, Gio, Gtk, Pango, Gdk
+from gi.repository import Adw, Gtk
 
 class getImages(list):
     def __init__(self, list, loc): 
@@ -29,8 +26,10 @@ class getImages(list):
                 self.names.append(name)
                 names.append(self.names)
 
-    def createElements(appImage, refresh, mainWindow):
+    def createElements(appImage, refresh, mainWindow, setState):
             
+            adw_expander_row = Adw.ExpanderRow.new()
+
             imageName = os.path.splitext(appImage)[0]
 
             fullName = os.path.basename(imageName)
@@ -40,9 +39,35 @@ class getImages(list):
             executable = bool(st.st_mode & stat.S_IEXEC)
 
             rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-            rightBox.append(createElementButton('media-playback-start-symbolic','success',manageImages.startImage, appImage, refresh, executable, mainWindow))
-            rightBox.append(createElementButton('org.gnome.Settings-symbolic',None, manageImages.imageOptions, appImage, refresh, baseName, mainWindow))
-            rightBox.append(createElementButton('user-trash-symbolic','error',manageImages.deleteImage, appImage, refresh, baseName, mainWindow))
+            rightBox.append(createElementButton('media-playback-start-symbolic','success',
+            
+            manageImages.startImage, 
+            appImage, 
+            refresh, 
+            executable, 
+            mainWindow, 
+            setState, 
+            adw_expander_row))
+
+            rightBox.append(createElementButton('org.gnome.Settings-symbolic', None, 
+
+            manageImages.imageOptions, 
+            appImage, 
+            fullName, 
+            refresh, 
+            mainWindow, 
+            setState, 
+            adw_expander_row))
+
+            rightBox.append(createElementButton('user-trash-symbolic','error', 
+
+            manageImages.deleteImage, 
+            appImage, 
+            refresh, 
+            baseName, 
+            mainWindow,
+            setState, 
+            adw_expander_row))
 
             leftBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             leftBox.set_hexpand(True)
@@ -55,13 +80,11 @@ class getImages(list):
 
             box = Adw.PreferencesGroup.new()
 
-            adw_expander_row = Adw.ExpanderRow.new()
             adw_expander_row.set_title(title=baseName)
             adw_expander_row.add_row(child=expandableLayout)
 
             if not executable:
-                adw_expander_row.get_style_context().add_class(class_name='error')
-                adw_expander_row.set_subtitle(subtitle='AppImage file not executable')
+                setState(adw_expander_row, 'error')
 
 
             box.add(adw_expander_row)
@@ -74,7 +97,7 @@ class getImages(list):
         desktopCount = 0
         nameNum = 0
 
-def createElementButton(iconName, style, action, actionArg1, refresh, name, mainWindow):
+def createElementButton(iconName, style, action, actionArg1, refresh, name, mainWindow, setRowState, row):
 
     b = Gtk.Button()
     b.set_size_request(30,30)
@@ -87,7 +110,7 @@ def createElementButton(iconName, style, action, actionArg1, refresh, name, main
     b.set_margin_top(12)
     b.set_margin_end(6)
     b.set_margin_bottom(12)
-    b.connect('clicked', action, actionArg1, refresh, name, mainWindow)
+    b.connect('clicked', action, actionArg1, refresh, name, mainWindow, setRowState, row)
 
     return b
 
@@ -101,6 +124,7 @@ def createElementLabel(text, name):
     # l.set_ellipsize_status(12)
     l.set_text(text + name)
     l.set_halign(Gtk.Align.START)
+    l.set_wrap(True)
 
     return l
 

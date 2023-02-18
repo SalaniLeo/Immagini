@@ -1,3 +1,4 @@
+fix extract appimage, and use gtkentry that tells you if entered location exists
 add desktop shortcut, and launcher shortcut
 create new icon for application
 (maybe) rename the app to 'Immagini' to match application function, and sounds more like a gnome application

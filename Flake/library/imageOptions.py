@@ -84,40 +84,33 @@ class manageImages(list):
     def extractImage(button, imagePath, entry):
         command = "cd " + entry.get_text() + " && " + imagePath + " /app/bin/Flake/creator/builder/tool/AppRun --appimage-extract"
 
-        print(command)
         os.popen(command)
 
-    def renameImage(button, appImage, name, loc, refresh):
 
-        global imageName
-
+    def renameImage(button, appImage, name, loc, refresh, imageName=None, imageNum=None):
         dst = loc + "/" + name.get_text() + ".AppImage"
 
-        if imageName is not None:
-            os.rename(imageName, dst)
-            imageName = dst
-        else:
-            os.rename(appImage, dst)
-            imageName = dst
+        os.rename(appImage, dst)
 
         refresh(None, None, None)
 
-    def createShortcut(switch, state, type, loc, appImage):
-        if switch.get_active():
-            if type == 'desktop':
-                print(type)
-            elif type == 'launcher':
-                print(type)
-        else:
-            print('off')
 
-    # def loadContent():
-    #     proc = subprocess.Popen([imageName,'--appimage-mount'],stdout=subprocess.PIPE)
-    #     while True: 
-    #         line = proc.stdout.readline()
-    #         print(line.rstrip())
+    # def createShortcut(switch, state, type, loc, appImage):
+    #     if switch.get_active():
+    #         if type == 'desktop':
+    #             manageImages.loadContent(appImage)
 
-imageName = None
+    #         elif type == 'launcher':
+    #             print(type)
+    #     else:
+    #         None
+
+    # def loadContent(appImage):
+
+    #     os.popen("cd " + '/home/leo/Applications' + " && " + appImage + " --appimage-extract *.desktop").read
+
+imageNum = None
+imageNames = None
 
 def runImage():
     subprocess.run(imagePath)
@@ -126,11 +119,6 @@ class imageOptions(Adw.PreferencesWindow):
 
     def __init__(self, parent, refresh, appImage, fullName, setRowState, row, **kwargs):
         super().__init__(**kwargs)  
-
-        # global imageName
-        # imageName = appImage
-        # thread = threading.Thread(target=manageImages.loadContent)
-        # thread.start()
 
         self.set_transient_for(parent)
         self.set_modal(True)
@@ -149,8 +137,7 @@ class imageOptions(Adw.PreferencesWindow):
         nameEntry.set_valign(Gtk.Align.CENTER)
 
         renameButton = Gtk.Button()
-        test = appImage
-        renameButton.connect('clicked', manageImages.renameImage, test, nameEntry, os.path.dirname(appImage), refresh)
+        renameButton.connect('clicked', manageImages.renameImage, appImage, nameEntry, os.path.dirname(appImage), refresh)
         renameButton.set_icon_name(icon_name='emblem-ok-symbolic')
         renameButton.set_valign(Gtk.Align.CENTER)
 
@@ -191,9 +178,8 @@ class imageOptions(Adw.PreferencesWindow):
         extractImage.add_suffix(extractButton)
 
         desktopShortcutSw = Gtk.Switch.new()
+        desktopShortcutSw.set_active(False)
         desktopShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        if executable:
-            desktopShortcutSw.set_active(True)
         desktopShortcutSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
 
         setDesktopShortcut = Adw.ActionRow.new()
@@ -202,9 +188,8 @@ class imageOptions(Adw.PreferencesWindow):
 
 
         launcherShortcutSw = Gtk.Switch.new()
+        launcherShortcutSw.set_active(False)
         launcherShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        if executable:
-            launcherShortcutSw.set_active(True)
         launcherShortcutSw.connect('notify::active', manageImages.createShortcut, 'launcher', str(pathlib.Path.home())+'/.local/bin', appImage)
 
         setLauncherShortcut = Adw.ActionRow.new()

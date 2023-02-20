@@ -24,7 +24,7 @@ def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self):
     # gets parent folder name from complete directory
     parentFolder = parentFolder
 
-    appDirPath = appDirPath + pFolderName
+    appDirPath = appDirPath + "usr"
     if path.exists(parentFolder):
         shutil.copytree(parentFolder, appDirPath)
         os.chmod(exe , 777)

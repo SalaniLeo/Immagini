@@ -14,15 +14,15 @@ from .creator.error import *
 # type = None
 # categories = None
 
-def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, self):
+def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, flatpak, self, mainWindow):
 
     # prints options for terminal output
-    print("[name] " + name)
-    print("[exe dir] " + exe)
-    print("[icon dir] " + icon)
-    print("[type] " + type)
-    print("[category] " + categories)
-    print("[output location] " + output)
+    # print("[name] " + name)
+    # print("[exe dir] " + exe)
+    # print("[icon dir] " + icon)
+    # print("[type] " + type)
+    # print("[category] " + categories)
+    # print("[output location] " + output)
     
     exeName = ntpath.basename(exe)
     iconName = ntpath.basename(icon)
@@ -47,7 +47,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
         # checks if AppRun is named AppRun
         if(ntpath.basename(appRunLoc)!="AppRun"):
             # throws error in case
-            throwError(self,"Rename the file to 'AppRun'", "AppRun file not valid")
+            throwError(self,"Rename the file to 'AppRun'", "AppRun file not valid", mainWindow)
             return 0
         # copies apprun if everything is ok
         copyAppRunFile(appRunLoc,appDirPath,self)
@@ -62,7 +62,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
 
 
     # sets outputtxt to the appimagetool output
-    outputtxt = initBuild(appDirPath,output,name)
+    outputtxt = initBuild(appDirPath,output,name,flatpak)
 
     return outputtxt
 

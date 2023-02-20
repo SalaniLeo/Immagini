@@ -14,7 +14,7 @@ from .creator.error import *
 # type = None
 # categories = None
 
-def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, flatpak, self):
+def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode,folderLoc, flatpak, self, mainWindow):
 
     # prints options for terminal output
     # print("[name] " + name)
@@ -47,7 +47,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
         # checks if AppRun is named AppRun
         if(ntpath.basename(appRunLoc)!="AppRun"):
             # throws error in case
-            throwError(self,"Rename the file to 'AppRun'", "AppRun file not valid")
+            throwError(self,"Rename the file to 'AppRun'", "AppRun file not valid", mainWindow)
             return 0
         # copies apprun if everything is ok
         copyAppRunFile(appRunLoc,appDirPath,self)

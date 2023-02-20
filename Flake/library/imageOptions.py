@@ -61,15 +61,6 @@ class manageImages(list):
     def imageOptions(button, appImage, fullName, executable ,mainWindow, setRowState, row):
         options = imageOptions(mainWindow, executable, appImage, fullName, setRowState, row)
         options.show()
-        
-    def startImage(button, appImage, executable, baseName,mainWindow, setRowState, row):
-        if not executable:
-            error.throwError(None, "The app has no executable permissions", "Permission denied")
-        else:
-            global imagePath
-            imagePath = appImage
-            t1 = threading.Thread(target=runImage)
-            t1.start()
 
     def setExecutable(switch, state, appImage, setRowState, row):
         if switch.get_active():
@@ -93,21 +84,6 @@ class manageImages(list):
         os.rename(appImage, dst)
 
         refresh(None, None, None)
-
-
-    # def createShortcut(switch, state, type, loc, appImage):
-    #     if switch.get_active():
-    #         if type == 'desktop':
-    #             manageImages.loadContent(appImage)
-
-    #         elif type == 'launcher':
-    #             print(type)
-    #     else:
-    #         None
-
-    # def loadContent(appImage):
-
-    #     os.popen("cd " + '/home/leo/Applications' + " && " + appImage + " --appimage-extract *.desktop").read
 
 imageNum = None
 imageNames = None
@@ -177,27 +153,27 @@ class imageOptions(Adw.PreferencesWindow):
         extractImage.add_suffix(extractEntry)
         extractImage.add_suffix(extractButton)
 
-        desktopShortcutSw = Gtk.Switch.new()
-        desktopShortcutSw.set_active(False)
-        desktopShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        desktopShortcutSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
+        # desktopShortcutSw = Gtk.Switch.new()
+        # desktopShortcutSw.set_active(False)
+        # desktopShortcutSw.set_valign(align=Gtk.Align.CENTER)
+        # desktopShortcutSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
 
-        setDesktopShortcut = Adw.ActionRow.new()
-        setDesktopShortcut.set_title(title='Desktop shortcut:')
-        setDesktopShortcut.add_suffix(widget=desktopShortcutSw)
+        # setDesktopShortcut = Adw.ActionRow.new()
+        # setDesktopShortcut.set_title(title='Desktop shortcut:')
+        # setDesktopShortcut.add_suffix(widget=desktopShortcutSw)
 
 
-        launcherShortcutSw = Gtk.Switch.new()
-        launcherShortcutSw.set_active(False)
-        launcherShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        launcherShortcutSw.connect('notify::active', manageImages.createShortcut, 'launcher', str(pathlib.Path.home())+'/.local/bin', appImage)
+        # launcherShortcutSw = Gtk.Switch.new()
+        # launcherShortcutSw.set_active(False)
+        # launcherShortcutSw.set_valign(align=Gtk.Align.CENTER)
+        # launcherShortcutSw.connect('notify::active', manageImages.createShortcut, 'launcher', str(pathlib.Path.home())+'/.local/bin', appImage)
 
-        setLauncherShortcut = Adw.ActionRow.new()
-        setLauncherShortcut.set_title(title='Launcher shortcut:')
-        setLauncherShortcut.add_suffix(widget=launcherShortcutSw)
+        # setLauncherShortcut = Adw.ActionRow.new()
+        # setLauncherShortcut.set_title(title='Launcher shortcut:')
+        # setLauncherShortcut.add_suffix(widget=launcherShortcutSw)
 
-        imageOptions.add(child=setDesktopShortcut)
-        imageOptions.add(child=setLauncherShortcut)
+        # imageOptions.add(child=setDesktopShortcut)
+        # imageOptions.add(child=setLauncherShortcut)
         imageOptions.add(child=extractImage)
 
 

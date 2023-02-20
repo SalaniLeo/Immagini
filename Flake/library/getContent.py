@@ -39,15 +39,6 @@ class getImages(list):
             executable = bool(st.st_mode & stat.S_IEXEC)
 
             rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-            rightBox.append(createElementButton('media-playback-start-symbolic','success',
-            
-            manageImages.startImage, 
-            appImage, 
-            refresh, 
-            executable, 
-            mainWindow, 
-            setState, 
-            adw_expander_row))
 
             rightBox.append(createElementButton('org.gnome.Settings-symbolic', None, 
 

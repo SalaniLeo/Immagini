@@ -29,6 +29,9 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     appDirPath = output + "/" + name + ".AppDir/"
     pFolderName =  os.path.basename(folderLoc)
     exePathFolderMode = compare(pFolderName,exe, self)
+    shareFolder = output + "/" + name + ".AppDir/usr/share"
+
+    os.makedirs(shareFolder)
 
     # creates initial .AppDir folder
     createAppDir(appDirPath,folderMode, self)
@@ -37,7 +40,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     createDesktopFile(name,exeName,iconName,type,categories,appDirPath)
     
     # copies icon file inside .AppDir
-    copyIcon(icon,appDirPath,iconName, self)
+    copyIcon(icon, shareFolder, appDirPath, iconName, self, mainWindow)
     
     # checks if custom apprun is enabled
     if not(customAppRun):

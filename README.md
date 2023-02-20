@@ -1,6 +1,4 @@
- # Flake (old gtk3 version)
-
-<p> early development </p>
+ # Flake (old gtk3 version, not maintained anymore)
 
 <p> GTK user interface for <a href="https://github.com/AppImage/appimagekit">appimagekit</a></p> 
 

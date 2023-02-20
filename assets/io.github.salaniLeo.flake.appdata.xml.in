@@ -26,12 +26,14 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.0.4" date="2023-02-06">
+    <release version="0.0.4" date="2023-02-30">
       <description>
         <p>
-          Added library page<br>
+          Added library page
           Added credits, preferences and about window
         </p>
+      </description>
+    </release>
     <release version="0.0.3" date="2023-02-06">
       <description>
         <p>

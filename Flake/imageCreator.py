@@ -58,14 +58,14 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     # checks if foldermode is enabled
     if not(folderMode):
         # if foldermode is not enabled copies executable file normally
-        copyExe(exe,appDirPath,exeName, self)
+        copyExe(exe,appDirPath,exeName, self, mainWindow)
     elif(folderMode):
         # if foldermode is enabled moves the entire app inside .AppDir
         copyExePFolder(appDirPath,pFolderName,folderLoc,exe, self)
 
 
     # sets outputtxt to the appimagetool output
-    outputtxt = initBuild(appDirPath,output,name,flatpak)
+    outputtxt = initBuild(appDirPath,output,name,flatpak, mainWindow)
 
     return outputtxt
 

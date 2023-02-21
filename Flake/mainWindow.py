@@ -35,6 +35,8 @@ class mainWindow(Gtk.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        page = self
+
         self.createImageBox = newImageBox()
         self.createImageBox.okButton.connect('clicked', newImageBox.createImage, Flake.refresh, page)
         newImageBox.getFlatpak(flatpak)
@@ -148,7 +150,7 @@ class Flake(Adw.Application):
         page = self.props.active_window
         if not page:
             page = mainWindow(application=self)
-        page.present()
+            page.present()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -192,6 +194,7 @@ class Flake(Adw.Application):
         getImages.restart_count()
         t1 = Thread(target=mainWindow.images)
         t1.start()
+        t1.join()
 
     def createImage(button, self):
         self.stack.set_visible_child(self.createImageBox)

@@ -10,6 +10,7 @@ def throwError(self, error, title, mainWindow):
 
         dialog.set_transient_for(mainWindow)
         dialog.set_modal(True)
+        
         dialog.set_heading(heading=title)
         dialog.set_body(body=error)
         dialog.add_response(Gtk.ResponseType.OK.value_nick, 'Ok')

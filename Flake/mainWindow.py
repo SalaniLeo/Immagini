@@ -38,7 +38,7 @@ class mainWindow(Gtk.ApplicationWindow):
         page = self
 
         self.createImageBox = newImageBox()
-        self.createImageBox.okButton.connect('clicked', newImageBox.createImage, Flake.refresh, page)
+        self.createImageBox.okButton.connect('clicked', newImageBox.initCreation, Flake.refresh, page)
         newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)

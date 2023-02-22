@@ -1,10 +1,9 @@
-
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw
 
-def throwError(self, error, title, mainWindow):
+def throwError(self, error, title, mainWindow, thread = None):
                  
         dialog = Adw.MessageDialog.new()
 
@@ -20,6 +19,4 @@ def throwError(self, error, title, mainWindow):
         )
 
         dialog.present()
-
-def dialog_response(dialog, response, imagePath, refresh):
-        None
+        thread.join()

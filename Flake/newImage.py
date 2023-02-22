@@ -3,6 +3,7 @@ from .imageCreator import start
 import shutil
 from .creator.error import *
 import gi
+import threading
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 gi.require_version('Gio', '2.0')
@@ -13,7 +14,6 @@ AdvancedInfo = Adw.PreferencesGroup.new()
 outputRow = Adw.PreferencesGroup.new()
 isOutputActive = False
 settings = Gio.Settings.new("io.github.salanileo.flake")
-
 
 class newImageBox(Gtk.Box):
     def __init__(self, *args, **kwargs):
@@ -69,9 +69,6 @@ class newImageBox(Gtk.Box):
         self.okButton.set_valign(Gtk.Align.CENTER)
         self.okButton.set_margin_bottom(6)
         self.okButton.set_margin_top(6)
-        # self.okButton.connect('clicked', self.createImage)
-
-        # self.okButton.connect("button-press-event", self.on_button_pressed)
 
         mainBox.add(group=self.addInfo)
 
@@ -231,57 +228,60 @@ class newImageBox(Gtk.Box):
             self.dialog.set_title(title)
             self.dialog.connect("response", self.fileCResponse, entry)
 
+            
+    def initCreation(self, refresh, mainWindow):
+        createThread = threading.Thread(target=newImageBox.createImage, args=(self, refresh, mainWindow), daemon=True, name='createThread')
+        createThread.start()
+        createThread.join()
 
     def createImage(self, refresh, mainWindow):
+            currentThread = threading.current_thread()
+            nameText = normalRow[0].get_text()
+            exeText = normalRow[1].get_text()
+            iconText = normalRow[2].get_text()
+            typeText = normalRow[3].get_text()
+            categoryText = normalRow[4].get_text()
 
-        nameText = normalRow[0].get_text()
-        exeText = normalRow[1].get_text()
-        iconText = normalRow[2].get_text()
-        typeText = normalRow[3].get_text()
-        categoryText = normalRow[4].get_text()
+            libraryPath = settings.get_string("librarypath")
+            uselibraryPath = settings.get_boolean("uselibrarypath")
+            removeappdir = settings.get_boolean("removeappdir")
 
-        libraryPath = settings.get_string("librarypath")
-        uselibraryPath = settings.get_boolean("uselibrarypath")
-        removeappdir = settings.get_boolean("removeappdir")
-
-        if not uselibraryPath:
-            outputText = normalRow[5].get_text()
-        else:
-            outputText = libraryPath
-
-        parentFolderText = advancedRow[0].get_text()
-        appRunText = advancedRow[1].get_text()
-
-        parentFolderSwitch = advancedSwitch[0]
-        appRunSwitch = advancedSwitch[1]
-
-        if None or "" in (nameText,exeText,iconText,typeText,categoryText,outputText):
-
-            throwError(self, "Please fill in all the informations", "All the info are required", mainWindow)
-
-        else:
-            
-            if(parentFolderSwitch.get_active()):
-                folderMode = True
+            if not uselibraryPath:
+                outputText = normalRow[5].get_text()
             else:
-                folderMode = False
+                outputText = libraryPath
 
-            if(appRunSwitch.get_active()):
-                customAppRun = True
+            parentFolderText = advancedRow[0].get_text()
+            appRunText = advancedRow[1].get_text()
+
+            parentFolderSwitch = advancedSwitch[0]
+            appRunSwitch = advancedSwitch[1]
+
+            if None or "" in (nameText,exeText,iconText,typeText,categoryText,outputText):
+
+                throwError(self, "Please fill in all the informations", "All the info are required", mainWindow, currentThread)
+
             else:
-                customAppRun = False
+                
+                if(parentFolderSwitch.get_active()):
+                    folderMode = True
+                else:
+                    folderMode = False
+
+                if(appRunSwitch.get_active()):
+                    customAppRun = True
+                else:
+                    customAppRun = False
 
 
-            start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self, mainWindow)
+                start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self, mainWindow)
 
-            if removeappdir:
-                shutil.rmtree(outputText + "/" + nameText + ".AppDir")
+                if removeappdir:
+                    shutil.rmtree(outputText + "/" + nameText + ".AppDir")
 
-            refresh(None, None, None)
-
+                refresh(None, None, None)
             
-            
-            
+
 
     def getFlatpak(isFlatpak):
         global flatpak

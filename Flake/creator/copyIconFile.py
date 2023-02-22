@@ -11,7 +11,7 @@ def copyIcon(icon, sharePath, appDirPath, iconName, self, mainWindow):
 
     if path.exists(iconPath):
 
-        if iconExtension == ".png" and iconExtension == ".jpg" and iconExtension == ".jpeg":
+        if iconExtension == ".png" or iconExtension == ".jpg" or iconExtension == ".jpeg":
 
             icon_file = iconPath
             with Image.open(icon_file) as img:

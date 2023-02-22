@@ -9,7 +9,7 @@ from gi.repository import Adw, Gtk
 
 # import shutil
 
-def initBuild(appDirPath, output, name, flatpak, mainWindow):
+def initBuild(appDirPath, output, name, flatpak, mainWindow, thread=None):
     # os.system("ARCH=x86_64 ./creator/builder/appimagetool-x86_64.AppImage " + "'" + appDirPath + "'" + " " + output + "/" + name + "-x86_64.AppImage")
     # shutil.move(name + "-x86_64.AppImage", output + "/" + name + "-x86_64.AppImage")
 

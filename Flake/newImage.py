@@ -136,6 +136,8 @@ class newImageBox(Gtk.Box):
 
         label = Gtk.Label(label=name)
         label.set_hexpand(False)
+        label.set_xalign(0.0)
+        label.set_size_request(65,-1)
         label.set_halign(Gtk.Align.START)
         entry = Gtk.Entry()
         entry.set_valign(Gtk.Align.CENTER)

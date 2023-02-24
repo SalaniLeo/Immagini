@@ -4,7 +4,8 @@ import os
 import stat
 import threading
 import pathlib
-from ..creator import error
+from ..ui.console import console
+from ..ui.error import throwError
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -19,12 +20,12 @@ class manageImages(list):
         menu.append(menu_item)
         menu_item.show()
 
-    def executeImage(imagePath, executable):
+    # def executeImage(imagePath, executable):
         
-        if not executable:
-                error.throwError(None, "The app has no executable permissions", "Permission denied")
-        else:
-                subprocess.run(imagePath)
+    #     if not executable:
+    #             error.throwError(None, "The app has no executable permissions", "Permission denied")
+    #     else:
+    #             subprocess.run(imagePath)
 
     def deleteImage(button, imagePath, refresh, name, mainWindow, setRowState, row):
         manageImages.askSure(name, imagePath, refresh, mainWindow)
@@ -72,10 +73,28 @@ class manageImages(list):
             os.chmod(appImage, current & ~stat.S_IEXEC)
             setRowState(row, 'error')
 
-    def extractImage(button, imagePath, entry):
-        command = "cd " + entry.get_text() + " && " + imagePath + " /app/bin/Flake/creator/builder/tool/AppRun --appimage-extract"
+    def extractImage(button, imagePath, entry, mainWindow):
+        command = "cd " + entry.get_text() + " && " + imagePath + " --appimage-extract"
 
-        os.popen(command)
+        extractOutput = os.popen(command).read()
+
+        if os.path.exists(entry.get_text() + '/squashfs-root'):
+            throwError(None, 'The "squashfs-root" folder already exists in '+ entry.get_text(), 'Folder already exists', mainWindow)
+
+
+        terminal = Gtk.TextView()
+        terminal.set_editable(False)
+
+        bff = Gtk.TextBuffer()
+        terminal = Gtk.TextView(buffer = bff)
+        bff.set_text("Creating image...")
+
+        iter = bff.get_end_iter()
+
+        bff.insert(iter, extractOutput)
+
+        consolePage = console(mainWindow, terminal)
+        consolePage.present()
 
 
     def renameImage(button, appImage, name, loc, refresh, imageName=None, imageNum=None):
@@ -146,7 +165,7 @@ class imageOptions(Adw.PreferencesWindow):
         extractButton = Gtk.Button.new()
         extractButton.set_icon_name(icon_name='emblem-ok-symbolic')
         extractButton.set_valign(Gtk.Align.CENTER)
-        extractButton.connect('clicked', manageImages.extractImage, appImage, extractEntry)
+        extractButton.connect('clicked', manageImages.extractImage, appImage, extractEntry, parent)
 
         extractImage = Adw.ActionRow.new()
         extractImage.set_title(title='Extract image:')

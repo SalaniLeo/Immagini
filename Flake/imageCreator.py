@@ -6,7 +6,7 @@ from .creator.AppRun import *
 from .creator.copyExeFile import *
 from .creator.copyIconFile import *
 from .creator.builder.builder import *
-from .creator.error import *
+from .ui.error import *
 
 # name = None
 # exe = None

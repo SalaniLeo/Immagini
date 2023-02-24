@@ -1,7 +1,7 @@
 import shutil
 import os
 from os import path
-from .error import throwError
+from ..ui.error import throwError
 from PIL import Image
 
 def copyIcon(icon, sharePath, appDirPath, iconName, self, mainWindow):

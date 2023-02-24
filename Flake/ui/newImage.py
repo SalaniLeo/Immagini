@@ -1,7 +1,7 @@
 import sys
-from .imageCreator import start
+from ..imageCreator import start
 import shutil
-from .creator.error import *
+from .error import *
 import gi
 import threading
 gi.require_version('Gtk', '4.0')

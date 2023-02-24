@@ -1,7 +1,7 @@
 import os
 import shutil
 import os
-from .error import throwError
+from ..ui.error import throwError
 from os import path
 
 def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName, self):

@@ -1,7 +1,7 @@
 import shutil
 import os
 from os import path
-from .error import throwError
+from ..ui.error import throwError
 import shutil
 
 # default copyExe option

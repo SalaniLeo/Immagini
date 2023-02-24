@@ -1,5 +1,5 @@
 import os
-from .console import console
+from ...ui.console import console
 import gi
 
 gi.require_version(namespace='Gtk', version='4.0')

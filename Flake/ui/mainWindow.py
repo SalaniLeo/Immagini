@@ -1,7 +1,7 @@
 import gi
 import time
 import os
-from .library.getContent import *
+from ..library.getContent import *
 from threading import Thread
 from .newImage import *
 

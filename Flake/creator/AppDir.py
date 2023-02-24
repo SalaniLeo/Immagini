@@ -1,5 +1,5 @@
 import os
-from .error import throwError
+from ..ui.error import throwError
 from os import path
 
 def createAppDir(appDirPath,folderMode, self):

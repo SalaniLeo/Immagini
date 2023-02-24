@@ -1,5 +1,5 @@
 import sys
-from .mainWindow import Flake
+from .ui.mainWindow import Flake
 import os
 
 AppId="io.github.salaniLeo.flake"

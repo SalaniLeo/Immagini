@@ -17,3 +17,4 @@ data/__pycache__/main.cpython-311.pyc
 local build/flatpak-build.sh
 test.py
 TODO
+flatpak-repo/build-repo.sh

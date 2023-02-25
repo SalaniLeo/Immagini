@@ -19,7 +19,7 @@
  
  <h2>Creation options</h2>
  <li><a href="#DeleteAppDir">Delete .AppDir after build has finished</a>
- <li>Include customm AppRun
+ <li>Include custom AppRun
  <li>Folder mode
  
  <h2>Documentation</h2>

@@ -17,10 +17,10 @@
 
 <h1>Create new AppImage</h1>
  
- <h2>Creation options</h2>
+ <h2>Create options</h2>
  <li><a href="#DeleteAppDir">Delete .AppDir after build has finished</a>
- <li>Include custom AppRun
- <li>Folder mode
+ <li><a href="#cAppRun">Include custom AppRun</a>
+ <li><a href="#folderMode">Folder mode</a>
  
  <h2>Documentation</h2>
  

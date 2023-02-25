@@ -19,4 +19,3 @@ def throwError(self, error, title, mainWindow, thread = None):
         )
 
         dialog.present()
-        thread.join()

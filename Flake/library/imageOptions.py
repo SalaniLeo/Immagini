@@ -76,25 +76,23 @@ class manageImages(list):
     def extractImage(button, imagePath, entry, mainWindow):
         command = "cd " + entry.get_text() + " && " + imagePath + " --appimage-extract"
 
-        extractOutput = os.popen(command).read()
-
         if os.path.exists(entry.get_text() + '/squashfs-root'):
             throwError(None, 'The "squashfs-root" folder already exists in '+ entry.get_text(), 'Folder already exists', mainWindow)
+        else:
+            extractOutput = os.popen(command).read()
+            terminal = Gtk.TextView()
+            terminal.set_editable(False)
 
+            bff = Gtk.TextBuffer()
+            terminal = Gtk.TextView(buffer = bff)
+            bff.set_text("Creating image...")
 
-        terminal = Gtk.TextView()
-        terminal.set_editable(False)
+            iter = bff.get_end_iter()
 
-        bff = Gtk.TextBuffer()
-        terminal = Gtk.TextView(buffer = bff)
-        bff.set_text("Creating image...")
+            bff.insert(iter, extractOutput)
 
-        iter = bff.get_end_iter()
-
-        bff.insert(iter, extractOutput)
-
-        consolePage = console(mainWindow, terminal)
-        consolePage.present()
+            consolePage = console(mainWindow, terminal)
+            consolePage.present()
 
 
     def renameImage(button, appImage, name, loc, refresh, imageName=None, imageNum=None):

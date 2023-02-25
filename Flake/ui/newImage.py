@@ -4,6 +4,7 @@ import shutil
 from .error import *
 import gi
 import threading
+from .uiElements import *
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 gi.require_version('Gio', '2.0')
@@ -14,13 +15,18 @@ AdvancedInfo = Adw.PreferencesGroup.new()
 outputRow = Adw.PreferencesGroup.new()
 isOutputActive = False
 settings = Gio.Settings.new("io.github.salanileo.flake")
+page = None
+
 
 class newImageBox(Gtk.Box):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, mainWindow, **kwargs):
+        super().__init__(**kwargs)
         global mainBox
         global AdvancedInfo
         global outputRow
+        global page
+
+        page = mainWindow
 
         self.entryNum = 0
 
@@ -38,14 +44,14 @@ class newImageBox(Gtk.Box):
         self.addInfo = Adw.PreferencesGroup.new()
         self.addInfo.set_title("New")
 
-        self.nameEntry = self.newEntryRow("Name", False, "Name",False)
-        self.exeEntry = self.newEntryRow("Executable",True,"Executable",False)
-        self.iconEntry = self.newEntryRow("Icon", True,"Icon",False)
-        self.categoriesEntry = self.newEntryRow("Category",False,"Category",False)
-        self.typeEntry = self.newEntryRow("Type",False,"Type",False)
+        self.nameEntry = self.newEntryRow("Name", False, "Name",False, False)
+        self.exeEntry = self.newEntryRow("Executable",True,"Executable",False, True)
+        self.iconEntry = self.newEntryRow("Icon", True, "Icon", False, True)
+        self.categoriesEntry = self.newEntryRow("Category",False,"Category",False, False)
+        self.typeEntry = self.newEntryRow("Type",False,"Type",False, False)
 
-        self.parentFolder = self.newAdvancedRow("Enable folder mode",True, True)
-        self.customARLoc = self.newAdvancedRow("Enable custom apprun",True, False)
+        self.parentFolder = self.newAdvancedRow("Enable folder mode", "Custom AppRun location", True, True, True)
+        self.customARLoc = self.newAdvancedRow("Enable custom apprun", "Custom AppRun location",True, False, True)
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
         AdvancedInfo.set_visible(False)
@@ -87,7 +93,7 @@ class newImageBox(Gtk.Box):
         mainBox.add(okPage)
         mainBox.add(AdvancedInfo)
 
-        self.outputEntry = self.newEntryRow("Location",True,"App location",True)
+        self.outputEntry = self.newEntryRow("Location",True,"App location",True, True)
         outputRow.add(self.outputEntry)
 
         # print(self.uselibraryPath)
@@ -132,23 +138,23 @@ class newImageBox(Gtk.Box):
                 isOutputActive = False
                 outputRow.set_visible(False)
 
-    def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode):
+    def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode, path):
+
+        if path:
+            entry = pathEntry(placeholder)
+        else:
+            entry = Gtk.Entry()
 
         label = Gtk.Label(label=name)
         label.set_hexpand(False)
         label.set_xalign(0.0)
         label.set_size_request(65,-1)
         label.set_halign(Gtk.Align.START)
-        entry = Gtk.Entry()
+
         entry.set_valign(Gtk.Align.CENTER)
         entry.set_halign(Gtk.Align.FILL)
         entry.set_placeholder_text(placeholder)
         entry.set_hexpand(True)
-
-        if name == "Enable folder mode":
-            entry.set_placeholder_text("Parent folder location")
-        elif name == "Enable custom apprun":
-            entry.set_placeholder_text("Custom AppRun location")
         
         global normalRow
         normalRow.append(entry)
@@ -158,19 +164,24 @@ class newImageBox(Gtk.Box):
         row.add_prefix(label)
         if buttonNeeded:
             button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-            button.connect('clicked', self.fileChooser, name, folderMode, entry)
+            button.connect('clicked', fileChooser, name, folderMode, entry, page)
             button.set_valign(Gtk.Align.CENTER)
             row.add_suffix(button)
 
         return row
 
-    def newAdvancedRow(self, name, buttonNeeded, folderMode):
+    def newAdvancedRow(self, name, placeholder, buttonNeeded, folderMode, path):
 
         switch = Gtk.Switch()
         switch.set_valign(Gtk.Align.CENTER)
 
         label = Gtk.Label(label=name)
-        entry = Gtk.Entry()
+
+        if path:
+            entry = pathEntry(placeholder)
+        else:
+            entry = Gtk.Entry()
+
         entry.set_valign(Gtk.Align.CENTER)
         entry.get_style_context().add_class(class_name='error')
         entry.set_editable(False)
@@ -196,7 +207,7 @@ class newImageBox(Gtk.Box):
         if buttonNeeded:
             button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
             button.set_valign(Gtk.Align.CENTER)
-            button.connect('clicked', self.fileChooser, name, folderMode, entry)
+            button.connect('clicked', fileChooser, name, folderMode, entry, page)
             row.add_suffix(button)
 
         return row
@@ -208,27 +219,6 @@ class newImageBox(Gtk.Box):
         elif state == False:
             opt.get_style_context().add_class(class_name='error')
             opt.set_editable(False)
-
-
-    
-    def fileCResponse(self, dialog, window, entry):
-
-            self.dialog.destroy()
-            entry.set_text(dialog.get_file().get_path())
-
-
-    def fileChooser(self, button , title, folderMode, entry):
-        
-            self.dialog = Gtk.FileChooserNative.new(title=title,
-                                                    parent=None, 
-                                                    action=Gtk.FileChooserAction.OPEN)
-
-            if folderMode:
-                self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
-            
-            self.dialog.show()
-            self.dialog.set_title(title)
-            self.dialog.connect("response", self.fileCResponse, entry)
 
             
     def initCreation(self, refresh, mainWindow):

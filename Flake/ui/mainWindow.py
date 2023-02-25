@@ -4,7 +4,7 @@ import os
 from ..library.getContent import *
 from threading import Thread
 from .newImage import *
-
+from .uiElements import *
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
@@ -37,7 +37,7 @@ class mainWindow(Gtk.ApplicationWindow):
 
         page = self
 
-        self.createImageBox = newImageBox()
+        self.createImageBox = newImageBox(self)
         self.createImageBox.okButton.connect('clicked', newImageBox.initCreation, Flake.refresh, page)
         newImageBox.getFlatpak(flatpak)
 
@@ -123,7 +123,7 @@ class mainWindow(Gtk.ApplicationWindow):
 
         # print(appslist)
         for n in range(imagesNum):
-            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, Flake.setRowState)
+            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, setRowState)
             widgets.append(element)
             contentWindow.add(widgets[n])
 
@@ -220,14 +220,6 @@ class Flake(Adw.Application):
 
         return toast
 
-    def setRowState(widget, mode):
-
-        if mode == 'default':
-            widget.get_style_context().remove_class(class_name='error')
-
-        widget.get_style_context().add_class(class_name=mode)
-        # widget.set_subtitle(subtitle='AppImage file not executable')
-
 class FlakePreferences(Adw.PreferencesWindow):
 
     def __init__(self, parent,  **kwargs):
@@ -295,12 +287,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         prefercePage.add(group=imageCreatorOptions)
         prefercePage.add(group=newImageOptions)
 
-
-        self.libraryPathEntry = Gtk.Entry.new()
-        self.libraryPathEntry.set_valign(align=Gtk.Align.CENTER)
-
-        self.libraryPathEntry.set_text(libraryPath)
-
+        self.libraryPathEntry = pathEntry(libraryPath)
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
 
         libraryPathRow = Adw.ActionRow.new()
@@ -342,10 +329,8 @@ class FlakePreferences(Adw.PreferencesWindow):
         if os.path.exists(entry.get_text()):
                 changedPath = True
                 settings.set_string(key, entry.get_text())
-                Flake.setRowState(self.libraryPathEntry, 'default')
         else:
                 settings.set_string(key, str(pathlib.Path.home()) + "/Applications")
-                Flake.setRowState(self.libraryPathEntry, 'error')
 
     def do_shutdown(self, quit):
         global changedPath

@@ -4,8 +4,6 @@
 <h2>Install</h2>
 <a href="https://beta.flathub.org/apps/io.github.salaniLeo.flake" rel="nofollow"><img src="https://camo.githubusercontent.com/1682ee5722ac262c660297d4541837e5c8765c7e239fa2a6ce7c3f4817a79283/68747470733a2f2f666c61746875622e6f72672f6173736574732f6261646765732f666c61746875622d62616467652d656e2e706e67" data-canonical-src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>
 
-<h3> Or, see <a href="https://github.com/SalaniLeo/Flake/releases">releases</a> for a .AppImage </h3>
-
 <h1>Library</h1>
 
 <h3>Ways to manage AppImages inside library:</h3>

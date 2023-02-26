@@ -254,22 +254,31 @@ class newImageBox(Gtk.Box):
                 throwError(self, "Please fill in all the informations", "All the info are required", mainWindow, currentThread)
 
             else:
+
+                folderName = nameText + ".AppDir"
+
+                print(outputText + "/" + folderName)
+
+                if os.path.exists(outputText + "/" + folderName):
+                    throwError(None, 'The' + folderName + 'folder already exists', 'Folder already exists', mainWindow)
+
+                else:
                 
-                if(parentFolderSwitch.get_active()):
-                    folderMode = True
-                else:
-                    folderMode = False
+                    if(parentFolderSwitch.get_active()):
+                        folderMode = True
+                    else:
+                        folderMode = False
 
-                if(appRunSwitch.get_active()):
-                    customAppRun = True
-                else:
-                    customAppRun = False
+                    if(appRunSwitch.get_active()):
+                        customAppRun = True
+                    else:
+                        customAppRun = False
 
 
-                start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self, mainWindow)
+                    start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self, mainWindow)
 
-                if removeappdir:
-                    shutil.rmtree(outputText + "/" + nameText + ".AppDir")
+                    if removeappdir:
+                        shutil.rmtree(outputText + "/" + nameText + ".AppDir")
 
                 refresh(None, None, None)
             

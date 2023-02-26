@@ -290,10 +290,16 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.libraryPathEntry = pathEntry(libraryPath)
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
 
+        self.browseLibLoc = Gtk.Button.new_from_icon_name("document-open-symbolic") 
+        self.browseLibLoc.connect('clicked', fileChooser, 'select library location', True, self.libraryPathEntry, page)
+        self.browseLibLoc.set_valign(Gtk.Align.CENTER)
+
         libraryPathRow = Adw.ActionRow.new()
         libraryPathRow.set_title(title='Library location')
         libraryPathRow.set_subtitle("To apply changes restart the app")
         libraryPathRow.add_suffix(widget=self.libraryPathEntry)
+        libraryPathRow.add_suffix(widget=self.browseLibLoc)
+
 
         libraryOptions.add(child=libraryPathRow)
 

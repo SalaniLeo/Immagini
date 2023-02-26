@@ -85,7 +85,7 @@ class manageImages(list):
 
             bff = Gtk.TextBuffer()
             terminal = Gtk.TextView(buffer = bff)
-            bff.set_text("Creating image...")
+            bff.set_text("Extracting image")
 
             iter = bff.get_end_iter()
 

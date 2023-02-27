@@ -102,11 +102,27 @@ class manageImages(list):
 
         refresh(None, None, None)
 
+    def startImage(button, appImage, executable, mainWindow, flatpak, setState, row):
+        if not executable:
+            throwError(None, "The app has no executable permissions", "Permission denied", mainWindow)
+        else:
+            global imagePath
+            global command
+            imagePath = appImage
+            if flatpak:
+                command = 'flatpak-spawn --host ' + imagePath
+            else:
+                command = imagePath
+            t1 = threading.Thread(target=runImage)
+            t1.start()
+
 imageNum = None
 imageNames = None
+command = None
 
 def runImage():
-    subprocess.run(imagePath)
+    os.system(command)
+
 
 class imageOptions(Adw.PreferencesWindow):
 
@@ -170,14 +186,14 @@ class imageOptions(Adw.PreferencesWindow):
         extractImage.add_suffix(extractEntry)
         extractImage.add_suffix(extractButton)
 
-        # desktopShortcutSw = Gtk.Switch.new()
-        # desktopShortcutSw.set_active(False)
-        # desktopShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        # desktopShortcutSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
+        # startInTerminalSw = Gtk.Switch.new()
+        # startInTerminalSw.set_active(False)
+        # startInTerminalSw.set_valign(align=Gtk.Align.CENTER)
+        # # startInTerminalSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
 
-        # setDesktopShortcut = Adw.ActionRow.new()
-        # setDesktopShortcut.set_title(title='Desktop shortcut:')
-        # setDesktopShortcut.add_suffix(widget=desktopShortcutSw)
+        # startInTerminal = Adw.ActionRow.new()
+        # startInTerminal.set_title(title='Start in terminal:')
+        # startInTerminal.add_suffix(widget=startInTerminalSw)
 
 
         # launcherShortcutSw = Gtk.Switch.new()
@@ -189,7 +205,7 @@ class imageOptions(Adw.PreferencesWindow):
         # setLauncherShortcut.set_title(title='Launcher shortcut:')
         # setLauncherShortcut.add_suffix(widget=launcherShortcutSw)
 
-        # imageOptions.add(child=setDesktopShortcut)
+        # imageOptions.add(child=startInTerminal)
         # imageOptions.add(child=setLauncherShortcut)
         imageOptions.add(child=extractImage)
 

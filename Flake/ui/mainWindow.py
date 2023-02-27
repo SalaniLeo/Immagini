@@ -123,7 +123,7 @@ class mainWindow(Gtk.ApplicationWindow):
 
         # print(appslist)
         for n in range(imagesNum):
-            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, setRowState)
+            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, setRowState, flatpak)
             widgets.append(element)
             contentWindow.add(widgets[n])
 

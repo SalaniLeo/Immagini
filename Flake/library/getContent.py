@@ -26,7 +26,7 @@ class getImages(list):
                 self.names.append(name)
                 names.append(self.names)
 
-    def createElements(appImage, refresh, mainWindow, setState):
+    def createElements(appImage, refresh, mainWindow, setState, flatpak):
             
             adw_expander_row = Adw.ExpanderRow.new()
 
@@ -39,6 +39,16 @@ class getImages(list):
             executable = bool(st.st_mode & stat.S_IEXEC)
 
             rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+
+            rightBox.append(createElementButton('media-playback-start-symbolic','success',
+            
+            manageImages.startImage, 
+            appImage, 
+            executable, 
+            mainWindow, 
+            flatpak,
+            None,
+            None))
 
             rightBox.append(createElementButton('org.gnome.Settings-symbolic', None, 
 

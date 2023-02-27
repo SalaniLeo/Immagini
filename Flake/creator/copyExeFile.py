@@ -29,7 +29,7 @@ def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self, mainWindow):
         shutil.copytree(parentFolder, appDirPath)
         os.chmod(exe , 777)
     else:
-        throwError(self, "could not copy the exe file", "exe file does't exist")
+        throwError(self, "could not copy the exe file", "exe file does't exist", mainWindow)
 
 
 

@@ -34,7 +34,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     os.makedirs(shareFolder)
 
     # creates initial .AppDir folder
-    createAppDir(appDirPath,folderMode, self)
+    createAppDir(appDirPath,folderMode, self, mainWindow)
     
     # creates desktop file inside .AppDir folder
     createDesktopFile(name,exeName,iconName,type,categories,appDirPath)
@@ -53,7 +53,7 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
             throwError(self,"Rename the file to 'AppRun'", "AppRun file not valid", mainWindow)
             return 0
         # copies apprun if everything is ok
-        copyAppRunFile(appRunLoc,appDirPath,self)
+        copyAppRunFile(appRunLoc,appDirPath,self, mainWindow)
             
     # checks if foldermode is enabled
     if not(folderMode):

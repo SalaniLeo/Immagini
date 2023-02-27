@@ -2,7 +2,7 @@ import os
 from ..ui.error import throwError
 from os import path
 
-def createAppDir(appDirPath,folderMode, self):
+def createAppDir(appDirPath,folderMode, self, mainWindow):
 
     folder = appDirPath + "usr/bin"
 
@@ -12,5 +12,5 @@ def createAppDir(appDirPath,folderMode, self):
         elif folderMode:
             os.makedirs(appDirPath)
     else:
-        throwError(self, "the folder already exists", "Can't create .AppDir folder")
+        throwError(self, "the folder already exists", "Can't create .AppDir folder", mainWindow)
         

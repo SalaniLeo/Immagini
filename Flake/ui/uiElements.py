@@ -22,22 +22,35 @@ class fileChooser():
     def __init__(self, button , title, folderMode, entry, mainWindow,  **kwargs):
         super().__init__(**kwargs)   
         
+        multiple = False
+
         self.dialog = Gtk.FileChooserNative.new(title=title,parent=None,action=Gtk.FileChooserAction.OPEN)
         self.dialog.set_transient_for(mainWindow)
         self.dialog.set_modal(True)
-        
+
+        if title == 'Include libraries':
+            self.dialog.set_select_multiple(True)
+            multiple = True
+
         if folderMode:
                 self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
 
         self.dialog.show()
         self.dialog.set_title(title)
-        self.dialog.connect("response", self.fileCResponse, entry)
+        self.dialog.connect("response", self.fileCResponse, entry, multiple)
 
 
-    def fileCResponse(self, dialog, window, entry):
+    def fileCResponse(self, dialog, window, entry, multiple):
 
-        self.dialog.destroy()
-        entry.set_text(dialog.get_file().get_path())
+        if multiple:
+            files_model = dialog.get_files()
+            filenames = [file.get_path() for file in files_model]
+            rawName = str(filenames)
+            finName = rawName.replace("[", "").replace("]", "").replace("'", "")
+            entry.set_text(finName)
+        else:
+            self.dialog.destroy()
+            entry.set_text(dialog.get_file().get_path())
 
 
 

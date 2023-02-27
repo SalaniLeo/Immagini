@@ -50,16 +50,13 @@ class newImageBox(Gtk.Box):
         self.categoriesEntry = self.newEntryRow("Category",False,"Category",False, False)
         self.typeEntry = self.newEntryRow("Type",False,"Type",False, False)
 
+        self.includeLibraries = self.newAdvancedRow("Include libraries", "Libraries location",True,False,True)
         self.parentFolder = self.newAdvancedRow("Enable folder mode", "Custom AppRun location", True, True, True)
         self.customARLoc = self.newAdvancedRow("Enable custom apprun", "Custom AppRun location",True, False, True)
+        AdvancedInfo.add(self.includeLibraries)
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
         AdvancedInfo.set_visible(False)
-
-
-        self.settings = Gio.Settings.new("io.github.salanileo.flake")
-        self.libraryPath = self.settings.get_string("librarypath")
-        uselibraryPath = self.settings.get_boolean("uselibrarypath")
 
         self.addInfo.add(self.nameEntry)
         self.addInfo.add(self.exeEntry)
@@ -96,7 +93,6 @@ class newImageBox(Gtk.Box):
         self.outputEntry = self.newEntryRow("Location",True,"App location",True, True)
         outputRow.add(self.outputEntry)
 
-        # print(self.uselibraryPath)
         global isOutputActive
 
         if not self.uselibraryPath:
@@ -138,7 +134,7 @@ class newImageBox(Gtk.Box):
                 isOutputActive = False
                 outputRow.set_visible(False)
 
-    def newEntryRow(self, name, buttonNeeded ,placeholder, folderMode, path):
+    def newEntryRow(self, name, buttonNeeded, placeholder, folderMode, path):
 
         if path:
             entry = pathEntry(placeholder)
@@ -243,11 +239,13 @@ class newImageBox(Gtk.Box):
             else:
                 outputText = libraryPath
 
-            parentFolderText = advancedRow[0].get_text()
-            appRunText = advancedRow[1].get_text()
+            librariesText = advancedRow[0].get_text()
+            parentFolderText = advancedRow[1].get_text()
+            appRunText = advancedRow[2].get_text()
 
-            parentFolderSwitch = advancedSwitch[0]
-            appRunSwitch = advancedSwitch[1]
+            librariesSwitch = advancedSwitch[0]
+            parentFolderSwitch = advancedSwitch[1]
+            appRunSwitch = advancedSwitch[2]
 
             if None or "" in (nameText,exeText,iconText,typeText,categoryText,outputText):
 
@@ -257,27 +255,53 @@ class newImageBox(Gtk.Box):
 
                 folderName = nameText + ".AppDir"
 
-                print(outputText + "/" + folderName)
-
-                if os.path.exists(outputText + "/" + folderName):
-                    throwError(None, 'The' + folderName + 'folder already exists', 'Folder already exists', mainWindow)
-
+                if(parentFolderSwitch.get_active()):
+                    folderMode = True
                 else:
-                
-                    if(parentFolderSwitch.get_active()):
-                        folderMode = True
+                    folderMode = False
+
+                if(appRunSwitch.get_active()):
+                    customAppRun = True
+                else:
+                    customAppRun = False
+
+                if(librariesSwitch.get_active()):
+                    includeLibraries = True
+                else:
+                    includeLibraries = False
+
+                if os.path.exists(iconText) and os.path.exists(exeText):
+
+                    if os.path.exists(outputText + "/" + folderName):
+                        throwError(None, 'The' + folderName + 'folder already exists', 'Folder already exists', mainWindow)
                     else:
-                        folderMode = False
+                        start(
+                            
+                            nameText,
+                            exeText,
+                            iconText,
+                            typeText,
+                            categoryText,
+                            outputText,
+                            customAppRun,
+                            appRunText,
+                            folderMode,
+                            parentFolderText,
+                            includeLibraries,
+                            librariesText,
+                            flatpak,
+                            self,
+                            mainWindow
+                            
+                        )
 
-                    if(appRunSwitch.get_active()):
-                        customAppRun = True
-                    else:
-                        customAppRun = False
+                elif not os.path.exists(exeText):
+                    throwError(None, 'Exe ' + exeText + 'does not appear to exist', 'Could not find exe', mainWindow)
 
+                elif not os.path.exists(iconText):
+                    throwError(None, 'Icon ' + iconText + 'does not appear to exist', 'Could not find icon', mainWindow)
 
-                    start(nameText,exeText,iconText,typeText,categoryText,outputText,customAppRun,appRunText,folderMode,parentFolderText,flatpak,self, mainWindow)
-
-                    if removeappdir:
+                if removeappdir:
                         shutil.rmtree(outputText + "/" + nameText + ".AppDir")
 
                 refresh(None, None, None)

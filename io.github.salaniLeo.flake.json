@@ -8,8 +8,16 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=home"
+        "--filesystem=home",
+        "--talk-name=org.freedesktop.PackageKit"
     ],
+    "build-options" : {
+        "env" : {
+            "V" : "1",
+            "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
+            "MOUNT_FUSE_PATH" : "../tmp/"
+        }
+    },
     "cleanup" : [
         "/include",
         "/share/doc",

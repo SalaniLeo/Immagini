@@ -74,13 +74,14 @@ class manageImages(list):
             os.chmod(appImage, current & ~stat.S_IEXEC)
             setRowState(row, 'error')
 
-    def extractImage(button, imagePath, entry, mainWindow):
-        command = "cd " + entry.get_text() + " && " + imagePath + " --appimage-extract"
+    def extractImage(button, imagePath, entry, mainWindow, name):
+        command = "cd " + entry.get_placeholder_text() + " && " + imagePath + " --appimage-extract"
 
-        if os.path.exists(entry.get_text() + '/squashfs-root'):
-            throwError(None, 'The "squashfs-root" folder already exists in '+ entry.get_text(), 'Folder already exists', mainWindow)
+        dst = entry.get_placeholder_text() + '/' + name.get_text() + '.AppDir'
+
+        if os.path.exists(dst):
+            throwError(None, 'Folder ' + dst + ' alredy exists', 'Folder already exists', mainWindow)
         else:
-            extractOutput = os.popen(command).read()
             terminal = Gtk.TextView()
             terminal.set_editable(False)
 
@@ -90,14 +91,17 @@ class manageImages(list):
 
             iter = bff.get_end_iter()
 
-            bff.insert(iter, extractOutput)
-
             consolePage = console(mainWindow, terminal)
             consolePage.present()
 
+            extractOutput = os.popen(command).read()
+            bff.insert(iter, extractOutput)
+
+            os.rename(entry.get_placeholder_text() + '/squashfs-root', dst)
+
 
     def renameImage(button, appImage, name, loc, refresh, imageName=None, imageNum=None):
-        dst = loc + "/" + name.get_text() + ".AppImage"
+        dst = loc + "/" + name.get_placeholder_text() + ".AppImage"
 
         os.rename(appImage, dst)
 
@@ -179,7 +183,7 @@ class imageOptions(Adw.PreferencesWindow):
         extractButton = Gtk.Button.new()
         extractButton.set_icon_name(icon_name='emblem-ok-symbolic')
         extractButton.set_valign(Gtk.Align.CENTER)
-        extractButton.connect('clicked', manageImages.extractImage, appImage, extractEntry, parent)
+        extractButton.connect('clicked', manageImages.extractImage, appImage, extractEntry, parent, nameEntry)
 
         extractImage = Adw.ActionRow.new()
         extractImage.set_title(title='Extract image:')

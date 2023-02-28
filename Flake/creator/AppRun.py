@@ -13,7 +13,7 @@ def createAppRunFile(exeName,appDirPath,folderMode,exePathFolderMode,pFolderName
   if not folderMode:
     f.writelines("\nEXEC=\"${HERE}/usr/bin/" + exeName + "\"")
   elif folderMode:
-    f.writelines("\nEXEC=\"${HERE}/"+ pFolderName + exePathFolderMode + "\"")
+    f.writelines("\nEXEC=\"${HERE}/usr/"+ pFolderName + exePathFolderMode + "\"")
   f.writelines("\nexec \"${EXEC}\"")
   f.close()
   os.system("chmod +x '" + appDirPath + "AppRun'")
@@ -29,7 +29,5 @@ def copyAppRunFile(AppRun,appDirPath, self, mainWindow):
     
     else:
         throwError(self, "Selected file must be named 'AppRun'", "Could not copy the AppRun file", mainWindow)
-        # sys.exit("could not copy the exe file")
-
 
 

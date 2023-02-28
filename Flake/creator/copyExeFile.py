@@ -20,11 +20,13 @@ def copyExe(exe,appDirPath,exeName, self, mainWindow):
         # sys.exit("could not copy the exe file")
         
 def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self, mainWindow):
-    
-    # gets parent folder name from complete directory
-    parentFolder = parentFolder
 
-    appDirPath = appDirPath + "usr"
+    appDirPath = appDirPath + 'usr/' + pFolderName
+
+    print(appDirPath)
+    print(parentFolder)
+    print(exe)
+
     if path.exists(parentFolder):
         shutil.copytree(parentFolder, appDirPath)
         os.chmod(exe , 777)

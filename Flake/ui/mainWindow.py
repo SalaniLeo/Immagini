@@ -87,8 +87,6 @@ class mainWindow(Gtk.ApplicationWindow):
         menu_button_model.append('Preferences', 'app.preferences')
         menu_button_model.append('About', 'app.about')
 
-
-
         menuButton = Gtk.MenuButton.new()
         menuButton.set_icon_name(icon_name='open-menu-symbolic')
         menuButton.set_menu_model(menu_model=menu_button_model)
@@ -290,9 +288,7 @@ class FlakePreferences(Adw.PreferencesWindow):
         self.libraryPathEntry = pathEntry(libraryPath)
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
 
-        self.browseLibLoc = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-        self.browseLibLoc.connect('clicked', fileChooser, 'select library location', True, self.libraryPathEntry, page)
-        self.browseLibLoc.set_valign(Gtk.Align.CENTER)
+        self.browseLibLoc = browseButton(fileChooser, 'select library location', True, self.libraryPathEntry, page)
 
         libraryPathRow = Adw.ActionRow.new()
         libraryPathRow.set_title(title='Library location')

@@ -7,20 +7,30 @@ import shutil
 def copyLibraries(libraries, appDirPath, self, mainWindow):
 
     num = len(libraries)
-    libArray = libraries.split(',')
+    libArray = libraries.split('\n')
 
-    print(libArray)
+    x = 0
 
     for x in range(len(libArray)):
 
-        if os.path.exists(libArray[x]):
+        if x == 0:
+            src = '/'+libArray[x][1:]
+            print(src)
+        else:
+            src = libArray[x][1:]
+            print(src)
+
+        if os.path.exists(src):
             dst = appDirPath + "usr/lib/" + os.path.basename(libArray[x])
-            print(libArray[x], dst)
-            # shutil.copyfile(libArray[x], dst)
+
+            if x == 0:
+                shutil.copy(src, dst)
+            else:
+                shutil.copy(src, dst)
+
             os.chmod(dst, 777)
         else:
-            print(libArray[x])
-            throwError(self, "could not copy library '" + libArray[x] + "'", "Library does not exist", mainWindow)
+            throwError(self, "could not copy library  '" + libArray[x][1:] + "'", "Library does not exist", mainWindow)
         # sys.exit("could not copy the exe file")
 
 

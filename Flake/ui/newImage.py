@@ -50,12 +50,13 @@ class newImageBox(Gtk.Box):
         self.categoriesEntry = self.newEntryRow("Category",False,"Category",False, False)
         self.typeEntry = self.newEntryRow("Type",False,"Type",False, False)
 
-        self.includeLibraries = self.newAdvancedRow("Include libraries", "Libraries location",True,False,True)
-        self.parentFolder = self.newAdvancedRow("Enable folder mode", "Custom AppRun location", True, True, True)
-        self.customARLoc = self.newAdvancedRow("Enable custom apprun", "Custom AppRun location",True, False, True)
-        AdvancedInfo.add(self.includeLibraries)
+        self.includeLibraries = self.newAdvancedList("Include libraries", 'Select a library to include inside an AppImage')
+        self.parentFolder = self.newAdvancedRow("Folder mode", "Parent folder location", True, True, True)
+        self.customARLoc = self.newAdvancedRow("Custom apprun", "Custom AppRun location",True, False, True)
+
         AdvancedInfo.add(self.parentFolder)
         AdvancedInfo.add(self.customARLoc)
+        AdvancedInfo.add(self.includeLibraries)
         AdvancedInfo.set_visible(False)
 
         self.addInfo.add(self.nameEntry)
@@ -65,7 +66,7 @@ class newImageBox(Gtk.Box):
         self.addInfo.add(self.typeEntry)
         self.addInfo.set_hexpand(True)
 
-        self.okButton = Gtk.Button(label="confirm")
+        self.okButton = Gtk.Button(label="Confirm")
         self.okButton.set_size_request(80, -1)
         self.okButton.set_hexpand(True)
         self.okButton.set_halign(Gtk.Align.CENTER)
@@ -159,10 +160,7 @@ class newImageBox(Gtk.Box):
         row.add_suffix(entry)
         row.add_prefix(label)
         if buttonNeeded:
-            button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-            button.connect('clicked', fileChooser, name, folderMode, entry, page)
-            button.set_valign(Gtk.Align.CENTER)
-            row.add_suffix(button)
+                row.add_suffix(browseButton(fileChooser, name, folderMode, entry, page))
 
         return row
 
@@ -174,49 +172,103 @@ class newImageBox(Gtk.Box):
         label = Gtk.Label(label=name)
 
         if path:
-            entry = pathEntry(placeholder)
+                entry = pathEntry(placeholder)
         else:
-            entry = Gtk.Entry()
+                entry = Gtk.Entry()
 
         entry.set_valign(Gtk.Align.CENTER)
         entry.get_style_context().add_class(class_name='error')
         entry.set_editable(False)
         entry.set_size_request(180,-1)
-        if name == "Enable folder mode":
-            entry.set_placeholder_text("Parent folder location")
-        elif name == "Enable custom apprun":
-            entry.set_placeholder_text("Custom AppRun location")
-        
-        switch.connect('state-set', self.enableOption, entry)
+
+        button = browseButton(fileChooser, name, folderMode, entry, page)
+        button.set_sensitive(False)
+
+        switch.connect('state-set', self.enableOption, entry, button)
 
         row = Adw.ActionRow.new()
         row.add_suffix(switch)
         row.add_suffix(entry)
         row.add_prefix(label)
+        row.add_suffix(button)
 
         global advancedRow
         advancedRow.append(entry)
-
+        
         global advancedSwitch
         advancedSwitch.append(switch)
 
-        if buttonNeeded:
-            button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
-            button.set_valign(Gtk.Align.CENTER)
-            button.connect('clicked', fileChooser, name, folderMode, entry, page)
-            row.add_suffix(button)
-
         return row
 
-    def enableOption(self, switch, state, opt):
-        if state == True:
-            opt.get_style_context().remove_class(class_name='error')
-            opt.set_editable(True)
-        elif state == False:
-            opt.get_style_context().add_class(class_name='error')
-            opt.set_editable(False)
+    def newAdvancedList(self, name, placeholder):
 
+            adw_expander_row = Adw.ExpanderRow.new()
+
+            switch = Gtk.Switch()
+            switch.set_valign(Gtk.Align.CENTER)
+            switch.set_halign(Gtk.Align.END)
+
+            nameLabel = Gtk.Label()
+            nameLabel.set_halign(Gtk.Align.START)
+            nameLabel.set_valign(Gtk.Align.CENTER)
+            nameLabel.set_margin_start(12)
+            nameLabel.set_margin_top(12)
+            nameLabel.set_margin_bottom(12)
+            nameLabel.set_text(placeholder)
+
+            button = browseButton(fileChooser, 'Select libraries', False, nameLabel, page)
+            button.set_valign(Gtk.Align.CENTER)
+            button.set_margin_bottom(12)
+            button.set_margin_top(12)
+            button.set_margin_end(12)
+            button.set_margin_start(12)
+            button.set_sensitive(False)
+
+            switch.connect('state-set', self.enableOption, None, button)
+
+
+            rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            rightBox.append(switch)
+            rightBox.append(button)
+
+            leftBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            leftBox.set_hexpand(True)
+
+            leftBox.append(nameLabel)
+
+            expandableLayout = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            expandableLayout.append(leftBox)
+            expandableLayout.append(rightBox)
+            expandableLayout.set_size_request(-1, -1)
+
+            box = Adw.PreferencesGroup.new()
+
+            adw_expander_row.add_row(child=expandableLayout)
+            adw_expander_row.set_title(title='Include libraries')
+
+            box.add(adw_expander_row)
+
+            global advancedRow
+            advancedRow.append(nameLabel)
             
+            global advancedSwitch
+            advancedSwitch.append(switch)
+
+            return adw_expander_row
+
+    def enableOption(self, switch, state, row, button):
+        if state == True:
+            if row != None:
+                row.get_style_context().remove_class(class_name='error')
+                row.set_editable(True)
+            button.set_sensitive(True)
+        elif state == False:
+            if row != None:
+                row.get_style_context().add_class(class_name='error')
+                row.set_editable(False)
+            button.set_sensitive(False)
+
+
     def initCreation(self, refresh, mainWindow):
         createThread = threading.Thread(target=newImageBox.createImage, args=(self, refresh, mainWindow), daemon=True, name='createThread')
         createThread.start()

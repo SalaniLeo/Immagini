@@ -6,6 +6,7 @@ import threading
 import pathlib
 from ..ui.console import console
 from ..ui.error import throwError
+from ..ui.uiElements import *
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -171,9 +172,8 @@ class imageOptions(Adw.PreferencesWindow):
         imageOptions.add(child=setExecutable)
 
 
-        extractEntry = Gtk.Entry()
+        extractEntry = pathEntry(os.path.dirname(os.path.abspath(appImage)))
         extractEntry.set_hexpand(True)
-        extractEntry.set_text(os.path.dirname(os.path.abspath(appImage)))
         extractEntry.set_valign(Gtk.Align.CENTER)
 
         extractButton = Gtk.Button.new()

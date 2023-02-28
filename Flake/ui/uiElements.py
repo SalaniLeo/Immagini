@@ -22,31 +22,26 @@ class fileChooser():
     def __init__(self, button , title, folderMode, entry, mainWindow,  **kwargs):
         super().__init__(**kwargs)   
         
-        multiple = False
-
         self.dialog = Gtk.FileChooserNative.new(title=title,parent=None,action=Gtk.FileChooserAction.OPEN)
         self.dialog.set_transient_for(mainWindow)
         self.dialog.set_modal(True)
-
-        if title == 'Include libraries':
+        if title == 'Select libraries':
             self.dialog.set_select_multiple(True)
-            multiple = True
 
         if folderMode:
                 self.dialog.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
 
         self.dialog.show()
         self.dialog.set_title(title)
-        self.dialog.connect("response", self.fileCResponse, entry, multiple)
+        self.dialog.connect("response", self.fileCResponse, entry, self.dialog.get_select_multiple())
 
 
     def fileCResponse(self, dialog, window, entry, multiple):
-
         if multiple:
             files_model = dialog.get_files()
             filenames = [file.get_path() for file in files_model]
             rawName = str(filenames)
-            finName = rawName.replace("[", "").replace("]", "").replace("'", "")
+            finName = rawName.replace("[", "").replace("]", "").replace("'", "").replace(",", "\n")
             entry.set_text(finName)
         else:
             self.dialog.destroy()
@@ -70,3 +65,11 @@ def setRowState(widget, mode):
             widget.get_style_context().remove_class(class_name='error')
 
         widget.get_style_context().add_class(class_name=mode)
+
+def browseButton(fileChooser, name, folderMode, entry, page):
+
+    button = Gtk.Button.new_from_icon_name("document-open-symbolic") 
+    button.set_valign(Gtk.Align.CENTER)
+    button.connect('clicked', fileChooser, name, folderMode, entry, page)
+
+    return button

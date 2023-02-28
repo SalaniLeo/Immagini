@@ -37,8 +37,8 @@ def start(name,exe,icon,type,categories,output,customAppRun,appRunLoc,folderMode
     os.makedirs(shareFolder)
     
     if(includeLibraries):
-        copyLibraries(librariesPath, appDirPath, self, mainWindow)
         os.makedirs(libFolder)
+        copyLibraries(librariesPath, appDirPath, self, mainWindow)
 
     # creates initial .AppDir folder
     createAppDir(appDirPath,folderMode, self, mainWindow)

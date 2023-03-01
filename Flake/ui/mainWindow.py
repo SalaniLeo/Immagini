@@ -18,7 +18,8 @@ flatpak = False
 contentWindow = Adw.PreferencesPage.new()
 # contentWindow = Gtk.Box.new(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 dir = str(pathlib.Path.home()) + "/.local/share/Flake"
-widgets = []
+images = []
+dirs = []
 changedPath = False
 toast_overlay = Adw.ToastOverlay.new()
 page = None
@@ -119,17 +120,18 @@ class mainWindow(Gtk.ApplicationWindow):
         imagesNum = appsInfo.appimages
         time.sleep(0.1)
 
-        # print(appslist)
         for n in range(imagesNum):
-            element = getImages.createElements(appsInfo.names[n], Flake.refresh, page, setRowState, flatpak)
-            widgets.append(element)
-            contentWindow.add(widgets[n])
+            imageRow = getImages.createImageRow(appsInfo.imageNames[n], Flake.refresh, page, setRowState, flatpak)
+
+            images.append(imageRow)
+
+            contentWindow.add(images[n])
 
 imagesNum = None
 
 class Flake(Adw.Application):
 
-    def __init__(self,AppId, isFlatpak):
+    def __init__(self, AppId, isFlatpak):
         super().__init__(application_id=AppId,
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
 
@@ -140,8 +142,6 @@ class Flake(Adw.Application):
 
         global flatpak
         flatpak = isFlatpak
-
-        # self.create_action('quit', self.do_shutdown, ['<primary>q'])
 
     def do_activate(self):
         global page
@@ -187,8 +187,8 @@ class Flake(Adw.Application):
 
     def refresh(self, action, param):
         for n in range(imagesNum):
-            contentWindow.remove(widgets[0])
-            widgets.remove(widgets[0])
+            contentWindow.remove(images[0])
+            images.remove(images[0])
         getImages.restart_count()
         t1 = Thread(target=mainWindow.images)
         t1.start()

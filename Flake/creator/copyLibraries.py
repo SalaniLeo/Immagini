@@ -15,10 +15,8 @@ def copyLibraries(libraries, appDirPath, self, mainWindow):
 
         if x == 0:
             src = '/'+libArray[x][1:]
-            print(src)
         else:
             src = libArray[x][1:]
-            print(src)
 
         if os.path.exists(src):
             dst = appDirPath + "usr/lib/" + os.path.basename(libArray[x])

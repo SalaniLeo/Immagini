@@ -14,7 +14,7 @@ class getImages(list):
         i = 0
         self.appimages = 0
         self.executable = []
-        self.names = []
+        self.imageNames = []
 
         for x in list:
             file = pathlib.Path(list[i-1])
@@ -22,11 +22,10 @@ class getImages(list):
             self.file_extension = file.suffix
             if(self.file_extension == ".AppImage"):
                 self.appimages += 1
-                name = str(loc) + '/' + str(file).encode('utf-8').decode()
-                self.names.append(name)
-                names.append(self.names)
+                imageName = str(loc) + '/' + str(file).encode('utf-8').decode()
+                self.imageNames.append(imageName)
 
-    def createElements(appImage, refresh, mainWindow, setState, flatpak):
+    def createImageRow(appImage, refresh, mainWindow, setState, flatpak):
             
             adw_expander_row = Adw.ExpanderRow.new()
 
@@ -49,6 +48,62 @@ class getImages(list):
             flatpak,
             None,
             None))
+
+            rightBox.append(createElementButton('org.gnome.Settings-symbolic', None, 
+
+            manageImages.imageOptions, 
+            appImage, 
+            fullName, 
+            refresh, 
+            mainWindow, 
+            setState, 
+            adw_expander_row))
+
+            rightBox.append(createElementButton('user-trash-symbolic','error', 
+
+            manageImages.deleteImage, 
+            appImage, 
+            refresh, 
+            baseName, 
+            mainWindow,
+            setState, 
+            adw_expander_row))
+
+            leftBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            leftBox.set_hexpand(True)
+            leftBox.append(createElementLabel("Name:  ", fullName + ".AppImage"))
+            leftBox.append(createElementLabel("Path:  ", appImage))
+
+            expandableLayout = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            expandableLayout.append(leftBox)
+            expandableLayout.append(rightBox)
+
+            box = Adw.PreferencesGroup.new()
+
+            adw_expander_row.set_title(title=baseName)
+            adw_expander_row.add_row(child=expandableLayout)
+
+            if not executable:
+                setState(adw_expander_row, 'error')
+
+
+            box.add(adw_expander_row)
+
+            return box
+
+    def createDirRow(appImage, refresh, mainWindow, setState, flatpak):
+            
+            adw_expander_row = Adw.ExpanderRow.new()
+
+            imageName = os.path.splitext(appImage)[0]
+
+            fullName = os.path.basename(imageName)
+            baseName = fullName.replace("-x86_64", "")
+
+            st = os.stat(appImage)
+            executable = bool(st.st_mode & stat.S_IEXEC)
+
+            rightBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
             rightBox.append(createElementButton('org.gnome.Settings-symbolic', None, 
 

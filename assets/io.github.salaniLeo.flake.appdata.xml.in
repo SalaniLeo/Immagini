@@ -2,11 +2,11 @@
 <component type="desktop">
   <id>io.github.salaniLeo.flake</id>
   <name>Flake</name>
-  <summary>Library and creation tool for .AppImage files </summary>
+  <summary>Gtk interface for AppImageKit. </summary>
   <description>
     <p>
 
-    Flake is an app made to manage and create AppImage files with a 
+    Made to let users build appimages with ease. Say goodbye to the classic old terminal.
 
     </p>
   </description>
@@ -24,19 +24,32 @@
       <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/secondPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/thirdPage.png</image>
+      <caption>Last page where you specify all the necessary paths</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/fourthPage.png</image>
+      <caption>Last page where you specify all the necessary paths</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/fifthPage.png</image>
+      <caption>Last page where you specify all the necessary paths</caption>
+    </screenshot>
   </screenshots>
   <releases>
-      <release version="0.1.0" date="2023-03-05">
+      <release version="0.1.0" date="2023-03-10">
       <description>
         <p>
-
+          ///desc
         </p>
       </description>
     </release>
-    <release version="0.0.4" date="2023-02-22">
+    <release version="0.0.4" date="2023-02-30">
       <description>
         <p>
-          For changelog see <a href="https://github.com/SalaniLeo/Flake/releases">releases</a> on github
+          Added library page
+          Added credits, preferences and about window
         </p>
       </description>
     </release>

@@ -101,7 +101,7 @@ class manageImages(list):
 
 
     def renameImage(button, appImage, name, loc, refresh, imageName=None, imageNum=None):
-        dst = loc + "/" + name.get_placeholder_text() + ".AppImage"
+        dst = loc + "/" + name.get_text() + ".AppImage"
 
         os.rename(appImage, dst)
 
@@ -155,11 +155,11 @@ class imageOptions(Adw.PreferencesWindow):
         renameButton.set_icon_name(icon_name='emblem-ok-symbolic')
         renameButton.set_valign(Gtk.Align.CENTER)
 
-        renameImage = Adw.ActionRow.new()
-        renameImage.set_title(title='Name:')
-        renameImage.add_suffix(nameEntry)
-        renameImage.add_suffix(renameButton)
-        imageOptions.add(child=renameImage)
+        self.renameImage = Adw.ActionRow.new()
+        self.renameImage.set_title(title='Name:')
+        self.renameImage.add_suffix(nameEntry)
+        self.renameImage.add_suffix(renameButton)
+        imageOptions.add(child=self.renameImage)
 
         st = os.stat(appImage)
         executable = bool(st.st_mode & stat.S_IEXEC)

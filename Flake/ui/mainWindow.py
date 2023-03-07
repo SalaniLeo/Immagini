@@ -115,8 +115,9 @@ class mainWindow(Gtk.ApplicationWindow):
 
         libraryPath = settings.get_string("librarypath")
 
-        appslist = os.listdir(libraryPath)
-        appsInfo = getFileNum(appslist, libraryPath)
+        print(libraryPath + "aaaaaaaasadsadfsad")
+        appslist = os.listdir(libraryPath.replace("~", str(pathlib.Path.home())))
+        appsInfo = getFileNum(appslist, libraryPath.replace("~", str(pathlib.Path.home())))
         imagesNum = appsInfo.appimages
         time.sleep(0.1)
 

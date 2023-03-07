@@ -43,6 +43,7 @@
         <p>
           <li>Added 'Include libraries' option when creating AppImage</li>
           <li>Added button to execute AppImage</li>
+          Full changelog is on GitHub
         </p>
       </description>
     </release>

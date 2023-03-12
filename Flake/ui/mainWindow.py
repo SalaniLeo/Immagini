@@ -115,7 +115,6 @@ class mainWindow(Gtk.ApplicationWindow):
 
         libraryPath = settings.get_string("librarypath")
 
-        print(libraryPath + "aaaaaaaasadsadfsad")
         appslist = os.listdir(libraryPath.replace("~", str(pathlib.Path.home())))
         appsInfo = getFileNum(appslist, libraryPath.replace("~", str(pathlib.Path.home())))
         imagesNum = appsInfo.appimages
@@ -172,7 +171,7 @@ class Flake(Adw.Application):
     def show_about(self, action, param):
         dialog = Adw.AboutWindow()
         dialog.set_application_name('Flake')
-        dialog.set_version("0.0.4")
+        dialog.set_version("0.1.1")
         # dialog.set_developer_name("Leonardo Salani")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
         dialog.set_comments("GTK user insterface for appimagekit")

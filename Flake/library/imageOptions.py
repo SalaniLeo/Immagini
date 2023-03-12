@@ -21,13 +21,6 @@ class manageImages(list):
         menu.append(menu_item)
         menu_item.show()
 
-    # def executeImage(imagePath, executable):
-        
-    #     if not executable:
-    #             error.throwError(None, "The app has no executable permissions", "Permission denied")
-    #     else:
-    #             subprocess.run(imagePath)
-
     def deleteImage(button, imagePath, refresh, name, mainWindow, setRowState, row):
         manageImages.askSure(name, imagePath, refresh, mainWindow)
 
@@ -117,7 +110,7 @@ class manageImages(list):
             if flatpak:
                 command = 'flatpak-spawn --host ' + imagePath
             else:
-                command = imagePath
+                command = 'flatpak-spawn --host ' + imagePath
             t1 = threading.Thread(target=runImage)
             t1.start()
 
@@ -126,7 +119,7 @@ imageNames = None
 command = None
 
 def runImage():
-    os.system(command)
+    subprocess.run(imagePath)
 
 
 class imageOptions(Adw.PreferencesWindow):

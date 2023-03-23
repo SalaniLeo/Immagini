@@ -1,4 +1,7 @@
 <h1>Flake</h1>
+
+<h2>Big updates coming soon!</h2>
+
 <b>Library and creation tool for .AppImage files</b><br>
 
 <h2>Install</h2>

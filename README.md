@@ -90,6 +90,14 @@
  
  </div>
  
+ <div id="name">
+ <h1>Why the name Immagini</h1>
+ <p>First of all let's start by sying that I'm italian. <br>
+ The name Immagini is the italian translation for 'images'... you see where I'm going?
+ Given that the app is made to manage .AppImage files and I wanted to give a name that has something to do with the app I came up with the name Immagini
+ Next step is making an icon
+ </div>
+ 
  
  
 

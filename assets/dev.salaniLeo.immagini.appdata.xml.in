@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>io.github.salaniLeo.flake</id>
-  <name>Flake</name>
+  <id>dev.salaniLeo.immagini</id>
+  <name>Immagini</name>
   <summary>Library and creation tool for AppImage apps </summary>
   <description>
     <p>
 
-    Flake is an app that provides a gtk4 gui to manage your AppImage apps. Also includes a way to create an AppImage.
+    Immagini provides an easy solution to manage and create AppImages
 
     </p>
   </description>
-  <launchable type="desktop-id">io.github.salaniLeo.flake.desktop</launchable>
-  <url type="homepage">https://github.com/SalaniLeo/Flake</url>
+  <launchable type="desktop-id">dev.salaniLeo.immagini.desktop</launchable>
+  <url type="homepage">https://github.com/SalaniLeo/Immagini</url>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <content_rating type="oars-1.1" />
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/firstPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/firstPage.png</image>
       <caption>Initial page when starting the app</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/secondPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/secondPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/thirdPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/thirdPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/fourthPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/fourthPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Flake/master/assets/screenshots/fifthPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/fifthPage.png</image>
       <caption>Last page where you specify all the necessary paths</caption>
     </screenshot>
   </screenshots>
@@ -43,7 +43,6 @@
         <p>
           <li>Added 'Include libraries' option when creating AppImage</li>
           <li>Added button to execute AppImage</li>
-          Full changelog is on GitHub
         </p>
       </description>
     </release>

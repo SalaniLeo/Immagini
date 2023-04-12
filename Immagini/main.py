@@ -1,8 +1,8 @@
 import sys
-from .ui.mainWindow import Flake
+from .ui.mainWindow import Immagini
 import os
 
-AppId="io.github.salaniLeo.flake"
+AppId="dev.salaniLeo.immagini"
 flatpak = False
 
 if 'FLATPAK_SANDBOX_DIR' in os.environ:
@@ -10,5 +10,5 @@ if 'FLATPAK_SANDBOX_DIR' in os.environ:
 
 
 class main():
-    app = Flake(AppId,flatpak)
+    app = Immagini(AppId,flatpak)
     app.run(sys.argv)

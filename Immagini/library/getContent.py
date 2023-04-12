@@ -43,7 +43,7 @@ class getImages(list):
             
             manageImages.startImage, 
             appImage, 
-            executable, 
+            None, 
             mainWindow, 
             flatpak,
             None,

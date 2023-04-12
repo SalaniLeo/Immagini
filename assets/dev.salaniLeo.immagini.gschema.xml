@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="io.github.salanileo.flake" path="/io/github/salaniLeo/flake/" gettext-domain="flake">
+  <schema id="dev.salaniLeo.immagini" path="/dev/salaniLeo/immagini/" gettext-domain="immagini">
 
     <key name="foldermode" type="b">
       <default>false</default>

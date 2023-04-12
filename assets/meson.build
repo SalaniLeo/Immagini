@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'io.github.salaniLeo.flake.desktop.in',
-       output: 'io.github.salaniLeo.flake.desktop',
+        input: 'dev.salaniLeo.immagini.desktop.in',
+       output: 'dev.salaniLeo.immagini.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'io.github.salaniLeo.flake.appdata.xml.in',
-       output: 'io.github.salaniLeo.flake.appdata.xml',
+        input: 'dev.salaniLeo.immagini.appdata.xml.in',
+       output: 'dev.salaniLeo.immagini.appdata.xml',
        po_dir: '../po',
       install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -25,7 +25,7 @@ if appstream_util.found()
   test('Validate appstream file', appstream_util, args: ['validate', appstream_file])
 endif
 
-install_data('io.github.salanileo.flake.gschema.xml',
+install_data('dev.salaniLeo.immagini.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 
@@ -36,8 +36,8 @@ if compile_schemas.found()
        args: ['--strict', '--dry-run', meson.current_source_dir()])
 endif
 
-gnome.compile_resources('flake',
-  'flake.gresource.xml',
+gnome.compile_resources('immagini',
+  'immagini.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,

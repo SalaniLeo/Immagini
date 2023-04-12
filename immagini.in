@@ -1,8 +1,8 @@
 #!@PYTHON@
 
-# flake.in
+# immagini.in
 #
-# Copyright 2023 Flake
+# Copyright 2023 immagini
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,18 +31,18 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-locale.bindtextdomain('flake', localedir)
-locale.textdomain('flake')
-gettext.install('flake', localedir)
+locale.bindtextdomain('immagini', localedir)
+locale.textdomain('immagini')
+gettext.install('immagini', localedir)
 
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'flake.gresource'))
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'immagini.gresource'))
     resource._register()
 
-    from Flake import main
+    from Immagini import main
 
 
     

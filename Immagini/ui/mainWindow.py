@@ -17,13 +17,13 @@ Adw.init()
 flatpak = False
 contentWindow = Adw.PreferencesPage.new()
 # contentWindow = Gtk.Box.new(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-dir = str(pathlib.Path.home()) + "/.local/share/Flake"
+dir = str(pathlib.Path.home()) + "/.local/share/immagini"
 images = []
 dirs = []
 changedPath = False
 toast_overlay = Adw.ToastOverlay.new()
 page = None
-settings = Gio.Settings.new("io.github.salanileo.flake")
+settings = Gio.Settings.new("dev.salaniLeo.immagini")
 
 
 ##checks if app data dir exists and if not creates it
@@ -39,12 +39,12 @@ class mainWindow(Gtk.ApplicationWindow):
         page = self
 
         self.createImageBox = newImageBox(self)
-        self.createImageBox.okButton.connect('clicked', newImageBox.initCreation, Flake.refresh, page)
+        self.createImageBox.okButton.connect('clicked', newImageBox.initCreation, Immagini.refresh, page)
         newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.set_default_size(750,450)
-        self.set_title(title='Flake - library')
+        self.set_title(title='immagini - library')
 
         ##stack that contains the scrolled and newImage
         self.stack = Gtk.Stack()
@@ -74,12 +74,12 @@ class mainWindow(Gtk.ApplicationWindow):
         self.set_titlebar(titlebar=self.headerbar)
 
         about = Gio.SimpleAction.new("about", None)
-        about.connect("activate", Flake.show_about)
+        about.connect("activate", Immagini.show_about)
 
         self.show_in_folder = Gtk.Button.new()
         
         show_in_folder = Gio.SimpleAction.new("show_in_folder", None)
-        show_in_folder.connect("activate", Flake.show_in_folder)
+        show_in_folder.connect("activate", Immagini.show_in_folder)
 
         menu_button_model = Gio.Menu()
 
@@ -94,12 +94,12 @@ class mainWindow(Gtk.ApplicationWindow):
         self.headerbar.pack_end(child=menuButton)
 
         self.newAppImage = Gtk.Button()
-        self.newAppImage.connect('clicked', Flake.createImage, self)
+        self.newAppImage.connect('clicked', Immagini.createImage, self)
         self.newAppImage.set_icon_name(icon_name='list-add-symbolic')
         self.headerbar.pack_start(child=self.newAppImage)
 
         self.backButton = Gtk.Button.new_from_icon_name("pan-start-symbolic") 
-        self.backButton.connect("clicked", Flake.goBack, self)
+        self.backButton.connect("clicked", Immagini.goBack, self)
 
         self.advancedOptions = Gtk.Box()
         self.advancedSwitch = Gtk.Switch()
@@ -121,7 +121,7 @@ class mainWindow(Gtk.ApplicationWindow):
         time.sleep(0.1)
 
         for n in range(imagesNum):
-            imageRow = getImages.createImageRow(appsInfo.imageNames[n], Flake.refresh, page, setRowState, flatpak)
+            imageRow = getImages.createImageRow(appsInfo.imageNames[n], Immagini.refresh, page, setRowState, flatpak)
 
             images.append(imageRow)
 
@@ -129,7 +129,7 @@ class mainWindow(Gtk.ApplicationWindow):
 
 imagesNum = None
 
-class Flake(Adw.Application):
+class Immagini(Adw.Application):
 
     def __init__(self, AppId, isFlatpak):
         super().__init__(application_id=AppId,
@@ -160,7 +160,7 @@ class Flake(Adw.Application):
 
     def show_preferences(self, action, param):
 
-        adw_preferences_window = FlakePreferences(page)
+        adw_preferences_window = ImmaginiPreferences(page)
         adw_preferences_window.show()
 
     def create_action(self, name, callback, shortcuts=None):
@@ -170,14 +170,14 @@ class Flake(Adw.Application):
 
     def show_about(self, action, param):
         dialog = Adw.AboutWindow()
-        dialog.set_application_name('Flake')
-        dialog.set_version("0.1.1")
+        dialog.set_application_name('Immagini')
+        dialog.set_version("0.1.0")
         # dialog.set_developer_name("Leonardo Salani")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        dialog.set_comments("GTK user insterface for appimagekit")
-        dialog.set_website("https://github.com/SalaniLeo/Flake")
+        dialog.set_comments("Management tool for AppImage applications")
+        dialog.set_website("https://github.com/SalaniLeo/Immagini")
         dialog.set_developers(["Leonardo Salani"])
-        dialog.set_application_icon("io.github.salaniLeo.flake")
+        dialog.set_application_icon("dev.salaniLeo.immagini")
         dialog.present()
         
     def show_in_folder(self, action, param):
@@ -199,14 +199,14 @@ class Flake(Adw.Application):
         self.headerbar.remove(self.newAppImage)
         self.headerbar.pack_start(self.backButton)
         self.headerbar.pack_start(self.advancedOptions)
-        self.set_title(title='Flake - new')
+        self.set_title(title='Immagini - new')
 
     def goBack(button, self):
         self.stack.set_visible_child(contentWindow)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
-        self.set_title(title='Flake - library')
+        self.set_title(title='Immagini - library')
 
     def newToast(self, title, action):
 
@@ -218,7 +218,7 @@ class Flake(Adw.Application):
 
         return toast
 
-class FlakePreferences(Adw.PreferencesWindow):
+class ImmaginiPreferences(Adw.PreferencesWindow):
 
     def __init__(self, parent,  **kwargs):
         super().__init__(**kwargs)   
@@ -242,8 +242,8 @@ class FlakePreferences(Adw.PreferencesWindow):
         prefercePage = Adw.PreferencesPage.new()
         self.add(page=prefercePage)
 
-        imageCreatorOptions = Adw.PreferencesGroup.new()
-        imageCreatorOptions.set_title(title='General options')
+        newImageOptions = Adw.PreferencesGroup.new()
+        newImageOptions.set_title(title='New image options')
 
         self.autoDelete = Gtk.Switch.new()
         self.autoDelete.set_valign(align=Gtk.Align.CENTER)
@@ -252,8 +252,9 @@ class FlakePreferences(Adw.PreferencesWindow):
 
         deleteADRow = Adw.ActionRow.new()
         deleteADRow.set_title(title='Auto delete AppDir')
+        deleteADRow.set_subtitle('Deletes the .AppDir folder after creating an AppImage file')
         deleteADRow.add_suffix(widget=self.autoDelete)
-        imageCreatorOptions.add(child=deleteADRow)
+        newImageOptions.add(child=deleteADRow)
 
         self.autoFolderMSw = Gtk.Switch.new()
         self.autoFolderMSw.set_valign(align=Gtk.Align.CENTER)
@@ -262,8 +263,9 @@ class FlakePreferences(Adw.PreferencesWindow):
 
         autoFolderMRow = Adw.ActionRow.new()
         autoFolderMRow.set_title(title='Enable FolderMode by default')
+        autoFolderMRow.set_subtitle('Automatically enables the "Folder Mode" option when creating a new image file')
         autoFolderMRow.add_suffix(widget=self.autoFolderMSw)
-        imageCreatorOptions.add(child=autoFolderMRow)
+        newImageOptions.add(child=autoFolderMRow)
 
         self.autoCustomARSw = Gtk.Switch.new()
         self.autoCustomARSw.set_valign(align=Gtk.Align.CENTER)
@@ -272,17 +274,14 @@ class FlakePreferences(Adw.PreferencesWindow):
 
         autoCustomARRow = Adw.ActionRow.new()
         autoCustomARRow.set_title(title='Enable custom AppRun by default')
+        autoCustomARRow.set_subtitle('Automatically enables the "Custom AppRun" option when creating a new image file')
         autoCustomARRow.add_suffix(widget=self.autoCustomARSw)
-        imageCreatorOptions.add(child=autoCustomARRow)
+        newImageOptions.add(child=autoCustomARRow)
 
         libraryOptions = Adw.PreferencesGroup.new()
         libraryOptions.set_title(title='Library options')
 
-        newImageOptions = Adw.PreferencesGroup.new()
-        newImageOptions.set_title(title='New image options')
-
         prefercePage.add(group=libraryOptions)
-        prefercePage.add(group=imageCreatorOptions)
         prefercePage.add(group=newImageOptions)
 
         self.libraryPathEntry = pathEntry(libraryPath)
@@ -338,10 +337,10 @@ class FlakePreferences(Adw.PreferencesWindow):
         global changedPath
 
         if(changedPath):
-            toast_overlay.add_toast(Flake.newToast(self, "Library path changed", "app.refresh"))
+            toast_overlay.add_toast(Immagini.newToast(self, "Library path changed", "app.refresh"))
 
 if __name__ == '__main__':
     import sys
 
-    app = Flake()
+    app = Immagini()
     app.run(sys.argv)

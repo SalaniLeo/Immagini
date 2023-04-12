@@ -14,7 +14,7 @@ mainBox = Adw.PreferencesPage.new()
 AdvancedInfo = Adw.PreferencesGroup.new()
 outputRow = Adw.PreferencesGroup.new()
 isOutputActive = False
-settings = Gio.Settings.new("io.github.salanileo.flake")
+settings = Gio.Settings.new("dev.salaniLeo.immagini")
 page = None
 
 
@@ -76,8 +76,7 @@ class newImageBox(Gtk.Box):
 
         mainBox.add(group=self.addInfo)
 
-        self.settings = Gio.Settings.new("io.github.salanileo.flake")
-        self.uselibraryPath = self.settings.get_boolean("uselibrarypath")
+        self.uselibraryPath = settings.get_boolean("uselibrarypath")
 
         okPage = Adw.PreferencesGroup.new()
 

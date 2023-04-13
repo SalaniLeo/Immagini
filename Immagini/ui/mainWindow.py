@@ -17,18 +17,20 @@ Adw.init()
 flatpak = False
 contentWindow = Adw.PreferencesPage.new()
 # contentWindow = Gtk.Box.new(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-dir = str(pathlib.Path.home()) + "/.local/share/immagini"
+# dir = str(pathlib.Path.home()) + "/.local/share/immagini"
 images = []
 dirs = []
 changedPath = False
 toast_overlay = Adw.ToastOverlay.new()
 page = None
 settings = Gio.Settings.new("dev.salaniLeo.immagini")
+libraryPath = settings.get_string("librarypath")
 
-
+if "~" in libraryPath:
+    libraryPath = libraryPath.replace("~", str(pathlib.Path.home()))
 ##checks if app data dir exists and if not creates it
-if(not os.path.exists(dir)):
-    os.mkdir(dir)
+# if(not os.path.exists(dir)):
+#     os.mkdir(dir)
 
 ##main app window
 class mainWindow(Gtk.ApplicationWindow):
@@ -130,11 +132,10 @@ class mainWindow(Gtk.ApplicationWindow):
 imagesNum = None
 
 class Immagini(Adw.Application):
-
     def __init__(self, AppId, isFlatpak):
-        super().__init__(application_id=AppId,
+        super().__init__(application_id="dev.salaniLeo.immagini",
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-
+        
         self.create_action('show_in_folder', self.show_in_folder)
         self.create_action('preferences', self.show_preferences)
         self.create_action('about', self.show_about)
@@ -181,8 +182,7 @@ class Immagini(Adw.Application):
         dialog.present()
         
     def show_in_folder(self, action, param):
-        global settings
-        libraryPath = settings.get_string("librarypath")
+        
         os.system('xdg-open "%s"' % libraryPath)
 
     def refresh(self, action, param):
@@ -228,7 +228,6 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         autoDeleteOption = settings.get_boolean("removeappdir")
         autoFolderMode = settings.get_boolean("foldermode")
         autoCustomAppRun = settings.get_boolean("customapprun")
-        libraryPath = settings.get_string("librarypath")
         uselibraryPath = settings.get_boolean("uselibrarypath")
 
         self.set_title(title='Preferences')

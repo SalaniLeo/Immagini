@@ -4,6 +4,7 @@ import shutil
 from .error import *
 import gi
 import threading
+import pathlib
 from .uiElements import *
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -282,6 +283,10 @@ class newImageBox(Gtk.Box):
             categoryText = normalRow[4].get_text()
 
             libraryPath = settings.get_string("librarypath")
+        
+            if "~" in libraryPath:
+                libraryPath = libraryPath.replace("~", str(pathlib.Path.home()))
+            
             uselibraryPath = settings.get_boolean("uselibrarypath")
             removeappdir = settings.get_boolean("removeappdir")
 
@@ -322,7 +327,7 @@ class newImageBox(Gtk.Box):
                     includeLibraries = False
 
                 if os.path.exists(iconText) and os.path.exists(exeText):
-
+                    
                     if os.path.exists(outputText + "/" + folderName):
                         throwError(None, 'The' + folderName + 'folder already exists', 'Folder already exists', mainWindow)
                     else:

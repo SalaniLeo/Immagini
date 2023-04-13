@@ -77,6 +77,7 @@
  <div id="folderMode">
  <h3>Folder mode</h3>
  <b>This option is still in beta quality, so don't expect much.</b><br>
+ <b>The exe file needs to be inside the selected folder</b><br>
  Folder mode allow you to package folders inside an AppImage.<br>
  To package folders into an AppImage you have to select the main app executable as the app <a href="#exe">executable</a>, and then in the foldermode entry     select the app folder.<br>
  Also, it's recommended to use a <a href="#cAppRun">custom AppRun</a> if you enable this option.
@@ -87,14 +88,14 @@
  <h3>Custom AppRun</h3>
  By enabling 'Custom AppRun' you can package in the application your own custom-made AppRun file.<br>
  it's recommended to use this option if you use folder mode.
- 
+
  </div>
  
  <div id="name">
  <h1>Why the name Immagini</h1>
  <p>First of all let's start by sying that I'm italian. <br>
  The name Immagini is the italian translation for 'images'... you see where I'm going?
- Given that the app is made to manage .AppImage files and I wanted to give a name that has something to do with the app I came up with the name Immagini
+ Given that the app is made to manage .AppImage files and I wanted to give a name that has something to do with the app I came up with the name Immagini.<br>
  Next step is making an icon
  </div>
  

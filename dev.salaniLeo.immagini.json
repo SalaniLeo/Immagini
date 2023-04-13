@@ -9,10 +9,8 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=home",
-        "--socket=session-bus",
-        "--socket=system-bus",
-        "--talk-name=org.freedesktop.Flatpak"
+        "--talk-name=org.freedesktop.Flatpak",
+        "--filesystem=home"
     ],
     "build-options" : {
         "env" : {

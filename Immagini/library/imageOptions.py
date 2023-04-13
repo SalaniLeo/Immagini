@@ -1,9 +1,7 @@
 import gi
-import subprocess
 import os
 import stat
 import threading
-import pathlib
 from ..ui.console import console
 from ..ui.error import throwError
 from ..ui.uiElements import *
@@ -120,7 +118,6 @@ imageNames = None
 command = None
 
 def runImage():
-    print(command)
     os.system(command)
 
 

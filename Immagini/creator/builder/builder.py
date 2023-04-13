@@ -14,12 +14,11 @@ def initBuild(appDirPath, output, name, flatpak, mainWindow, thread=None):
     # shutil.move(name + "-x86_64.AppImage", output + "/" + name + "-x86_64.AppImage")
 
     if flatpak:
-        toolDir = "/app/bin/Flake/creator/builder/tool/AppRun"
+        toolDir = "/app/bin/Immagini/creator/builder/tool/AppRun"
     else:
-        toolDir = "Flake/creator/builder/tool/AppRun"
+        toolDir = "Immagini/creator/builder/tool/AppRun"
 
     # os.chmod(toolDir, 777)
-
     buildoutput = os.popen("ARCH=x86_64 " + toolDir + " '" + appDirPath + "'" + " '" + output + "/" + name + "-x86_64.AppImage' ").read()
 
     terminal = Gtk.TextView()
@@ -27,7 +26,6 @@ def initBuild(appDirPath, output, name, flatpak, mainWindow, thread=None):
 
     bff = Gtk.TextBuffer()
     terminal = Gtk.TextView(buffer = bff)
-    bff.set_text("Creating image...")
 
     iter = bff.get_end_iter()
     bff.insert(iter, buildoutput)

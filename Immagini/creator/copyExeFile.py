@@ -23,9 +23,6 @@ def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self, mainWindow):
 
     appDirPath = appDirPath + 'usr/' + pFolderName
 
-    print(appDirPath)
-    print(parentFolder)
-    print(exe)
 
     if path.exists(parentFolder):
         shutil.copytree(parentFolder, appDirPath)

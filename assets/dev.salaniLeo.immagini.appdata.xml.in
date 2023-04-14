@@ -17,33 +17,35 @@
   <content_rating type="oars-1.1" />
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/firstPage.png</image>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot1.png</image>
       <caption>Initial page when starting the app</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/secondPage.png</image>
-      <caption>Last page where you specify all the necessary paths</caption>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot2.png</image>
+      <caption>scr</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/thirdPage.png</image>
-      <caption>Last page where you specify all the necessary paths</caption>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot3.png</image>
+      <caption>scr</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/fourthPage.png</image>
-      <caption>Last page where you specify all the necessary paths</caption>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot4.png</image>
+      <caption>scr</caption>
     </screenshot>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/fifthPage.png</image>
-      <caption>Last page where you specify all the necessary paths</caption>
+      <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot5.png</image>
+      <caption>scr</caption>
     </screenshot>
   </screenshots>
   <releases>
       <release version="0.1.0" date="2023-03-06">
       <description>
-        <p>
-          <li>Added 'Include libraries' option when creating AppImage</li>
-          <li>Added button to execute AppImage</li>
-        </p>
+        <p>What's changed</p>
+        <li>Added 'include libraries' option</li>
+        <li>Fixed rename app not working if renamed more than one time</li>
+        <p>>Updates</p>
+        <li>Fixed error with renaming the app more than one time</li>
+        <li>Fixed error with launching appimages in some distros</li>
       </description>
     </release>
     <release version="0.0.4" date="2023-02-22">

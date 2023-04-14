@@ -18,23 +18,23 @@
   <screenshots>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot1.png</image>
-      <caption>Initial page when starting the app</caption>
+      <caption>Library</caption>
     </screenshot>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot2.png</image>
-      <caption>scr</caption>
+      <caption>New image page</caption>
     </screenshot>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot3.png</image>
-      <caption>scr</caption>
+      <caption>New image page with advanced options</caption>
     </screenshot>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot4.png</image>
-      <caption>scr</caption>
+      <caption>Preferences</caption>
     </screenshot>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/SalaniLeo/Immagini/master/assets/screenshots/screenshot5.png</image>
-      <caption>scr</caption>
+      <caption>Image options</caption>
     </screenshot>
   </screenshots>
   <releases>

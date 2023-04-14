@@ -3,7 +3,7 @@
 <b>Library and creation tool for .AppImage files</b><br>
 
 <h2>Install</h2>
-<a href="https://beta.flathub.org/apps/io.github.salaniLeo.flake" rel="nofollow"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>
+<a href="https://beta.flathub.org/apps/dev.salaniLeo.immagini" rel="nofollow"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>
 
 <h1>Library</h1>
 

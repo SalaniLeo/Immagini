@@ -178,6 +178,7 @@ class Immagini(Adw.Application):
         dialog.set_comments("Management tool for AppImage applications")
         dialog.set_website("https://github.com/SalaniLeo/Immagini")
         dialog.set_developers(["Leonardo Salani"])
+        dialog.set_artists(["Brage Fuglseth"])
         dialog.set_application_icon("dev.salaniLeo.immagini")
         dialog.present()
         

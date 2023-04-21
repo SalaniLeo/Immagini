@@ -1,4 +1,4 @@
-<h1>Immagini</h1>
+<h1>Immagini <img src="/share/icons/hicolor/scalable/apps/dev.salaniLeo.immagini.svg" alt="icon" style="width:45px;height:45px;position:absolute;"> </h1>
 
 <b>Library and creation tool for .AppImage files</b><br>
 

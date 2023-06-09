@@ -87,7 +87,7 @@
  <div id="cAppRun">
  <h3>Custom AppRun</h3>
  By enabling 'Custom AppRun' you can package in the application your own custom-made AppRun file.<br>
- it's recommended to use this option if you use folder mode.
+ it's recommended to use this option if you use folder mode. If packaging only a single file the executable is located in usr/bin/, so for example if you want to create your own apprun the path to the executable should be usr/bin/(exe).
 
  </div>
  

@@ -1,0 +1,5 @@
+# List of source files containing translatable strings.
+data/dev.salaniLeo.immagini.appdata.xml.in
+data/dev.salaniLeo.immagini.desktop.in
+data/dev.salaniLeo.immagini.gschema.xml
+Immagini/ui/strings.py

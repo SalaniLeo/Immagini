@@ -1,0 +1,330 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-22 18:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: Immagini/ui/strings.py:4
+msgid "Immagini"
+msgstr ""
+
+#: Immagini/ui/strings.py:6
+msgid "Name"
+msgstr ""
+
+#: Immagini/ui/strings.py:7
+msgid "Executable"
+msgstr ""
+
+#: Immagini/ui/strings.py:8
+msgid "Icon"
+msgstr ""
+
+#: Immagini/ui/strings.py:9
+msgid "Path"
+msgstr ""
+
+#: Immagini/ui/strings.py:10
+msgid "Category"
+msgstr ""
+
+#: Immagini/ui/strings.py:11
+msgid "Type"
+msgstr ""
+
+#: Immagini/ui/strings.py:12
+msgid "Delete"
+msgstr ""
+
+#: Immagini/ui/strings.py:13
+msgid "Close"
+msgstr ""
+
+#: Immagini/ui/strings.py:14 Immagini/ui/strings.py:25
+msgid "Refresh"
+msgstr ""
+
+#: Immagini/ui/strings.py:15
+msgid "Confirm"
+msgstr ""
+
+#: Immagini/ui/strings.py:16
+msgid "Template"
+msgstr ""
+
+#: Immagini/ui/strings.py:18
+msgid "Application"
+msgstr ""
+
+#: Immagini/ui/strings.py:19
+msgid "Utility"
+msgstr ""
+
+#: Immagini/ui/strings.py:21
+msgid "Immagini - Library"
+msgstr ""
+
+#: Immagini/ui/strings.py:22
+msgid "Immagini - New"
+msgstr ""
+
+#: Immagini/ui/strings.py:26
+msgid "Show in folder"
+msgstr ""
+
+#: Immagini/ui/strings.py:27 Immagini/ui/strings.py:34
+msgid "Preferences"
+msgstr ""
+
+#: Immagini/ui/strings.py:28
+msgid "Shortcuts"
+msgstr ""
+
+#: Immagini/ui/strings.py:29
+msgid "About Immagini"
+msgstr ""
+
+#: Immagini/ui/strings.py:31
+msgid "Management tool for AppImage applications"
+msgstr ""
+
+#: Immagini/ui/strings.py:35
+msgid "New image options"
+msgstr ""
+
+#: Immagini/ui/strings.py:36
+msgid "Library options"
+msgstr ""
+
+#: Immagini/ui/strings.py:38
+msgid "Library location"
+msgstr ""
+
+#: Immagini/ui/strings.py:39
+msgid "To apply changes restart the app"
+msgstr ""
+
+#: Immagini/ui/strings.py:40
+msgid "Select library location"
+msgstr ""
+
+#: Immagini/ui/strings.py:42
+msgid "Auto delete AppDir"
+msgstr ""
+
+#: Immagini/ui/strings.py:43
+msgid "Deletes the .AppDir folder after creating an AppImage file"
+msgstr ""
+
+#: Immagini/ui/strings.py:45
+msgid "Enable FolderMode by default"
+msgstr ""
+
+#: Immagini/ui/strings.py:46
+msgid ""
+"Automatically enables the \"Folder Mode\" option when creating a new image "
+"file"
+msgstr ""
+
+#: Immagini/ui/strings.py:48
+msgid "Enable custom AppRun by default"
+msgstr ""
+
+#: Immagini/ui/strings.py:49
+msgid ""
+"Automatically enables the \"Custom AppRun\" option when creating a new image "
+"file"
+msgstr ""
+
+#: Immagini/ui/strings.py:51
+msgid "Use library folder as default"
+msgstr ""
+
+#: Immagini/ui/strings.py:52
+msgid "Uses library folder as default location when creating new apps"
+msgstr ""
+
+#: Immagini/ui/strings.py:54
+msgid "Library path changed"
+msgstr ""
+
+#: Immagini/ui/strings.py:58
+msgid "Include libraries"
+msgstr ""
+
+#: Immagini/ui/strings.py:59
+msgid "Select a library to include inside an AppImage"
+msgstr ""
+
+#: Immagini/ui/strings.py:60
+msgid "Select libraries"
+msgstr ""
+
+#: Immagini/ui/strings.py:62
+msgid "Folder mode"
+msgstr ""
+
+#: Immagini/ui/strings.py:63
+msgid "Parent folder location"
+msgstr ""
+
+#: Immagini/ui/strings.py:65
+msgid "Custom AppRun"
+msgstr ""
+
+#: Immagini/ui/strings.py:66
+msgid "Custom AppRun location"
+msgstr ""
+
+#: Immagini/ui/strings.py:68
+msgid "Include dependencies"
+msgstr ""
+
+#: Immagini/ui/strings.py:69
+msgid "Installed interpreters"
+msgstr ""
+
+#: Immagini/ui/strings.py:70
+msgid "Select manually"
+msgstr ""
+
+#: Immagini/ui/strings.py:72
+msgid "Create template image"
+msgstr ""
+
+#: Immagini/ui/strings.py:74
+msgid "Location"
+msgstr ""
+
+#: Immagini/ui/strings.py:75
+msgid "App location"
+msgstr ""
+
+#: Immagini/ui/strings.py:77
+msgid "Select files: "
+msgstr ""
+
+#: Immagini/ui/strings.py:78
+msgid "Select folders: "
+msgstr ""
+
+#: Immagini/ui/strings.py:79
+msgid "Selected items: "
+msgstr ""
+
+#: Immagini/ui/strings.py:81
+msgid "Please fill in all the informations"
+msgstr ""
+
+#: Immagini/ui/strings.py:82
+msgid "All the info are required"
+msgstr ""
+
+#: Immagini/ui/strings.py:85
+msgid "Advanced"
+msgstr ""
+
+#: Immagini/ui/strings.py:88
+msgid "Terminal"
+msgstr ""
+
+#: Immagini/ui/strings.py:92
+msgid "Image Options"
+msgstr ""
+
+#: Immagini/ui/strings.py:93
+msgid "Executable:"
+msgstr ""
+
+#: Immagini/ui/strings.py:94
+msgid "Extract image:"
+msgstr ""
+
+#: Immagini/ui/strings.py:95
+msgid "Start in terminal:"
+msgstr ""
+
+#: Immagini/ui/strings.py:97
+msgid "Deleting an appimage file is not reversible"
+msgstr ""
+
+#: Immagini/ui/strings.py:98
+msgid "Extracting image"
+msgstr ""
+
+#: Immagini/ui/strings.py:102
+msgid "The app has no executable permissions"
+msgstr ""
+
+#: Immagini/ui/strings.py:103
+msgid "Permission denied"
+msgstr ""
+
+#: Immagini/ui/strings.py:105
+msgid " alredy exists"
+msgstr ""
+
+#: Immagini/ui/strings.py:106
+msgid "Folder already exists"
+msgstr ""
+
+#: Immagini/ui/strings.py:108
+msgid "Selected file must be named 'AppRun'"
+msgstr ""
+
+#: Immagini/ui/strings.py:109
+msgid "AppRun file not valid"
+msgstr ""
+
+#: Immagini/ui/strings.py:111
+msgid "The Application folder does not contain the selected executable file"
+msgstr ""
+
+#: Immagini/ui/strings.py:112
+msgid "Application folder does not contain executable"
+msgstr ""
+
+#: Immagini/ui/strings.py:114
+msgid " does not exists"
+msgstr ""
+
+#: Immagini/ui/strings.py:115
+msgid "could not copy the exe file"
+msgstr ""
+
+#: Immagini/ui/strings.py:117
+msgid "icon file does't exist"
+msgstr ""
+
+#: Immagini/ui/strings.py:118
+msgid "could not copy icon"
+msgstr ""
+
+#: Immagini/ui/strings.py:120
+msgid "The icon size must be 32x32, 48x48 etc.. not "
+msgstr ""
+
+#: Immagini/ui/strings.py:121
+msgid "Icon size not valid"
+msgstr ""
+
+#: Immagini/ui/strings.py:123
+msgid "could not copy library"
+msgstr ""
+
+#: Immagini/ui/strings.py:124
+msgid "Library does not exist"
+msgstr ""

@@ -3,6 +3,8 @@ import stat
 import pathlib
 import gi
 from .imageOptions import *
+from ..ui.strings import *
+
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -71,8 +73,8 @@ class getImages(list):
 
             leftBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             leftBox.set_hexpand(True)
-            leftBox.append(createElementLabel("Name:  ", fullName + ".AppImage"))
-            leftBox.append(createElementLabel("Path:  ", appImage))
+            leftBox.append(createElementLabel(globalName, fullName + ".AppImage"))
+            leftBox.append(createElementLabel(globalPath, appImage))
 
             expandableLayout = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             expandableLayout.append(leftBox)
@@ -127,8 +129,8 @@ class getImages(list):
 
             leftBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             leftBox.set_hexpand(True)
-            leftBox.append(createElementLabel("Name:  ", fullName + ".AppImage"))
-            leftBox.append(createElementLabel("Path:  ", appImage))
+            leftBox.append(createElementLabel(globalName, fullName + ".AppImage"))
+            leftBox.append(createElementLabel(globalPath, appImage))
 
             expandableLayout = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             expandableLayout.append(leftBox)

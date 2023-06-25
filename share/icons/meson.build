@@ -12,14 +12,3 @@ install_data(
   install_dir: join_paths(get_option('datadir'), 'icons', symbolic_dir)
 )
 
-action_dir = join_paths('hicolor', 'scalable', 'actions')
-action_icons = [
-    # each icon must be registered here
-    join_paths(action_dir, 'im-symbolic.svg')
-]
-
-install_data(
-  action_icons,
-  install_dir: join_paths(get_option('datadir'), 'icons', action_dir)
-)
-

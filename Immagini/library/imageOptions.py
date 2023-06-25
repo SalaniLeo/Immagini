@@ -5,15 +5,15 @@ import threading
 from ..ui.console import console
 from ..ui.error import throwError
 from ..ui.uiElements import *
+from ..ui.strings import *
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
-
-from gi.repository import Gtk, Gdk, Adw
+from gi.repository import Gtk, Adw
 
 class manageImages(list):
     def __init__(self, list, loc): 
         menu = Gtk.Menu()
-        menu_item = Gtk.MenuItem("A menu item")
+        menu_item = Gtk.MenuItem()
         menu.append(menu_item)
         menu_item.show()
 
@@ -26,8 +26,8 @@ class manageImages(list):
 
         dialog.set_transient_for(mainWindow)
         dialog.set_modal(True)
-        dialog.set_heading(heading='Delete ' + name + "?")
-        dialog.set_body(body='Deleting an appimage file is not reversible')
+        dialog.set_heading(heading=f'{globalDelete} {name}?')
+        dialog.set_body(body=askConfirmDeleting)
         dialog.add_response(Gtk.ResponseType.CANCEL.value_nick, 'Cancel')
         dialog.set_response_appearance(
             response=Gtk.ResponseType.CANCEL.value_nick,
@@ -69,14 +69,14 @@ class manageImages(list):
         dst = entry.get_placeholder_text() + '/' + name.get_text() + '.AppDir'
 
         if os.path.exists(dst):
-            throwError(None, 'Folder ' + dst + ' alredy exists', 'Folder already exists', mainWindow)
+            throwError(None, dst + folderAlreadyExistsSubtitle, folderAlreadyExistsTitle, mainWindow)
         else:
             terminal = Gtk.TextView()
             terminal.set_editable(False)
 
             bff = Gtk.TextBuffer()
             terminal = Gtk.TextView(buffer = bff)
-            bff.set_text("Extracting image")
+            bff.set_text(extractingImage)
 
             iter = bff.get_end_iter()
 
@@ -96,30 +96,27 @@ class manageImages(list):
 
         refresh(None, None, None)
 
-    def startImage(button, appImage, none, mainWindow, flatpak, setState, row):
+    def startImage(button, appImage, startInTerminal, mainWindow, flatpak, setState, row):
+        
+        command = None
         
         st = os.stat(appImage)
         executable = bool(st.st_mode & stat.S_IEXEC)
         
         if not executable:
-            throwError(None, "The app has no executable permissions", "Permission denied", mainWindow)
+            throwError(None, noExePermissionSubtitle, noExePermissionTitle, mainWindow)
         else:
-            global command
-
             if flatpak:
                 command = 'cd ~ && ' + 'flatpak-spawn --host ' + appImage.split("/home/",1)[1].split("/",1)[1]
             else:
                 command = appImage
-            t1 = threading.Thread(target=runImage)
-            t1.start()
+        
+            launchThread = threading.Thread(target=os.popen(command))
+            launchThread.start()
+        
 
 imageNum = None
 imageNames = None
-command = None
-
-def runImage():
-    os.system(command)
-
 
 class imageOptions(Adw.PreferencesWindow):
 
@@ -129,7 +126,7 @@ class imageOptions(Adw.PreferencesWindow):
         self.set_transient_for(parent)
         self.set_modal(True)
 
-        self.set_title(title='Image options')
+        self.set_title(imageOptionsTitle)
         self.set_default_size(450,375)
 
         prefercePage = Adw.PreferencesPage.new()
@@ -148,7 +145,7 @@ class imageOptions(Adw.PreferencesWindow):
         renameButton.set_valign(Gtk.Align.CENTER)
 
         self.renameImage = Adw.ActionRow.new()
-        self.renameImage.set_title(title='Name:')
+        self.renameImage.set_title(title=globalName + ':')
         self.renameImage.add_suffix(nameEntry)
         self.renameImage.add_suffix(renameButton)
         imageOptions.add(child=self.renameImage)
@@ -163,7 +160,7 @@ class imageOptions(Adw.PreferencesWindow):
         executableSw.connect('notify::active', manageImages.setExecutable, appImage, setRowState, row)
 
         setExecutable = Adw.ActionRow.new()
-        setExecutable.set_title(title='Executable:')
+        setExecutable.set_title(title=imageOptionsExecutable)
         setExecutable.add_suffix(widget=executableSw)
         imageOptions.add(child=setExecutable)
 
@@ -178,32 +175,31 @@ class imageOptions(Adw.PreferencesWindow):
         extractButton.connect('clicked', manageImages.extractImage, appImage, extractEntry, parent, nameEntry)
 
         extractImage = Adw.ActionRow.new()
-        extractImage.set_title(title='Extract image:')
+        extractImage.set_title(title=imageOptionsExtract)
         extractImage.add_suffix(extractEntry)
         extractImage.add_suffix(extractButton)
 
-        # startInTerminalSw = Gtk.Switch.new()
-        # startInTerminalSw.set_active(False)
-        # startInTerminalSw.set_valign(align=Gtk.Align.CENTER)
-        # # startInTerminalSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
+        startInTerminalSw = Gtk.Switch.new()
+        startInTerminalSw.set_active(False)
+        startInTerminalSw.set_valign(align=Gtk.Align.CENTER)
+        # startInTerminalSw.connect('notify::active', manageImages.createShortcut, 'desktop', str(pathlib.Path.home())+'/Desktop', appImage)
 
-        # startInTerminal = Adw.ActionRow.new()
-        # startInTerminal.set_title(title='Start in terminal:')
-        # startInTerminal.add_suffix(widget=startInTerminalSw)
+        startInTerminal = Adw.ActionRow.new()
+        startInTerminal.set_title(title=imageOptionsStartTerminal)
+        startInTerminal.add_suffix(widget=startInTerminalSw)
 
 
-        # launcherShortcutSw = Gtk.Switch.new()
-        # launcherShortcutSw.set_active(False)
-        # launcherShortcutSw.set_valign(align=Gtk.Align.CENTER)
-        # launcherShortcutSw.connect('notify::active', manageImages.createShortcut, 'launcher', str(pathlib.Path.home())+'/.local/bin', appImage)
+        # integrateSw = Gtk.Switch.new()
+        # integrateSw.set_active(False)
+        # integrateSw.set_valign(align=Gtk.Align.CENTER)
+        # integrateSw.connect('notify::active', manageImages.integrateImage, appImage, flatpak)
 
         # setLauncherShortcut = Adw.ActionRow.new()
-        # setLauncherShortcut.set_title(title='Launcher shortcut:')
-        # setLauncherShortcut.add_suffix(widget=launcherShortcutSw)
+        # setLauncherShortcut.set_title(title='System integrate:')
+        # setLauncherShortcut.add_suffix(widget=integrateSw)
 
-        # imageOptions.add(child=startInTerminal)
+        imageOptions.add(child=startInTerminal)
         # imageOptions.add(child=setLauncherShortcut)
         imageOptions.add(child=extractImage)
-
 
         prefercePage.add(imageOptions)

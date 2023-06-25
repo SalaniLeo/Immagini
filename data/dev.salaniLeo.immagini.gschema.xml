@@ -32,5 +32,11 @@
       <description>test</description>
     </key>
 
+    <key name="start-in-terminal" type="b">
+      <default>false</default>
+      <summary>executes appimage in a terminal</summary>
+      <description>If the option is on the appimage selected will be run inside a terminal</description>
+    </key>
+
   </schema>
 </schemalist>

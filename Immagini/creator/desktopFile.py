@@ -1,8 +1,11 @@
 import os
+import shutil
+import ntpath
 
 def createDesktopFile(name,exeName,iconName,type,categories,appDirPath):
 
-  icon = os.path.splitext(iconName)[0]
+  tmp = ntpath.basename(iconName)
+  icon = os.path.splitext(tmp)[0]
 
   f = open(appDirPath + name + ".desktop", "w")
 
@@ -13,3 +16,6 @@ def createDesktopFile(name,exeName,iconName,type,categories,appDirPath):
   f.writelines("\nType=" + type)
   f.writelines("\nCategories=" + categories)
   f.close()
+  
+def copyDesktopFile(file, dest):
+  shutil.copy(file, dest)

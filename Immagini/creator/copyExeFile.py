@@ -1,7 +1,7 @@
-import shutil
 import os
 from os import path
 from ..ui.error import throwError
+from ..ui.strings import *
 import shutil
 
 # default copyExe option
@@ -13,12 +13,9 @@ def copyExe(exe,appDirPath,exeName, self, mainWindow):
     # checks if exe file exists
     if path.exists(exe):
         shutil.copyfile(exe, dst)
-        os.chmod(dst, 777)
-    
     else:
-        throwError(self, "could not copy the exe file", "exe file does't exist", mainWindow)
-        # sys.exit("could not copy the exe file")
-        
+        throwError(self, invalidExeSubtitle, invalidExeTitle, mainWindow)
+
 def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self, mainWindow):
 
     appDirPath = appDirPath + 'usr/' + pFolderName
@@ -28,10 +25,4 @@ def copyExePFolder(appDirPath,pFolderName,parentFolder,exe, self, mainWindow):
         shutil.copytree(parentFolder, appDirPath)
         os.chmod(exe , 777)
     else:
-        throwError(self, "could not copy the exe file", "exe file does't exist", mainWindow)
-
-
-
-
-
-        
+        throwError(self, invalidExeSubtitle, invalidExeTitle, mainWindow)

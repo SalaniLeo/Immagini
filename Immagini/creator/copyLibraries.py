@@ -2,6 +2,7 @@ import shutil
 import os
 from ..ui.error import throwError
 import shutil
+from ..ui.strings import *
 
 # default copyExe option
 def copyLibraries(libraries, appDirPath, self, mainWindow):
@@ -28,12 +29,4 @@ def copyLibraries(libraries, appDirPath, self, mainWindow):
 
             os.chmod(dst, 777)
         else:
-            throwError(self, "could not copy library  '" + libArray[x][1:] + "'", "Library does not exist", mainWindow)
-        # sys.exit("could not copy the exe file")
-
-
-
-
-
-
-        
+            throwError(self, invalidLibraryTitle + " '" + libArray[x][1:] + "'", invalidLibrarySubtitle, mainWindow)

@@ -5,6 +5,7 @@ from ..library.getContent import *
 from threading import Thread
 from .newImage import *
 from .uiElements import *
+from ..ui.strings import *
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
@@ -16,8 +17,6 @@ Adw.init()
 
 flatpak = False
 contentWindow = Adw.PreferencesPage.new()
-# contentWindow = Gtk.Box.new(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-# dir = str(pathlib.Path.home()) + "/.local/share/immagini"
 images = []
 dirs = []
 changedPath = False
@@ -28,25 +27,22 @@ libraryPath = settings.get_string("librarypath")
 
 if "~" in libraryPath:
     libraryPath = libraryPath.replace("~", str(pathlib.Path.home()))
-##checks if app data dir exists and if not creates it
-# if(not os.path.exists(dir)):
-#     os.mkdir(dir)
+
 
 ##main app window
 class mainWindow(Gtk.ApplicationWindow):
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        global page
         page = self
 
-        self.createImageBox = newImageBox(self)
-        self.createImageBox.okButton.connect('clicked', newImageBox.initCreation, Immagini.refresh, page)
+        self.createImageBox = newImageBox(self, Immagini)
         newImageBox.getFlatpak(flatpak)
 
         self.switch_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.set_default_size(750,450)
-        self.set_title(title='immagini - library')
+        self.set_default_size(850, 550)
+        self.set_title(title=globalLibraryTitle)
 
         ##stack that contains the scrolled and newImage
         self.stack = Gtk.Stack()
@@ -73,6 +69,7 @@ class mainWindow(Gtk.ApplicationWindow):
         t1.start()
 
         self.headerbar = Gtk.HeaderBar.new()
+        self.headerbar.add_css_class(css_class='flat')
         self.set_titlebar(titlebar=self.headerbar)
 
         about = Gio.SimpleAction.new("about", None)
@@ -85,10 +82,11 @@ class mainWindow(Gtk.ApplicationWindow):
 
         menu_button_model = Gio.Menu()
 
-        menu_button_model.append('Refresh', 'app.refresh')
-        menu_button_model.append('Show in folder', 'app.show_in_folder')
-        menu_button_model.append('Preferences', 'app.preferences')
-        menu_button_model.append('About', 'app.about')
+        menu_button_model.append(menuRefresh, 'app.refresh')
+        menu_button_model.append(menuShowInFolder, 'app.show_in_folder')
+        menu_button_model.append(menuPreferences, 'app.preferences')
+        menu_button_model.append(menuShortcuts, 'app.show_shortcuts')
+        menu_button_model.append(menuAbout, 'app.about')
 
         menuButton = Gtk.MenuButton.new()
         menuButton.set_icon_name(icon_name='open-menu-symbolic')
@@ -105,7 +103,7 @@ class mainWindow(Gtk.ApplicationWindow):
 
         self.advancedOptions = Gtk.Box()
         self.advancedSwitch = Gtk.Switch()
-        self.advancedLabel = Gtk.Label(label="Advanced")
+        self.advancedLabel = Gtk.Label(label=advancedTitle)
         self.advancedLabel.set_margin_end(12)
         self.advancedOptions.append(self.advancedLabel)
         self.advancedOptions.append(self.advancedSwitch)
@@ -120,13 +118,11 @@ class mainWindow(Gtk.ApplicationWindow):
         appslist = os.listdir(libraryPath.replace("~", str(pathlib.Path.home())))
         appsInfo = getFileNum(appslist, libraryPath.replace("~", str(pathlib.Path.home())))
         imagesNum = appsInfo.appimages
-        time.sleep(0.1)
+        # time.sleep(0.1)
 
         for n in range(imagesNum):
             imageRow = getImages.createImageRow(appsInfo.imageNames[n], Immagini.refresh, page, setRowState, flatpak)
-
             images.append(imageRow)
-
             contentWindow.add(images[n])
 
 imagesNum = None
@@ -136,10 +132,13 @@ class Immagini(Adw.Application):
         super().__init__(application_id="dev.salaniLeo.immagini",
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
         
-        self.create_action('show_in_folder', self.show_in_folder)
-        self.create_action('preferences', self.show_preferences)
+        self.create_action('show_in_folder', self.show_in_folder, ['<Control>f'])
+        self.create_action('preferences', self.show_preferences, ['<Control>comma'])
         self.create_action('about', self.show_about)
-        self.create_action('refresh', self.refresh)
+        self.create_action('show_shortcuts', self.show_shortcuts)
+        self.create_action('refresh', self.refresh, ['<Control>r'])
+        self.create_action('quit', self.exit_app, ['<Control>w', '<Control>q'])
+        self.create_action('createImage', self.createImageShortcut, ['<Control>n'])
 
         global flatpak
         flatpak = isFlatpak
@@ -160,7 +159,6 @@ class Immagini(Adw.Application):
         self.quit()
 
     def show_preferences(self, action, param):
-
         adw_preferences_window = ImmaginiPreferences(page)
         adw_preferences_window.show()
 
@@ -168,14 +166,16 @@ class Immagini(Adw.Application):
         action = Gio.SimpleAction.new(name, None)
         action.connect('activate', callback)
         self.add_action(action)
+        if shortcuts:
+            self.set_accels_for_action(f'app.{name}', shortcuts)
 
     def show_about(self, action, param):
         dialog = Adw.AboutWindow()
-        dialog.set_application_name('Immagini')
-        dialog.set_version("0.1.0")
+        dialog.set_application_name(globalImmagini)
+        dialog.set_version("0.1.1")
         # dialog.set_developer_name("Leonardo Salani")
         dialog.set_license_type(Gtk.License(Gtk.License.GPL_3_0))
-        dialog.set_comments("Management tool for AppImage applications")
+        dialog.set_comments(aboutWindowComment)
         dialog.set_website("https://github.com/SalaniLeo/Immagini")
         dialog.set_developers(["Leonardo Salani"])
         dialog.set_artists(["Brage Fuglseth"])
@@ -183,8 +183,11 @@ class Immagini(Adw.Application):
         dialog.present()
         
     def show_in_folder(self, action, param):
-        
         os.system('xdg-open "%s"' % libraryPath)
+
+    def show_shortcuts(self, action, param):
+        shortcuts_window = ShortcutsWindow(transient_for=self.get_active_window())
+        shortcuts_window.present()
 
     def refresh(self, action, param):
         for n in range(imagesNum):
@@ -200,24 +203,29 @@ class Immagini(Adw.Application):
         self.headerbar.remove(self.newAppImage)
         self.headerbar.pack_start(self.backButton)
         self.headerbar.pack_start(self.advancedOptions)
-        self.set_title(title='Immagini - new')
+        self.set_title(title=globalNewImageTitle)
+
+    def createImageShortcut(win, action, shortcut):
+        Immagini.createImage(None, page)
 
     def goBack(button, self):
         self.stack.set_visible_child(contentWindow)
         self.headerbar.remove(self.backButton)
         self.headerbar.remove(self.advancedOptions)
         self.headerbar.pack_start(self.newAppImage)
-        self.set_title(title='Immagini - library')
+        self.set_title(title=globalLibraryTitle)
 
     def newToast(self, title, action):
 
-        toast = Adw.Toast.new(title='')
-        toast.set_title(title=title)
+        toast = Adw.Toast.new(title=title)
         toast.set_timeout(True)
-        toast.set_button_label("Refresh")
+        toast.set_button_label(globalRefresh)
         toast.set_action_name(action)
 
         return toast
+    
+    def exit_app(self, action, param):
+        self.quit()
 
 class ImmaginiPreferences(Adw.PreferencesWindow):
 
@@ -231,7 +239,7 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         autoCustomAppRun = settings.get_boolean("customapprun")
         uselibraryPath = settings.get_boolean("uselibrarypath")
 
-        self.set_title(title='Preferences')
+        self.set_title(title=prefrencesTitle)
 
         self.set_transient_for(parent)
         self.set_modal(True)
@@ -243,7 +251,7 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         self.add(page=prefercePage)
 
         newImageOptions = Adw.PreferencesGroup.new()
-        newImageOptions.set_title(title='New image options')
+        newImageOptions.set_title(title=newImagePreferencesTitle)
 
         self.autoDelete = Gtk.Switch.new()
         self.autoDelete.set_valign(align=Gtk.Align.CENTER)
@@ -251,8 +259,8 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         self.autoDelete.set_state(autoDeleteOption)
 
         deleteADRow = Adw.ActionRow.new()
-        deleteADRow.set_title(title='Auto delete AppDir')
-        deleteADRow.set_subtitle('Deletes the .AppDir folder after creating an AppImage file')
+        deleteADRow.set_title(title=autoDeleteAppDirTitle)
+        deleteADRow.set_subtitle(autoDeleteAppDirSubtitle)
         deleteADRow.add_suffix(widget=self.autoDelete)
         newImageOptions.add(child=deleteADRow)
 
@@ -262,8 +270,8 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         self.autoFolderMSw.set_state(autoFolderMode)
 
         autoFolderMRow = Adw.ActionRow.new()
-        autoFolderMRow.set_title(title='Enable FolderMode by default')
-        autoFolderMRow.set_subtitle('Automatically enables the "Folder Mode" option when creating a new image file')
+        autoFolderMRow.set_title(title=autoFolderModeTitle)
+        autoFolderMRow.set_subtitle(autoFolderModeSubtitle)
         autoFolderMRow.add_suffix(widget=self.autoFolderMSw)
         newImageOptions.add(child=autoFolderMRow)
 
@@ -273,13 +281,13 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         self.autoCustomARSw.set_state(autoCustomAppRun)
 
         autoCustomARRow = Adw.ActionRow.new()
-        autoCustomARRow.set_title(title='Enable custom AppRun by default')
-        autoCustomARRow.set_subtitle('Automatically enables the "Custom AppRun" option when creating a new image file')
+        autoCustomARRow.set_title(title=autoCustomAppRunTitle)
+        autoCustomARRow.set_subtitle(autoCustomAppRunSubtitle)
         autoCustomARRow.add_suffix(widget=self.autoCustomARSw)
         newImageOptions.add(child=autoCustomARRow)
 
         libraryOptions = Adw.PreferencesGroup.new()
-        libraryOptions.set_title(title='Library options')
+        libraryOptions.set_title(title=libraryPreferencesTitle)
 
         prefercePage.add(group=libraryOptions)
         prefercePage.add(group=newImageOptions)
@@ -287,11 +295,11 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         self.libraryPathEntry = pathEntry(libraryPath)
         self.libraryPathEntry.connect('changed', self.saveString, "librarypath")
 
-        self.browseLibLoc = browseButton(fileChooser, 'select library location', True, self.libraryPathEntry, page)
+        self.browseLibLoc = browseButton(fileChooser, librarySelectionTitle, True, self.libraryPathEntry, page)
 
         libraryPathRow = Adw.ActionRow.new()
-        libraryPathRow.set_title(title='Library location')
-        libraryPathRow.set_subtitle("To apply changes restart the app")
+        libraryPathRow.set_title(title=libraryLocationTitle)
+        libraryPathRow.set_subtitle(libraryLocationSubtitle)
         libraryPathRow.add_suffix(widget=self.libraryPathEntry)
         libraryPathRow.add_suffix(widget=self.browseLibLoc)
 
@@ -308,8 +316,8 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         useLPath.set_state(uselibraryPath)
 
         useLPathRow = Adw.ActionRow.new()
-        useLPathRow.set_title(title='Use library folder as default')
-        useLPathRow.set_subtitle('Uses library folder as default location when creating new apps')
+        useLPathRow.set_title(title=useLibraryPathTitle)
+        useLPathRow.set_subtitle(useLibraryPathSubtitle)
         useLPathRow.add_suffix(widget=useLPath)
 
         newImageOptions.add(child=useLPathRow)
@@ -337,7 +345,12 @@ class ImmaginiPreferences(Adw.PreferencesWindow):
         global changedPath
 
         if(changedPath):
-            toast_overlay.add_toast(Immagini.newToast(self, "Library path changed", "app.refresh"))
+            toast_overlay.add_toast(Immagini.newToast(self, libraryPathChanged, "app.refresh"))
+
+class ShortcutsWindow(Gtk.ShortcutsWindow):
+    __gtype_name__ = 'ShortcutsWindow'
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 if __name__ == '__main__':
     import sys

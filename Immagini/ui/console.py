@@ -1,5 +1,5 @@
 import gi
-
+from ..ui.strings import *
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -10,7 +10,7 @@ class console(Adw.MessageDialog):
         super().__init__(**kwargs)
 
         self.set_default_size(500,225)
-        self.set_title(title='Console')
+        self.set_title(title=terminalTitle)
         self.set_transient_for(mainWindow)
         self.set_modal(True)
 
@@ -23,8 +23,7 @@ class console(Adw.MessageDialog):
         self.scrolled.set_margin_start(25)
         self.scrolled.set_vexpand(True)
 
-
-        self.closeButton = Gtk.Button(label=("Close"))
+        self.closeButton = Gtk.Button(label=globalClose)
         self.closeButton.set_hexpand(True)
         self.closeButton.set_size_request(-1, 50)
         self.closeButton.connect('clicked', self.exit)
@@ -32,12 +31,9 @@ class console(Adw.MessageDialog):
         self.box.append(self.scrolled)
         self.box.append(self.closeButton)
 
-
         self.set_child(self.box)
 
-
         self.scrolled.set_child(console)
-
 
     def exit(self, button):
         self.close()

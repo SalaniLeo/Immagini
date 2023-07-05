@@ -1,6 +1,6 @@
 <h1>Immagini <img src="/share/icons/hicolor/scalable/apps/dev.salaniLeo.immagini.svg" alt="icon" style="width:45px;height:45px;position:absolute;"> </h1>
 
-<b>Library and creation tool for .AppImage files</b><br>
+<b>An application made to easily manage and create .AppImage apps</b><br>
 
 <h2>Install</h2>
 <a href="https://beta.flathub.org/apps/dev.salaniLeo.immagini" rel="nofollow"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" style="max-width: 100%;" width="200"></a>

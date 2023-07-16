@@ -3,328 +3,333 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Immagini\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-22 18:18+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2023-07-16 10:10-0300\n"
+"Last-Translator: \n"
+"Language-Team: Rilson Joás <rilsonjoas10@gmail.com\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: Immagini/ui/strings.py:4
 msgid "Immagini"
-msgstr ""
+msgstr "Immagini"
 
 #: Immagini/ui/strings.py:6
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: Immagini/ui/strings.py:7
 msgid "Executable"
-msgstr ""
+msgstr "Executável"
 
 #: Immagini/ui/strings.py:8
 msgid "Icon"
-msgstr ""
+msgstr "Ícone"
 
 #: Immagini/ui/strings.py:9
 msgid "Path"
-msgstr ""
+msgstr "Caminho"
 
 #: Immagini/ui/strings.py:10
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #: Immagini/ui/strings.py:11
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: Immagini/ui/strings.py:12
 msgid "Delete"
-msgstr ""
+msgstr "Deletar"
 
 #: Immagini/ui/strings.py:13
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: Immagini/ui/strings.py:14 Immagini/ui/strings.py:25
 msgid "Refresh"
-msgstr ""
+msgstr "Recarregar"
 
 #: Immagini/ui/strings.py:15
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: Immagini/ui/strings.py:16
 msgid "Template"
-msgstr ""
+msgstr "Modelo"
 
 #: Immagini/ui/strings.py:18
 msgid "Application"
-msgstr ""
+msgstr "Aplicativo"
 
 #: Immagini/ui/strings.py:19
 msgid "Utility"
-msgstr ""
+msgstr "Utilidade"
 
 #: Immagini/ui/strings.py:21
 msgid "Immagini - Library"
-msgstr ""
+msgstr "Immagini - Biblioteca"
 
 #: Immagini/ui/strings.py:22
 msgid "Immagini - New"
-msgstr ""
+msgstr "Immagini- Novo"
 
 #: Immagini/ui/strings.py:26
 msgid "Show in folder"
-msgstr ""
+msgstr "Mostrar na pasta"
 
 #: Immagini/ui/strings.py:27 Immagini/ui/strings.py:34
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: Immagini/ui/strings.py:28
 msgid "Shortcuts"
-msgstr ""
+msgstr "Atalhos"
 
 #: Immagini/ui/strings.py:29
 msgid "About Immagini"
-msgstr ""
+msgstr "Sobre o Immagini"
 
 #: Immagini/ui/strings.py:31
 msgid "Management tool for AppImage applications"
-msgstr ""
+msgstr "Ferramenta de gerenciamento de aplicativos AppImage"
 
 #: Immagini/ui/strings.py:35
 msgid "New image options"
-msgstr ""
+msgstr "Opções de nova imagem"
 
 #: Immagini/ui/strings.py:36
 msgid "Library options"
-msgstr ""
+msgstr "Opções de biblioteca"
 
 #: Immagini/ui/strings.py:38
 msgid "Library location"
-msgstr ""
+msgstr "Local de biblioteca"
 
 #: Immagini/ui/strings.py:39
 msgid "To apply changes restart the app"
-msgstr ""
+msgstr "Reinicie o app para aplicar as mudanças"
 
 #: Immagini/ui/strings.py:40
 msgid "Select library location"
-msgstr ""
+msgstr "Selecione o local da biblioteca"
 
 #: Immagini/ui/strings.py:42
 msgid "Auto delete AppDir"
-msgstr ""
+msgstr "Deletar AppDir automaticamente"
 
 #: Immagini/ui/strings.py:43
 msgid "Deletes the .AppDir folder after creating an AppImage file"
-msgstr ""
+msgstr "Deleta a pasta .AppDir depois de criar um arquivo AppImage"
 
 #: Immagini/ui/strings.py:45
 msgid "Enable FolderMode by default"
-msgstr ""
+msgstr "Aplicar Folder Mode por padrão"
 
 #: Immagini/ui/strings.py:46
 msgid ""
 "Automatically enables the \"Folder Mode\" option when creating a new image "
 "file"
 msgstr ""
+"Automaticamente aplica o \"Folder Mode\" ao criar uma nova imagem de arquivo"
 
 #: Immagini/ui/strings.py:48
 msgid "Enable custom AppRun by default"
-msgstr ""
+msgstr "Habilita AppRun customizável por padrão"
 
 #: Immagini/ui/strings.py:49
 msgid ""
 "Automatically enables the \"Custom AppRun\" option when creating a new image "
 "file"
 msgstr ""
+"Automaticamente habilita o AppRun customizável por padrão ao criar uma nova "
+"imagem de arquivo"
 
 #: Immagini/ui/strings.py:51
 msgid "Use library folder as default"
-msgstr ""
+msgstr "Usar pasta de biblioteca como padrão"
 
 #: Immagini/ui/strings.py:52
 msgid "Uses library folder as default location when creating new apps"
 msgstr ""
+"Automaticamente usa pasta de biblioteca como padrão ao criar novos apps"
 
 #: Immagini/ui/strings.py:54
 msgid "Library path changed"
-msgstr ""
+msgstr "Caminho da biblioteca mudado"
 
 #: Immagini/ui/strings.py:58
 msgid "Include libraries"
-msgstr ""
+msgstr "Inclui bibliotecas"
 
 #: Immagini/ui/strings.py:59
 msgid "Select a library to include inside an AppImage"
-msgstr ""
+msgstr "Selecione uma biblioteca para incluir dentro de um AppImage"
 
 #: Immagini/ui/strings.py:60
 msgid "Select libraries"
-msgstr ""
+msgstr "Selecione bibliotecas"
 
 #: Immagini/ui/strings.py:62
 msgid "Folder mode"
-msgstr ""
+msgstr "Folder Mode"
 
 #: Immagini/ui/strings.py:63
 msgid "Parent folder location"
-msgstr ""
+msgstr "Localização da pasta principal"
 
 #: Immagini/ui/strings.py:65
 msgid "Custom AppRun"
-msgstr ""
+msgstr "AppRun customizável"
 
 #: Immagini/ui/strings.py:66
 msgid "Custom AppRun location"
-msgstr ""
+msgstr "Local de AppRun customizável"
 
 #: Immagini/ui/strings.py:68
 msgid "Include dependencies"
-msgstr ""
+msgstr "Incluir dependências"
 
 #: Immagini/ui/strings.py:69
 msgid "Installed interpreters"
-msgstr ""
+msgstr "Interpretadores instalados"
 
 #: Immagini/ui/strings.py:70
 msgid "Select manually"
-msgstr ""
+msgstr "Selecionar manualmente"
 
 #: Immagini/ui/strings.py:72
 msgid "Create template image"
-msgstr ""
+msgstr "Criar imagem modelo"
 
 #: Immagini/ui/strings.py:74
 msgid "Location"
-msgstr ""
+msgstr "Local"
 
 #: Immagini/ui/strings.py:75
 msgid "App location"
-msgstr ""
+msgstr "Local de app"
 
 #: Immagini/ui/strings.py:77
 msgid "Select files: "
-msgstr ""
+msgstr "Selecionar arquivos: "
 
 #: Immagini/ui/strings.py:78
 msgid "Select folders: "
-msgstr ""
+msgstr "Selecionar pastas: "
 
 #: Immagini/ui/strings.py:79
 msgid "Selected items: "
-msgstr ""
+msgstr "Selecionar itens: "
 
 #: Immagini/ui/strings.py:81
 msgid "Please fill in all the informations"
-msgstr ""
+msgstr "Por favor, preencha as informações"
 
 #: Immagini/ui/strings.py:82
 msgid "All the info are required"
-msgstr ""
+msgstr "Todas as informações são obrigatórias"
 
 #: Immagini/ui/strings.py:85
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 #: Immagini/ui/strings.py:88
 msgid "Terminal"
-msgstr ""
+msgstr "Terminal"
 
 #: Immagini/ui/strings.py:92
 msgid "Image Options"
-msgstr ""
+msgstr "Opções de imagem"
 
 #: Immagini/ui/strings.py:93
 msgid "Executable:"
-msgstr ""
+msgstr "Executável:"
 
 #: Immagini/ui/strings.py:94
 msgid "Extract image:"
-msgstr ""
+msgstr "Extrair imagem:"
 
 #: Immagini/ui/strings.py:95
 msgid "Start in terminal:"
-msgstr ""
+msgstr "Começar no terminal:"
 
 #: Immagini/ui/strings.py:97
 msgid "Deleting an appimage file is not reversible"
-msgstr ""
+msgstr "Deletar um arquivo appimage é uma ação irreversível"
 
 #: Immagini/ui/strings.py:98
 msgid "Extracting image"
-msgstr ""
+msgstr "Extraindo imagem"
 
 #: Immagini/ui/strings.py:102
 msgid "The app has no executable permissions"
-msgstr ""
+msgstr "O app não possui permissão de execução"
 
 #: Immagini/ui/strings.py:103
 msgid "Permission denied"
-msgstr ""
+msgstr "Permissão negada"
 
 #: Immagini/ui/strings.py:105
 msgid " alredy exists"
-msgstr ""
+msgstr " já existe"
 
 #: Immagini/ui/strings.py:106
 msgid "Folder already exists"
-msgstr ""
+msgstr "Pasta já existe"
 
 #: Immagini/ui/strings.py:108
 msgid "Selected file must be named 'AppRun'"
-msgstr ""
+msgstr "Arquivo selecionado deve ser nomeado como 'AppRun'"
 
 #: Immagini/ui/strings.py:109
 msgid "AppRun file not valid"
-msgstr ""
+msgstr "Arquivo AppRun não válido"
 
 #: Immagini/ui/strings.py:111
 msgid "The Application folder does not contain the selected executable file"
-msgstr ""
+msgstr "A pasta de Aplicativo não contém o arquivo executável selecionado"
 
 #: Immagini/ui/strings.py:112
 msgid "Application folder does not contain executable"
-msgstr ""
+msgstr "Pasta de aplicativo não possui executável"
 
 #: Immagini/ui/strings.py:114
 msgid " does not exists"
-msgstr ""
+msgstr " não existe"
 
 #: Immagini/ui/strings.py:115
 msgid "could not copy the exe file"
-msgstr ""
+msgstr "não pôde copiar o arquivo executável"
 
 #: Immagini/ui/strings.py:117
 msgid "icon file does't exist"
-msgstr ""
+msgstr "arquivo de ícone não existe"
 
 #: Immagini/ui/strings.py:118
 msgid "could not copy icon"
-msgstr ""
+msgstr "não pôde copiar o ícone"
 
 #: Immagini/ui/strings.py:120
 msgid "The icon size must be 32x32, 48x48 etc.. not "
-msgstr ""
+msgstr "O tamanho do ícone deve ser 32x32, 48x48, etc... não "
 
 #: Immagini/ui/strings.py:121
 msgid "Icon size not valid"
-msgstr ""
+msgstr "Tamanho do arquivo não válido"
 
 #: Immagini/ui/strings.py:123
 msgid "could not copy library"
-msgstr ""
+msgstr "não pôde copiar biblioteca"
 
 #: Immagini/ui/strings.py:124
 msgid "Library does not exist"
-msgstr ""
+msgstr "Biblioteca não existe"

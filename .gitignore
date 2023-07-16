@@ -18,3 +18,4 @@ local build/flatpak-build.sh
 test.py
 TODO
 flatpak-repo/build-repo.sh
+messages.mo
